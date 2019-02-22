@@ -1,0 +1,20 @@
+# Kevin Spatling
+# Simple Calculator
+# This asks the user for 2 numbers, than adds the numbers together
+
+
+# This asks for the users first and second number
+num1 = float(input('Enter your first number: '))
+num2 = float(input('Enter your second number: '))
+
+
+# This awnsers the equation & has the awnser message
+sum = num1 + num2
+awnser = 'Your awnser is '
+
+
+# This formats the awnser, showing the numbers added
+print('Input: {} + {} = '.format(num1, num2))
+
+# This prints the awnsers, I used str() to convert the awnser int into a string
+print(awnser + str(sum) + '!')
