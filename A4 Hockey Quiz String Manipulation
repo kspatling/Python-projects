@@ -1,0 +1,184 @@
+# Kevin Spatling
+# Trivia
+
+
+# Intro to my hockey quiz
+print('''WELCOME TO GAME TIME QUIZ!
+
+''')
+
+user_name = input('Please enter your name: ')
+
+name_continue = input('Hello ' + user_name + ''', the rules of the game are the longer you play the harder it gets. You will get multiple choice, and word awnser questions, are you ready to start?
+Type YES or NO: ''')
+
+name_continue = name_continue.upper()
+
+if name_continue == 'YES':
+    print()
+
+else:
+    print('Have a great day! Hope to see you later!')
+    exit()
+
+score = 0
+
+
+# This is question one, multiple choice
+question_one = input('''Q1: What team is Dion Phaneuf currently playing for?
+
+A: Montreal Canadian's
+B: Toronto Maple Leafs
+C: Chicago Blackhawks
+D: Los Angelos Kings
+
+Enter your answer here: ''')
+
+question_one = question_one.upper()
+
+if question_one == 'D':
+    score += 10
+    print('Congratulations ' + user_name + ' you got the first question correct. You currently have ' + str(score) + ' points!')
+
+else:
+    print('''
+Nice try! The correct answer was D, the Los Angelos Kings.
+''')
+
+
+# This is question 2 word awnser
+question_two = input('''Q2: What team does Chris Neil play for?
+
+Enter your answer here: ''')
+
+question_two = question_two.lower()
+question_two_answer = ['ottawa senators', 'ottawa', 'senators', 'sens', 'senz', 'ottawasens', 'ottawa sens', 'ottawa senz', 'ottawasenz', 'ottawasenators']
+
+if question_two in str(question_two_answer):
+    score += 10
+    print('Congratulations ' + user_name + ' you got the second question correct. You currently have ' + str(score) + ' points!')
+
+else:
+    print('''
+Nice try! The correct answer was the Ottawa Senators
+''')
+
+
+# This is question 3 word awnser
+question_three = input('''Q3: What team does Alexander Ovechkin play for?
+
+Enter your answer here: ''')
+
+question_three = question_three.lower()
+question_three_answer = ['washington', 'washington capitals', 'washingtoncapitals', 'caps', 'washingtoncaps', 'washington caps']
+
+if question_three in str(question_three_answer):
+    score += 10
+    print('Congratulations ' + user_name + ' you got the third question correct. You currently have ' + str(score) + ' points!')
+
+else:
+    print('''
+Nice try! The correct answer was the Washington Capitals
+''')
+
+
+# This is question 4 word awnser
+question_four = input('''Q4: What's ____ Stone, first name that plays for the Ottawa Senators?
+
+Enter your answer here: ''')
+
+question_four = question_four.lower()
+question_four_answer = ['mark', 'm4rk', 'mrk']
+
+if question_four in str(question_four_answer):
+    score += 10
+    print('Congratulations ' + user_name + ' you got the fourth question correct. You currently have ' + str(score) + ' points!')
+
+else:
+    print('''
+Nice try! The correct answer was Mark
+''')
+
+
+# This is question 5 word awnser
+question_five = input('''Q5: Who is Ottawa Senators current goalie?
+
+Enter your answer here: ''')
+
+question_five = question_five.lower()
+question_five_answer = ['craig anderson', 'craiganderson', 'craig  anderson', 'craig', 'anderson']
+
+if question_five in str(question_five_answer):
+    score += 10
+    print('Congratulations ' + user_name + ' you got the fifth question correct. You currently have ' + str(score) + ' points!')
+
+else:
+    print('''
+Nice try! The correct answer was Craig Anderson
+''')
+
+
+# This is question six, multiple choice
+question_six = input('''Q6: The great NHL defenseman, Tim Horton, had his jersey retired. With which team/s was it retired?
+
+A: Buffalo Sabres
+B: Buffalo Sabres and Toronto Maple Leafs
+C: Montreal Canadians
+D: Toronto Maple Leafs and Montreal Canadians
+
+Enter your answer here: ''')
+
+question_six = question_six.upper()
+
+if question_six == 'B':
+    score += 10
+    print('Congratulations ' + user_name + ' you got the sixth question correct. You currently have ' + str(score) + ' points!')
+
+else:
+    print('''
+Nice try! The correct answer was B, the Buffalo Sabres and Toronto Maple Leafs.
+''')
+
+
+# This is question seven, multiple choice
+question_seven = input('''Q7: The Toronto Maple Leafs are second in Stanley Cups behind the Montreal Canadiens. How many have the Leafs won in the NHL?
+
+A: 11
+B: 20
+C: 13
+D: 22
+
+Enter your answer here: ''')
+
+question_seven = question_seven.upper()
+
+if question_seven == 'C':
+    score += 10
+    print('Congratulations ' + user_name + ' you got the seventh question correct. You currently have ' + str(score) + ' points!')
+
+else:
+    print('''
+Nice try! The correct answer was B, 13 stanley cups.
+''')
+
+
+# This is question eight, multiple choice
+question_eight = input('''Q8: The Montreal Canadians are first in Stanley cups. How many have the Canadians won in the NHL?
+
+A: 23
+B: 17
+C: 20
+D: 21
+
+Enter your answer here: ''')
+
+question_eight = question_eight.upper()
+
+if question_eight == 'A':
+    score += 10
+    print('Congratulations ' + user_name + ' you got the seventh question correct. You currently have ' + str(score) + ' points!')
+
+else:
+    print('''
+Nice try! The correct answer was A, 23 stanley cups.
+''')
