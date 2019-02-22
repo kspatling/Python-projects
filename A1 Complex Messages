@@ -1,0 +1,12 @@
+# Kevin Spatling
+# Complex Messages
+# Adds messages together, and changes an integer into a string
+
+# Variables declaring my name, age, and date of birth.
+name = 'Kevin'
+surname = ' Spatling'
+age = 16
+date_of_birth = ' 3/7/02'
+
+# Print the string, and using str() to convert the age int, into a string
+print('Hello, my name is ' + name + surname + ', I am age ' + str(age) + ', born' + date_of_birth)
