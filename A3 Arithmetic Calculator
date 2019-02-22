@@ -1,0 +1,87 @@
+# Kevin Spatling
+# Calculator
+# This is a complex calculator that includes square root, squared, GUI's, and error handling. This calculator formats
+# your awnser to make sure you know your using the right numbers in your calculation. This calculator also deals with
+# errors such as dividing by 0, entering an invalid operator, and different inputs for squared and roots.
+
+
+# Imported GUI window, and math code for easier operations
+import math
+import tkinter as tk
+
+
+# Defining the function close, when the operator inputs a wrong mathamatical operation. When it's called it will open
+def close():
+    me = tk.Tk()
+    me.title('Error')
+    me.geometry('155x21')
+
+
+# This creates a label with the text below, and a background color red
+    label = tk.Label(text='Invalid operator, please retry.', bg='RED')
+    label.grid(column='100', row='100')
+    me.mainloop()
+
+
+# This asks the users input on what operation they want to use, I also use \033[1;33m to change the color of text,Yellow
+op = int(input('''\033[1;33mPlease pick your calculating process
+Use 1 for addition
+Use 2 for subtraction
+Use 3 multiplication
+Use 4 for division
+Use 5 for square root
+Use 6 for squared
+
+Pick your operation:'''))
+
+
+# I used less than or greater than statements to see if the number picked was an operator
+if op <= 0:
+    print("\033[1;31mInvalid operator, please retry.")
+    close()
+
+elif op >= 7:
+    print("\033[1;31mInvalid operator, please retry.")
+    close()
+
+
+# This checks if the user wants to square or square root their number, only asking for one number instead of 2
+elif op == 5:
+    num = float(input('\033[1;36mEnter your number: '))
+
+elif op == 6:
+    num = float(input('\033[1;36mEnter your number: '))
+    num3 = float(input('\033[1;36mTo the power of: '))
+
+
+# This declares what their first and second number will be
+else:
+    num1 = float(input('\033[1;36mEnter your first number: '))
+    num2 = float(input('\033[1;36mEnter your second number: '))
+
+
+# These statements will check what the operation is, and format it while printing the awnser
+if op == 1:
+    print('\033[1;32m{} + {} = \033[1;35m{}'.format(num1, num2, num1 + num2))
+
+elif op == 2:
+    print('\033[1;32m{} - {} = \033[1;35m{}'.format(num1, num2, num1 - num2))
+
+elif op == 3:
+    print('\033[1;32m{} * {} = \033[1;35m{}'.format(num1, num2, num1 * num2))
+
+
+# This bug handles if the user will divide by 0, opening the close window
+elif op == 4:
+    try:
+        print('\033[1;32m{} / {} = \033[1;35m{}'.format(num1, num2, num1 / num2))
+    except ZeroDivisionError:
+        print('Sorry you cannot divide by 0!!!')
+
+
+# Using math import for an easier time calculating the awnser
+elif op == 5:
+    print('\033[1;32m√{} = \033[1;35m{}'.format(num, math.sqrt(num)))
+
+elif op == 6:
+    print('\033[1;32m{}^{} = \033[1;35m{}'.format(num, num3, math.pow(num, num3)))
