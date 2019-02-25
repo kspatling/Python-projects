@@ -10,9 +10,7 @@ print('''WELCOME TO GAME TIME QUIZ!
 user_name = input('Please enter your name: ')
 
 name_continue = input('Hello ' + user_name + ''', the rules of the game are the longer you play the harder it gets. You will get multiple choice, and word awnser questions, are you ready to start?
-Type YES or NO: ''')
-
-name_continue = name_continue.upper()
+Type YES or NO: ''').upper()
 
 if name_continue == 'YES':
     print()
@@ -32,9 +30,7 @@ B: Toronto Maple Leafs
 C: Chicago Blackhawks
 D: Los Angelos Kings
 
-Enter your answer here: ''')
-
-question_one = question_one.upper()
+Enter your answer here: ''').upper()
 
 if question_one == 'D':
     score += 10
@@ -49,12 +45,11 @@ Nice try! The correct answer was D, the Los Angelos Kings.
 # This is question 2 word awnser
 question_two = input('''Q2: What team does Chris Neil play for?
 
-Enter your answer here: ''')
+Enter your answer here: ''').lower
 
-question_two = question_two.lower()
 question_two_answer = ['ottawa senators', 'ottawa', 'senators', 'sens', 'senz', 'ottawasens', 'ottawa sens', 'ottawa senz', 'ottawasenz', 'ottawasenators']
 
-if question_two in str(question_two_answer):
+if question_two_answer found in question_two:
     score += 10
     print('Congratulations ' + user_name + ' you got the second question correct. You currently have ' + str(score) + ' points!')
 
@@ -67,9 +62,8 @@ Nice try! The correct answer was the Ottawa Senators
 # This is question 3 word awnser
 question_three = input('''Q3: What team does Alexander Ovechkin play for?
 
-Enter your answer here: ''')
+Enter your answer here: ''').lower()
 
-question_three = question_three.lower()
 question_three_answer = ['washington', 'washington capitals', 'washingtoncapitals', 'caps', 'washingtoncaps', 'washington caps']
 
 if question_three in str(question_three_answer):
@@ -85,9 +79,8 @@ Nice try! The correct answer was the Washington Capitals
 # This is question 4 word awnser
 question_four = input('''Q4: What's ____ Stone, first name that plays for the Ottawa Senators?
 
-Enter your answer here: ''')
+Enter your answer here: ''').lower()
 
-question_four = question_four.lower()
 question_four_answer = ['mark', 'm4rk', 'mrk']
 
 if question_four in str(question_four_answer):
@@ -103,9 +96,8 @@ Nice try! The correct answer was Mark
 # This is question 5 word awnser
 question_five = input('''Q5: Who is Ottawa Senators current goalie?
 
-Enter your answer here: ''')
+Enter your answer here: ''').lower()
 
-question_five = question_five.lower()
 question_five_answer = ['craig anderson', 'craiganderson', 'craig  anderson', 'craig', 'anderson']
 
 if question_five in str(question_five_answer):
@@ -126,9 +118,7 @@ B: Buffalo Sabres and Toronto Maple Leafs
 C: Montreal Canadians
 D: Toronto Maple Leafs and Montreal Canadians
 
-Enter your answer here: ''')
-
-question_six = question_six.upper()
+Enter your answer here: ''').upper()
 
 if question_six == 'B':
     score += 10
@@ -148,9 +138,7 @@ B: 20
 C: 13
 D: 22
 
-Enter your answer here: ''')
-
-question_seven = question_seven.upper()
+Enter your answer here: ''').upper()
 
 if question_seven == 'C':
     score += 10
@@ -170,9 +158,7 @@ B: 17
 C: 20
 D: 21
 
-Enter your answer here: ''')
-
-question_eight = question_eight.upper()
+Enter your answer here: ''').upper()
 
 if question_eight == 'A':
     score += 10
@@ -181,4 +167,24 @@ if question_eight == 'A':
 else:
     print('''
 Nice try! The correct answer was A, 23 stanley cups.
+''')
+
+
+# This is question nine, multiple choice
+question_nine = input('''Q9: What is the date and place that the NHL was founded?
+
+A: November 26, 1917, Montreal
+B: December 21, 1932, Ottawa
+C: October 23, 1933, Boston
+D: February 29, 1923, New York
+
+Enter your answer here: ''').upper()
+
+if question_nine == 'A':
+    score += 10
+    print('Congratulations ' + user_name + ' you got the seventh question correct. You currently have ' + str(score) + ' points!')
+
+else:
+    print('''
+Nice try! The correct answer was A, November 26, 1917, Montreal.
 ''')
