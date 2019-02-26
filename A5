@@ -1,0 +1,26 @@
+import random
+
+random_number_generator = random.randint(1, 203)
+correct = True
+guesses = 0
+
+while correct:
+    guess_input = input('Guess my number: ')
+    try:
+        val = int(guess_input)
+    except ValueError:
+        print('That is not a number! Try again')
+        exit()
+
+    if guess_input < random_number_generator:
+        guesses += 1
+        print('Sorry my number is higher than that, guess again!')
+
+    elif guess_input > random_number_generator:
+        guesses += 1
+        print('Sorry my number is lower than that, guess again!')
+
+    elif guess_input == random_number_generator:
+        print('Congratulations you guessed the number!')
+        print('It took you ' + str(guesses) + ' guesses, maybe you can do better next time!')
+        correct = False
