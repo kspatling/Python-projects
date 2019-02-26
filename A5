@@ -12,6 +12,8 @@ while correct:
         print('That is not a number! Try again')
         exit()
 
+    guess_input = int(guess_input)
+    
     if guess_input < random_number_generator:
         guesses += 1
         print('Sorry my number is higher than that, guess again!')
@@ -24,3 +26,5 @@ while correct:
         print('Congratulations you guessed the number!')
         print('It took you ' + str(guesses) + ' guesses, maybe you can do better next time!')
         correct = False
+
+
