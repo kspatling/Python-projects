@@ -3,27 +3,27 @@
 
 
 # Intro to my hockey quiz
-print('''WELCOME TO GAME TIME QUIZ!
+print('''\033[1;33mWELCOME TO GAME TIME QUIZ!
 
 ''')
 
-user_name = input('Please enter your name: ')
+user_name = input('\033[1;33mPlease enter your name: ')
 
-name_continue = input('Hello ' + user_name + ''', the rules of the game are the longer you play the harder it gets. You will get multiple choice, and word awnser questions, are you ready to start?
+continue_option = input('\033[1;33mHello \033[1;31m' + user_name + '''\033[1;33m,the rules of the game are the longer you play the harder it gets. You will get multiple choice, and word awnser questions, are you ready to start?
 Type YES or NO: ''').upper()
 
-if name_continue == 'YES':
+if continue_option == 'YES':
     print()
 
 else:
-    print('Have a great day! Hope to see you later!')
+    print('\033[1;31mHave a great day! Hope to see you later!')
     exit()
 
 score = 0
 
 
 # This is question one, multiple choice
-question_one = input('''Q1: What team is Dion Phaneuf currently playing for?
+question_one = input('''\033[1;36mQ1: What team is Dion Phaneuf currently playing for?
 
 A: Montreal Canadian's
 B: Toronto Maple Leafs
@@ -34,16 +34,16 @@ Enter your answer here: ''').upper()
 
 if question_one == 'D':
     score += 10
-    print('Congratulations ' + user_name + ' you got the first question correct. You currently have ' + str(score) + ' points!')
+    print('\033[1;33mCongratulations ' + user_name + ' you got the first question correct. You currently have ' + str(score) + ' points!')
 
 else:
-    print('''
+    print('''\033[1;31m
 Nice try! The correct answer was D, the Los Angelos Kings.
 ''')
 
 
 # This is question 2 word awnser
-question_two = input('''Q2: What team did Chris Neil play for?
+question_two = input('''\033[1;36mQ2: What team did Chris Neil play for?
 
 Enter your answer here: ''').lower()
 
@@ -51,16 +51,16 @@ question_two_answer = ['ottawa senators', 'ottawa', 'senators', 'sens', 'senz', 
 
 if question_two in str(question_two_answer):
     score += 10
-    print('Congratulations ' + user_name + ' you got the second question correct. You currently have ' + str(score) + ' points!')
+    print('\033[1;36mCongratulations ' + user_name + ' you got the second question correct. You currently have ' + str(score) + ' points!')
 
 else:
-    print('''
+    print('''\033[1;31m
 Nice try! The correct answer was the Ottawa Senators
 ''')
 
 
 # This is question 3 word awnser
-question_three = input('''Q3: What team does Alexander Ovechkin play for?
+question_three = input('''\033[1;36mQ3: What team does Alexander Ovechkin play for?
 
 Enter your answer here: ''').lower()
 
@@ -68,16 +68,16 @@ question_three_answer = ['washington', 'washington capitals', 'washingtoncapital
 
 if question_three in str(question_three_answer):
     score += 10
-    print('Congratulations ' + user_name + ' you got the third question correct. You currently have ' + str(score) + ' points!')
+    print('\033[1;36mCongratulations ' + user_name + ' you got the third question correct. You currently have ' + str(score) + ' points!')
 
 else:
-    print('''
+    print('''\033[1;31m
 Nice try! The correct answer was the Washington Capitals
 ''')
 
 
 # This is question 4 word awnser
-question_four = input('''Q4: What's ____ Stone, first name that plays for the Ottawa Senators?
+question_four = input('''\033[1;36mQ4: What's ____ Stone, first name that plays for the Ottawa Senators?
 
 Enter your answer here: ''').lower()
 
@@ -85,16 +85,16 @@ question_four_answer = ['mark', 'm4rk', 'mrk', 'merk']
 
 if question_four in str(question_four_answer):
     score += 10
-    print('Congratulations ' + user_name + ' you got the fourth question correct. You currently have ' + str(score) + ' points!')
+    print('\033[1;36mCongratulations ' + user_name + ' you got the fourth question correct. You currently have ' + str(score) + ' points!')
 
 else:
-    print('''
+    print('''\033[1;31m
 Nice try! The correct answer was Mark
 ''')
 
 
 # This is question 5 word awnser
-question_five = input('''Q5: Who is Ottawa Senators current goalie?
+question_five = input('''\033[1;36mQ5: Who is Ottawa Senators current goalie?
 
 Enter your answer here: ''').lower()
 
@@ -102,16 +102,16 @@ question_five_answer = ['craig anderson', 'craiganderson', 'craig  anderson', 'c
 
 if question_five in str(question_five_answer):
     score += 10
-    print('Congratulations ' + user_name + ' you got the fifth question correct. You currently have ' + str(score) + ' points!')
+    print('\033[1;36mCongratulations ' + user_name + ' you got the fifth question correct. You currently have ' + str(score) + ' points!')
 
 else:
-    print('''
+    print('''\033[1;31m
 Nice try! The correct answer was Craig Anderson
 ''')
 
 
 # This is question six, multiple choice
-question_six = input('''Q6: The great NHL defenseman, Tim Horton, had his jersey retired. With which team/s was it retired?
+question_six = input('''\033[1;36mQ6: The great NHL defenseman, Tim Horton, had his jersey retired. With which team/s was it retired?
 
 A: Buffalo Sabres
 B: Buffalo Sabres and Toronto Maple Leafs
@@ -122,16 +122,16 @@ Enter your answer here: ''').upper()
 
 if question_six == 'B':
     score += 10
-    print('Congratulations ' + user_name + ' you got the sixth question correct. You currently have ' + str(score) + ' points!')
+    print('\033[1;36mCongratulations ' + user_name + ' you got the sixth question correct. You currently have ' + str(score) + ' points!')
 
 else:
-    print('''
+    print('''\033[1;31m
 Nice try! The correct answer was B, the Buffalo Sabres and Toronto Maple Leafs.
 ''')
 
 
 # This is question seven, multiple choice
-question_seven = input('''Q7: The Toronto Maple Leafs are second in Stanley Cups behind the Montreal Canadiens. How many have the Leafs won in the NHL?
+question_seven = input('''\033[1;36mQ7: The Toronto Maple Leafs are second in Stanley Cups behind the Montreal Canadiens. How many have the Leafs won in the NHL?
 
 A: 11
 B: 20
@@ -142,16 +142,16 @@ Enter your answer here: ''').upper()
 
 if question_seven == 'C':
     score += 10
-    print('Congratulations ' + user_name + ' you got the seventh question correct. You currently have ' + str(score) + ' points!')
+    print('\033[1;36mCongratulations ' + user_name + ' you got the seventh question correct. You currently have ' + str(score) + ' points!')
 
 else:
-    print('''
+    print('''\033[1;31m
 Nice try! The correct answer was B, 13 stanley cups.
 ''')
 
 
 # This is question eight, multiple choice
-question_eight = input('''Q8: The Montreal Canadians are first in Stanley cups. How many have the Canadians won in the NHL?
+question_eight = input('''\033[1;36mQ8: The Montreal Canadians are first in Stanley cups. How many have the Canadians won in the NHL?
 
 A: 23
 B: 17
@@ -162,16 +162,16 @@ Enter your answer here: ''').upper()
 
 if question_eight == 'A':
     score += 10
-    print('Congratulations ' + user_name + ' you got the seventh question correct. You currently have ' + str(score) + ' points!')
+    print('\033[1;36mCongratulations ' + user_name + ' you got the seventh question correct. You currently have ' + str(score) + ' points!')
 
 else:
-    print('''
+    print('''\033[1;31m
 Nice try! The correct answer was A, 23 stanley cups.
 ''')
 
 
 # This is question nine, multiple choice
-question_nine = input('''Q9: What is the date and place that the NHL was founded?
+question_nine = input('''\033[1;36mQ9: What is the date and place that the NHL was founded?
 
 A: November 26, 1917, Montreal
 B: December 21, 1932, Ottawa
@@ -182,16 +182,16 @@ Enter your answer here: ''').upper()
 
 if question_nine == 'A':
     score += 10
-    print('Congratulations ' + user_name + ' you got the seventh question correct. You currently have ' + str(score) + ' points!')
+    print('\033[1;36mCongratulations ' + user_name + ' you got the seventh question correct. You currently have ' + str(score) + ' points!')
 
 else:
-    print('''
+    print('''\033[1;31m
 Nice try! The correct answer was A, November 26, 1917, Montreal.
 ''')
 
 
 # This is question 10 word awnser
-question_ten = input('''Q5: What is ______ Blue Jackets home town?
+question_ten = input('''\033[1;36mQ10: What is ______ Blue Jackets home town?
 
 Enter your answer here: ''').lower()
 
@@ -199,11 +199,13 @@ question_ten_answer = ['columbus', 'ohio', 'columbuss', 'columbuse', 'coluambus'
 
 if question_ten in str(question_ten_answer):
     score += 10
-    print('Congratulations ' + user_name + ' you got the tenth question correct. You currently have ' + str(score) + ' points!')
+    print('\033[1;36mCongratulations ' + user_name + ' you got the tenth question correct. You currently have ' + str(score) + ' points!')
 
 else:
-    print('''
+    print('''\033[1;31m
 Nice try! The correct answer was Columbus or Ohio
 ''')
 
-
+print('''\033[1;33mThank you for playing my quiz ''' + user_name + ''' I hope you had a fun time playing.
+You finished with a whole \033[1;31m''' + str(score) + '''\033[1;33m points!'''
+''' `` That''s \033[1;31m''' + str(score) + '''\033[1;33m more points than me!''')
