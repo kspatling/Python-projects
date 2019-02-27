@@ -1,30 +1,61 @@
+# Kevin Spatling
+# Guess The Number Game
+# This programs generates a random number between 1 and 203, it than asks the user to input the number and replies if the number is higher or lower.
+# I used loops and while statements to reroute the code if they needed to guess again
 import random
 
+
+# This randomly generates a number between 1 and 203. I also make the code true which will loop, and also difineing guesses.
 random_number_generator = random.randint(1, 203)
+amount_of_tries = random.randint(10, 30)
 correct = True
 guesses = 0
 
-while correct:
-    guess_input = input('Guess my number: ')
-    try:
-        val = int(guess_input)
-    except ValueError:
-        print('That is not a number! Try again')
-        exit()
 
-    guess_input = int(guess_input)
-    
+#This is the startup message
+print('''\033[1;36mWelcome to Kevin''s guess the number game.
+
+You will have ''' + str(amount_of_tries) + ''' of tries to get the number right.
+
+If you don't you lose! Good Luck!!!
+ ''')
+
+
+# This states while the program is running, continue this loop.
+while correct:
+
+
+# This tests if the input from the user is a string. They need to input a number.
+    try:
+        guess_input = int(input('\033[1;35mPlease enter your guess: '))
+    except ValueError:
+        print('''
+\033[1;31mPlease enter a real number!
+''')
+        continue
+
+
+# Less than, greather than, and equal too.
     if guess_input < random_number_generator:
         guesses += 1
-        print('Sorry my number is higher than that, guess again!')
+        print('\033[1;36mSorry my number is higher than that, guess again!')
 
     elif guess_input > random_number_generator:
         guesses += 1
-        print('Sorry my number is lower than that, guess again!')
+        print('\033[1;35mSorry my number is lower than that, guess again!')
 
     elif guess_input == random_number_generator:
-        print('Congratulations you guessed the number!')
-        print('It took you ' + str(guesses) + ' guesses, maybe you can do better next time!')
+        guesses += 1
+        print('\033[1;32mCongratulations you guessed the number!')
+        print('\033[1;32mIt took you \033[1;31m' + str(guesses) + '\033[1;32m guesses, maybe you can do better next time!')
         correct = False
 
 
+# This prints their amount of tries at the end of the game.
+    elif guesses == amount_of_tries:
+        print('\033[1;31mSorry you failed the game. Better luck next time!')
+
+
+# Just incase they somehow find another way to break my code.
+    else:
+        exit()
