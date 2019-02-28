@@ -1,0 +1,31 @@
+import random as rng
+
+bust = 21
+
+def randomcard():
+    random_card = rng.randrange(1, 11)
+    return random_card
+
+print('''\033[1;36mWelcome to Kevin's Blackjack casino!
+The rules are simple, either hit(H) or stand(S)
+Whoever gets closer to 21, the dealer or player, wins!!
+Be careful though, if you go over, your busted!{}''')
+
+player_hand = []
+player_hand.append(randomcard())
+player_hand.append(randomcard())
+player_total = sum(player_hand)
+player_play_hit = ['H', 'HIT']
+player_play_stand = ['S', 'SIT']
+player_play = input('''\033[1;33m
+
+This is your hand: {}. For a total of: {}
+Type H to hit, or type S to stand!'''.format(player_hand, player_total)).upper()
+
+dealer_hand = []
+dealer_hand.append(randomcard())
+dealer_hand.append(randomcard())
+dealer_total = sum(dealer_hand)
+
+
+
