@@ -1,3 +1,5 @@
+# Kevin Spatling
+# Blackjack
 import random as rng
 
 
@@ -7,38 +9,57 @@ def randomcard():
     return random_card
 
 
+# This defines the blackjack win message.
+def Blackjackwin():
+    print('''\033[1;32m
+Congratulations you won! You hit blackjack!
+Your hand: {}, Total: {}
+Dealers hand: {}, Total {}'''.format(player_hand, player_total, dealer_hand, dealer_total))
+
+
+# This defines the bust message for the player.
+def Bustmessage():
+    print('''\033[1;31m
+Sorry you lost. You hit bust!
+Your hand: {}, Total: {}
+Dealers hand: {}, Total {}'''.format(player_hand, player_total, dealer_hand, dealer_total))
+
+
+# This defines the shuffle message for the player.
+def Shufflemessage():
+    print('''\033[1;34m
+Its a shuffle, nobody wins!
+Your hand: {}, Total: {}
+Dealers hand: {}, Total {}'''.format(player_hand, player_total, dealer_hand, dealer_total))
+
 # This is my player stand statement, if they say S or STAND, it will define who wins.
 def playerstand():
     if player_play == 'S':
 
         if player_total < dealer_total:
-            print('''
+            print('''\033[1;31m
 Sorry you lost, the dealer beat you!
 Your hand: {}, Total: {}
 Dealers hand: {}, Total {}'''.format(player_hand, player_total, dealer_hand, dealer_total))
             exit()
 
         elif player_total > dealer_total:
-            print('''
+            print('''\033[1;32m
 Congratulations you won! You beat the dealer
 Your hand: {}, Total: {}
 Dealers hand: {}, Total {}'''.format(player_hand, player_total, dealer_hand, dealer_total))
             exit()
 
         elif player_total == dealer_total:
-            print('''
-Its a shuffle, nobody wins!
-Your hand: {}, Total: {}
-Dealers hand: {}, Total {}'''.format(player_hand, player_total, dealer_hand, dealer_total))
+            Shufflemessage()
             exit()
 
         elif player_total == 21:
             if dealer_total == 21:
-                print('''
-Its a shuffle, nobody wins!
-Your hand: {}, Total: {}
-Dealers hand: {}, Total {}'''.format(player_hand, player_total, dealer_hand, dealer_total))
+                Shufflemessage()
 
+
+# This is the game startup message.
 print('''\033[1;36mWelcome to Kevin's Blackjack casino!
 The rules are simple, either hit(H) or stand(S)
 Whoever gets closer to 21, the dealer or player, wins!!
@@ -54,6 +75,8 @@ dealer_hand.append(randomcard())
 dealer_hand.append(randomcard())
 dealer_total = sum(dealer_hand)
 
+
+# This gets the player input, and displays the cards.
 player_play = input('''\033[1;33m
 
 This is your hand: {}. For a total of: {}
@@ -62,40 +85,41 @@ Type H to hit, or type S to stand!'''.format(player_hand, player_total, dealer_h
 
 playerstand()
 
+
+# This defines if the player hits blackjack, or busts right away.
 if player_total == 21:
-    print('''
-Congratulations you won! You hit blackjack!
-Your hand: {}, Total: {}
-Dealers hand: {}, Total {}'''.format(player_hand, player_total, dealer_hand, dealer_total))
+    Blackjackwin()
 
 elif player_total > 21:
-    print('''
-Sorry you lost. You hit bust!
-Your hand: {}, Total: {}
-Dealers hand: {}, Total {}'''.format(player_hand, player_total, dealer_hand, dealer_total))
+    Bustmessage()
 
-while dealer_total < 17:
 
-    if dealer_total < 17:
-        dealer_hand.append(randomcard())
-        dealer_total = sum(dealer_hand)
+# This handles with the dealer's cards
+if dealer_total < 17:
+    while dealer_total < 17:
 
-    elif dealer_total == 21:
-        print('''
+        if dealer_total < 17:
+            dealer_hand.append(randomcard())
+            dealer_total = sum(dealer_hand)
+
+        elif dealer_total == 21:
+            print('''\033[1;31m
 Sorry you lost. The dealer hit BlackJack!
 Your hand: {}, Total: {}
 Dealers hand: {}, Total {}'''.format(player_hand, player_total, dealer_hand, dealer_total))
-        exit()
+            exit()
 
-    elif dealer_total > 21:
-        print('''
+        elif dealer_total > 21:
+            print('''\033[1;32m
 Congratulations you won! The dealer hit bust!
 Your hand: {}, Total: {}
 Dealers hand: {}, Total {}'''.format(player_hand, player_total, dealer_hand, dealer_total))
 
-    elif dealer_total > 17:
-        break
+        elif dealer_total > 17:
+            break
 
+
+# This handles with player hiting.
 while player_play == 'H':
 
     player_hand.append(randomcard())
@@ -108,22 +132,15 @@ This is your hand: {}. For a total of: {}
 Type H to hit, or type S to stand!'''.format(player_hand, player_total)).upper()
 
     if player_total > 21:
-        print('''
-Sorry you lost. You hit bust!
-Your hand: {}, Total: {}
-Dealers hand: {}, Total {}'''.format(player_hand, player_total, dealer_hand, dealer_total))
+        Bustmessage()
         exit()
 
     elif player_total == 21:
-        print('''
-Congratulations you won! You hit blackjack!
-Your hand: {}, Total: {}
-Dealers hand: {}, Total {}'''.format(player_hand, player_total, dealer_hand, dealer_total))
+        Blackjackwin()
         exit()
 
     playerstand()
 
 else:
-    print('''How did you end up here!''')
-
-
+    print('''\033[1;31mHow did you end up here!''')
+    exit()
