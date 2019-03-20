@@ -10,7 +10,7 @@ def randomcard():
 
 
 # This defines the blackjack win message.
-def Blackjackwin():
+def blackjackwin():
     print('''\033[1;32m
 Congratulations you won! You hit blackjack!
 Your hand: {}, Total: {}
@@ -18,7 +18,7 @@ Dealers hand: {}, Total {}'''.format(player_hand, player_total, dealer_hand, dea
 
 
 # This defines the bust message for the player.
-def Bustmessage():
+def bustmessage():
     print('''\033[1;31m
 Sorry you lost. You hit bust!
 Your hand: {}, Total: {}
@@ -26,9 +26,25 @@ Dealers hand: {}, Total {}'''.format(player_hand, player_total, dealer_hand, dea
 
 
 # This defines the shuffle message for the player.
-def Shufflemessage():
+def shufflemessage():
     print('''\033[1;34m
 Its a shuffle, nobody wins!
+Your hand: {}, Total: {}
+Dealers hand: {}, Total {}'''.format(player_hand, player_total, dealer_hand, dealer_total))
+
+
+# This is the winning message when the dealer hits bust
+def dealerbust():
+    print('''\033[1;32m
+Congratulations you won! The dealer hit bust!
+Your hand: {}, Total: {}
+Dealers hand: {}, Total {}'''.format(player_hand, player_total, dealer_hand, dealer_total))
+
+
+# This is the dealer blackjack message
+def dealerblackjack():
+    print('''\033[1;31m
+Sorry you lost. The dealer hit BlackJack!
 Your hand: {}, Total: {}
 Dealers hand: {}, Total {}'''.format(player_hand, player_total, dealer_hand, dealer_total))
 
@@ -36,7 +52,13 @@ Dealers hand: {}, Total {}'''.format(player_hand, player_total, dealer_hand, dea
 def playerstand():
     if player_play == 'S':
 
-        if player_total < dealer_total:
+        if player_total > 21:
+            bustmessage()
+
+        elif dealer_total > 21:
+            dealerbust()
+
+        elif player_total < dealer_total:
             print('''\033[1;31m
 Sorry you lost, the dealer beat you!
 Your hand: {}, Total: {}
@@ -51,12 +73,12 @@ Dealers hand: {}, Total {}'''.format(player_hand, player_total, dealer_hand, dea
             exit()
 
         elif player_total == dealer_total:
-            Shufflemessage()
+            shufflemessage()
             exit()
 
         elif player_total == 21:
             if dealer_total == 21:
-                Shufflemessage()
+                shufflemessage()
 
 
 # This is the game startup message.
@@ -72,7 +94,6 @@ player_total = sum(player_hand)
 
 dealer_hand = []
 dealer_hand.append(randomcard())
-dealer_hand.append(randomcard())
 dealer_total = sum(dealer_hand)
 
 
@@ -80,22 +101,13 @@ dealer_total = sum(dealer_hand)
 player_play = input('''\033[1;33m
 
 This is your hand: {}. For a total of: {}
-This is the dealers hand: {}. For a total of: {}
-Type H to hit, or type S to stand!'''.format(player_hand, player_total, dealer_hand, dealer_total)).upper()
-
-playerstand()
-
-
-# This defines if the player hits blackjack, or busts right away.
-if player_total == 21:
-    Blackjackwin()
-
-elif player_total > 21:
-    Bustmessage()
-
+This is the dealers hand: {}.
+Type H to hit, or type S to stand!'''.format(player_hand, player_total, dealer_hand)).upper()
+dealer_hand.append(randomcard())
+dealer_total = sum(dealer_hand)
 
 # This handles with the dealer's cards
-if dealer_total < 17:
+if dealer_total > 0:
     while dealer_total < 17:
 
         if dealer_total < 17:
@@ -110,13 +122,20 @@ Dealers hand: {}, Total {}'''.format(player_hand, player_total, dealer_hand, dea
             exit()
 
         elif dealer_total > 21:
-            print('''\033[1;32m
-Congratulations you won! The dealer hit bust!
-Your hand: {}, Total: {}
-Dealers hand: {}, Total {}'''.format(player_hand, player_total, dealer_hand, dealer_total))
+            dealerbust()
 
         elif dealer_total > 17:
             break
+
+playerstand()
+
+
+# This defines if the player hits blackjack, or busts right away.
+if player_total == 21:
+    blackjackwin()
+
+elif player_total > 21:
+    bustmessage()
 
 
 # This handles with player hiting.
@@ -132,15 +151,12 @@ This is your hand: {}. For a total of: {}
 Type H to hit, or type S to stand!'''.format(player_hand, player_total)).upper()
 
     if player_total > 21:
-        Bustmessage()
+        bustmessage()
         exit()
 
     elif player_total == 21:
-        Blackjackwin()
+        blackjackwin()
         exit()
 
     playerstand()
 
-else:
-    print('''\033[1;31mHow did you end up here!''')
-    exit()
