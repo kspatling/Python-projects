@@ -1,0 +1,49 @@
+from tkinter import *
+from tkinter import messagebox
+
+def awnser():
+    messagebox.showinfo('Answer Form', 'Awnser: {}'.format(summary))
+def calculate():
+    global summary
+    num1 = int(number_one.get())
+    num2 = int(number_two.get())
+
+    if expression.get() == '+':
+        summary = num1 + num2
+        awnser()
+
+    elif expression.get() == '-':
+        summary = num1 - num2
+        awnser()
+
+    elif expression.get() == '*':
+        summary = num1 * num2
+        awnser()
+
+    elif expression.get() == '/':
+        summary = num1 / num2
+        awnser()
+
+    else:
+        print('Nope')
+
+    return summary
+
+
+kevin = Tk()
+Label(kevin, text="Number One: ").grid(row=0)
+Label(kevin, text="Number Two: ").grid(row=1)
+Label(kevin, text="Expression: ").grid(row=2)
+
+number_one = Entry(kevin)
+number_two = Entry(kevin)
+expression = Entry(kevin)
+
+number_one.grid(row=0, column=1)
+number_two.grid(row=1, column=1)
+expression.grid(row=2, column=1)
+
+Button(kevin, text='Quit', command=kevin.quit, fg='RED').grid(row=3, column=0, sticky=W, pady=4)
+Button(kevin, text='Awnser', command=calculate, fg='GREEN').grid(row=3, column=1, sticky=W, pady=4)
+
+mainloop( )
