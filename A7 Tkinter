@@ -1,11 +1,55 @@
 from tkinter import *
 from tkinter import messagebox
+from math import *
+
+def debug():
+    try:
+        num1 = int(entry1.get())
+        num2 = int(entry2.get())
+    except ValueError:
+            messagebox.showerror('Error', 'Please enter a real number!')
+            quit()
+
+def debugroot():
+    try:
+        num1 = int(spinbox.get())
+    except ValueError:
+            messagebox.showerror('Error', 'Please enter a real number!')
+            quit()
 
 def add():
+    debug()
     num1 = int(entry1.get())
     num2 = int(entry2.get())
     summary = num1 + num2
     messagebox.showinfo('Awnser', '{} + {} = {}'.format(num1, num2, summary))
+
+def subtract():
+    debug()
+    num1 = int(entry1.get())
+    num2 = int(entry2.get())
+    summary = num1 - num2
+    messagebox.showinfo('Awnser', '{} - {} = {}'.format(num1, num2, summary))
+
+def multiply():
+    debug()
+    num1 = int(entry1.get())
+    num2 = int(entry2.get())
+    summary = num1 * num2
+    messagebox.showinfo('Awnser', '{} x {} = {}'.format(num1, num2, summary))
+
+def divise():
+    debug()
+    num1 = int(entry1.get())
+    num2 = int(entry2.get())
+    summary = num1 / num2
+    messagebox.showinfo('Awnser', '{} / {} = {}'.format(num1, num2, summary))
+
+def root():
+    debugroot()
+    num1 = int(spinbox.get())
+    summary = sqrt(num1)
+    messagebox.showinfo('Awnser', '√{} = {}'.format(num1, summary))
 
 def addition():
     global entry1, entry2
@@ -24,19 +68,103 @@ def addition():
 
     btn1 = Button(addition, text='Calculate', fg='LIGHTGREEN', command=add).grid(row=3, column=1)
 
-    mainloop
+    mainloop()
+
+def subtraction():
+    global entry1, entry2
+    subtraction = Tk()
+    subtraction.title('Subtraction Application')
+
+    lbl1 = Label(subtraction, text='Subtraction Calculator', bg='BLUE', fg='WHITE', relief='ridge').grid(row=0, column=1)
+    lbl2 = Label(subtraction, text='Number One: ', bg='LIGHTGREEN', fg='RED').grid(row=1, column=0)
+    lbl3 = Label(subtraction, text='Number Two: ', bg='LIGHTGREEN', fg='RED').grid(row=2, column=0)
+
+    entry1 = Entry(subtraction)
+    entry1.grid(row=1, column=1)
+
+    entry2 = Entry(subtraction)
+    entry2.grid(row=2, column=1)
+
+    btn1 = Button(subtraction, text='Calculate', fg='LIGHTGREEN', command=subtract).grid(row=3, column=1)
+
+    mainloop()
+
+def multiplication():
+    global entry1, entry2
+    addition = Tk()
+    addition.title('Multiplication Application')
+
+    lbl1 = Label(addition, text='Multiplication Calculator', bg='BLUE', fg='WHITE', relief='ridge').grid(row=0, column=1)
+    lbl2 = Label(addition, text='Number One: ', bg='LIGHTGREEN', fg='RED').grid(row=1, column=0)
+    lbl3 = Label(addition, text='Number Two: ', bg='LIGHTGREEN', fg='RED').grid(row=2, column=0)
+
+    entry1 = Entry(addition)
+    entry1.grid(row=1, column=1)
+
+    entry2 = Entry(addition)
+    entry2.grid(row=2, column=1)
+
+    btn1 = Button(addition, text='Calculate', fg='LIGHTGREEN', command=multiply).grid(row=3, column=1)
+
+    mainloop()
+
+def division():
+    global entry1, entry2
+    addition = Tk()
+    addition.title('Division Application')
+
+    lbl1 = Label(addition, text='Division Calculator', bg='BLUE', fg='WHITE', relief='ridge').grid(row=0, column=1)
+    lbl2 = Label(addition, text='Number One: ', bg='LIGHTGREEN', fg='RED').grid(row=1, column=0)
+    lbl3 = Label(addition, text='Number Two: ', bg='LIGHTGREEN', fg='RED').grid(row=2, column=0)
+
+    entry1 = Entry(addition)
+    entry1.grid(row=1, column=1)
+
+    entry2 = Entry(addition)
+    entry2.grid(row=2, column=1)
+
+    btn1 = Button(addition, text='Calculate', fg='LIGHTGREEN', command=divise).grid(row=3, column=1)
+
+    mainloop()
+
+def squareroot():
+    global spinbox
+    addition = Tk()
+    addition.title('Square Root Application')
+
+    lbl1 = Label(addition, text='Square Root Calculator', bg='BLUE', fg='WHITE', relief='ridge').grid(row=0, column=1)
+    lbl2 = Label(addition, text='Number One: ', bg='LIGHTGREEN', fg='RED').grid(row=1, column=0)
+
+    spinbox = Spinbox(addition, from_=0, to=100)
+    spinbox.grid(row=1, column=1)
+
+    btn1 = Button(addition, text='Calculate', fg='LIGHTGREEN', command=root).grid(row=2, column=1)
+
+    mainloop()
 
 def main():
+    global window
     window = Tk()
     window.title('''Kevin's Hub''')
 
+    mb = Menu(window)
+    operatorstab = Menu(mb, tearoff=0)
+    mb.add_cascade(label='Operators', menu=operatorstab)
+    operatorstab.add_command(label='Addition', command=addition)
+    operatorstab.add_command(label='Subtraction', command=subtraction)
+    operatorstab.add_command(label='Multiplication', command=multiplication)
+    operatorstab.add_command(label='Division', command=division)
+    operatorstab.add_command(label='Square', command=squareroot)
+    operatorstab.add_separator()
+    window.config(menu=operatorstab)
+
     lbl1 = Label(window, text='''Kevin's Application''', bg='BLUE', fg='WHITE', relief='ridge').grid(row=0, column=2)
 
-    rb1 = Radiobutton(window, text='Addition', indicatoron=0, pady=3, bg='LIGHTGREEN', fg='RED', bd=2, command=addition).grid(row=1, column=0)
-    rb2 = Radiobutton(window, text='Subtraction', indicatoron=0, pady=3, bg='LIGHTGREEN', fg='RED', bd=2).grid(row=1, column=1)
-    rb3 = Radiobutton(window, text='Multiplication', indicatoron=0, pady=3, bg='LIGHTGREEN', fg='RED', bd=2).grid(row=1, column=2)
-    rb4 = Radiobutton(window, text='Division', indicatoron=0, pady=3, bg='LIGHTGREEN', fg='RED', bd=2).grid(row=1, column=3)
-    rb5 = Radiobutton(window, text='Square Root', indicatoron=0, pady=3, bg='LIGHTGREEN', fg='RED', bd=2).grid(row=1, column=4)
+    rb1 = Radiobutton(window, text='Addition', indicatoron=0, pady=3, fg='RED', bd=2, command=addition).grid(row=1, column=0)
+    rb2 = Radiobutton(window, text='Subtraction', indicatoron=0, pady=3, fg='RED', bd=2, command=subtraction).grid(row=1, column=1)
+    rb3 = Radiobutton(window, text='Multiplication', indicatoron=0, pady=3, fg='RED', bd=2, command=multiplication).grid(row=1, column=2)
+    rb4 = Radiobutton(window, text='Division', indicatoron=0, pady=3, fg='RED', bd=2, command=division).grid(row=1, column=3)
+    rb5 = Radiobutton(window, text='Square Root', indicatoron=0, pady=3, fg='RED', bd=2, command=squareroot).grid(row=1, column=4)
 
     mainloop()
 
