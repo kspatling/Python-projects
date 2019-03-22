@@ -58,6 +58,13 @@ def playerstand():
         elif dealer_total > 21:
             dealerbust()
 
+        elif player_total == dealer_total:
+            shufflemessage()
+
+        elif player_total == 21:
+            if dealer_total == 21:
+                shufflemessage()
+
         elif player_total < dealer_total:
             print('''\033[1;31m
 Sorry you lost, the dealer beat you!
@@ -71,14 +78,6 @@ Congratulations you won! You beat the dealer
 Your hand: {}, Total: {}
 Dealers hand: {}, Total {}'''.format(player_hand, player_total, dealer_hand, dealer_total))
             exit()
-
-        elif player_total == dealer_total:
-            shufflemessage()
-            exit()
-
-        elif player_total == 21:
-            if dealer_total == 21:
-                shufflemessage()
 
 
 # This is the game startup message.
