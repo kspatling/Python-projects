@@ -12,7 +12,7 @@ user_name = input('\033[1;33mPlease enter your name: ')
 continue_option = input('\033[1;33mHello \033[1;31m' + user_name + '''\033[1;33m,the rules of the game are the longer you play the harder it gets. You will get multiple choice, and word awnser questions, are you ready to start?
 Type YES or NO: ''').upper()
 
-if continue_option == 'YES':
+if continue_option == 'YES' or 'Y':
     print()
 
 else:
