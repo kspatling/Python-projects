@@ -6,19 +6,22 @@ import random
 
 
 # This randomly generates a number between 1 and 203. I also make the code true which will loop, and also difineing guesses.
-random_number_generator = random.randint(1, 203)
-amount_of_tries = random.randint(10, 30)
+random_number_generator = random.randint(1, 400)
+amount_of_tries = random.randint(10, 15)
 correct = True
 guesses = 0
+tries_left = 0
 
 
 #This is the startup message
-print('''\033[1;36mWelcome to Kevin''s guess the number game.
+print('''\033[1;36mWelcome to Kevin's guess the number game.
 
-You will have ''' + str(amount_of_tries) + ''' of tries to get the number right.
+You will have \033[1;31m{} \033[1;36mof tries to get the number right.
 
-If you don't you lose! Good Luck!!!
- ''')
+The number is in between 1 - 400
+
+Good Luck!!!
+ '''.format(str(amount_of_tries)))
 
 
 # This states while the program is running, continue this loop.
@@ -38,24 +41,26 @@ while correct:
 # Less than, greather than, and equal too.
     if guess_input < random_number_generator:
         guesses += 1
-        print('\033[1;36mSorry my number is higher than that, guess again!')
+        tries_left = amount_of_tries - guesses
+        print('''
+\033[1;36mSorry my number is higher than that, guess again! You have \033[1;31m{} \033[1;35mtries left!
+'''.format(str(tries_left)))
 
     elif guess_input > random_number_generator:
         guesses += 1
-        print('\033[1;35mSorry my number is lower than that, guess again!')
+        tries_left = amount_of_tries - guesses
+        print('''
+\033[1;35mSorry my number is lower than that, guess again! You have \033[1;31m{} \033[1;35mtries left!
+'''.format(str(tries_left)))
 
     elif guess_input == random_number_generator:
         guesses += 1
         print('\033[1;32mCongratulations you guessed the number!')
-        print('\033[1;32mIt took you \033[1;31m' + str(guesses) + '\033[1;32m guesses, maybe you can do better next time!')
+        print('\033[1;32mIt took you \033[1;31m{} \033[1;32mguesses, maybe you can do better next time!'.format(str(guesses)))
         correct = False
 
 
 # This prints their amount of tries at the end of the game.
-    elif guesses == amount_of_tries:
+    if tries_left <= 0:
         print('\033[1;31mSorry you failed the game. Better luck next time!')
-
-
-# Just incase they somehow find another way to break my code.
-    else:
-        exit()
+        correct = False
