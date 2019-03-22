@@ -1,56 +1,43 @@
 from tkinter import *
 from tkinter import messagebox
 
+def add():
+    num1 = int(entry1.get())
+    num2 = int(entry2.get())
+    summary = num1 + num2
+    messagebox.showinfo('Awnser', '{} + {} = {}'.format(num1, num2, summary))
 
-def answer():
-    messagebox.showinfo('Answer Form', 'Answer: {}'.format(summary))
+def addition():
+    global entry1, entry2
+    addition = Tk()
+    addition.title('Addition Application')
 
+    lbl1 = Label(addition, text='Addition Calculator', bg='BLUE', fg='WHITE', relief='ridge').grid(row=0, column=1)
+    lbl2 = Label(addition, text='Number One: ', bg='LIGHTGREEN', fg='RED').grid(row=1, column=0)
+    lbl3 = Label(addition, text='Number Two: ', bg='LIGHTGREEN', fg='RED').grid(row=2, column=0)
 
-def calculate():
-    global summary
-    num1 = int(number_one.get())
-    num2 = int(number_two.get())
+    entry1 = Entry(addition)
+    entry1.grid(row=1, column=1)
 
-    if expression.get() == '+':
-        summary = num1 + num2
-        answer()
+    entry2 = Entry(addition)
+    entry2.grid(row=2, column=1)
 
-    elif expression.get() == '-':
-        summary = num1 - num2
-        answer()
+    btn1 = Button(addition, text='Calculate', fg='LIGHTGREEN', command=add).grid(row=3, column=1)
 
-    elif expression.get() == '*':
-        summary = num1 * num2
-        answer()
+    mainloop
 
-    elif expression.get() == '/':
-        summary = num1 / num2
-        answer()
+def main():
+    window = Tk()
+    window.title('''Kevin's Hub''')
 
-    else:
-        messagebox.showerror('Error', 'Sorry you cannot do that!')
+    lbl1 = Label(window, text='''Kevin's Application''', bg='BLUE', fg='WHITE', relief='ridge').grid(row=0, column=2)
 
-    return summary
+    rb1 = Radiobutton(window, text='Addition', indicatoron=0, pady=3, bg='LIGHTGREEN', fg='RED', bd=2, command=addition).grid(row=1, column=0)
+    rb2 = Radiobutton(window, text='Subtraction', indicatoron=0, pady=3, bg='LIGHTGREEN', fg='RED', bd=2).grid(row=1, column=1)
+    rb3 = Radiobutton(window, text='Multiplication', indicatoron=0, pady=3, bg='LIGHTGREEN', fg='RED', bd=2).grid(row=1, column=2)
+    rb4 = Radiobutton(window, text='Division', indicatoron=0, pady=3, bg='LIGHTGREEN', fg='RED', bd=2).grid(row=1, column=3)
+    rb5 = Radiobutton(window, text='Square Root', indicatoron=0, pady=3, bg='LIGHTGREEN', fg='RED', bd=2).grid(row=1, column=4)
 
+    mainloop()
 
-kevin = Tk()
-kevin.title('Calculator')
-
-lbl1 = Label(kevin, text='Calculator App', fg='RED').grid(row=0, column=1)
-lbl2 = Label(kevin, text='Number One: ', fg='BLUE').grid(row=1)
-lbl3 = Label(kevin, text='Number Two: ', fg='BLUE').grid(row=2)
-lbl4 = Label(kevin, text='Expression: ', fg='BLUE').grid(row=3)
-
-number_one = Entry(kevin)
-number_two = Entry(kevin)
-expression = Entry(kevin)
-
-number_one.grid(row=1, column=1)
-number_two.grid(row=2, column=1)
-expression.grid(row=3, column=1)
-
-btn1 = Button(kevin, text='Quit', command=kevin.quit, fg='RED').grid(row=4, column=0, sticky=W, pady=4)
-btn2 = Button(kevin, text='Answer', command=calculate, fg='GREEN').grid(row=4, column=1, sticky=W, pady=4)
-
-mainloop()
-
+main()
