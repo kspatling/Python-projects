@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 from math import *
+import random
 
 def debug():
     try:
@@ -42,6 +43,11 @@ def divise():
     debug()
     num1 = int(entry1.get())
     num2 = int(entry2.get())
+    try:
+        summary = num1 / num2
+    except ZeroDivisionError:
+        messagebox.showerror('Error', 'Sorry you cannot divide by zero!')
+        exit()
     summary = num1 / num2
     messagebox.showinfo('Awnser', '{} / {} = {}'.format(num1, num2, summary))
 
@@ -55,6 +61,7 @@ def addition():
     global entry1, entry2
     addition = Tk()
     addition.title('Addition Application')
+    addition.configure(bg='LIGHTGREEN')
 
     lbl1 = Label(addition, text='Addition Calculator', bg='BLUE', fg='WHITE', relief='ridge').grid(row=0, column=1)
     lbl2 = Label(addition, text='Number One: ', bg='LIGHTGREEN', fg='RED').grid(row=1, column=0)
@@ -74,6 +81,7 @@ def subtraction():
     global entry1, entry2
     subtraction = Tk()
     subtraction.title('Subtraction Application')
+    subtraction.configure(bg='LIGHTGREEN')
 
     lbl1 = Label(subtraction, text='Subtraction Calculator', bg='BLUE', fg='WHITE', relief='ridge').grid(row=0, column=1)
     lbl2 = Label(subtraction, text='Number One: ', bg='LIGHTGREEN', fg='RED').grid(row=1, column=0)
@@ -91,61 +99,128 @@ def subtraction():
 
 def multiplication():
     global entry1, entry2
-    addition = Tk()
-    addition.title('Multiplication Application')
+    multiplication = Tk()
+    multiplication.title('Multiplication Application')
+    multiplication.configure(bg='LIGHTGREEN')
 
-    lbl1 = Label(addition, text='Multiplication Calculator', bg='BLUE', fg='WHITE', relief='ridge').grid(row=0, column=1)
-    lbl2 = Label(addition, text='Number One: ', bg='LIGHTGREEN', fg='RED').grid(row=1, column=0)
-    lbl3 = Label(addition, text='Number Two: ', bg='LIGHTGREEN', fg='RED').grid(row=2, column=0)
+    lbl1 = Label(multiplication, text='Multiplication Calculator', bg='BLUE', fg='WHITE', relief='ridge').grid(row=0, column=1)
+    lbl2 = Label(multiplication, text='Number One: ', bg='LIGHTGREEN', fg='RED').grid(row=1, column=0)
+    lbl3 = Label(multiplication, text='Number Two: ', bg='LIGHTGREEN', fg='RED').grid(row=2, column=0)
 
-    entry1 = Entry(addition)
+    entry1 = Entry(multiplication)
     entry1.grid(row=1, column=1)
 
-    entry2 = Entry(addition)
+    entry2 = Entry(multiplication)
     entry2.grid(row=2, column=1)
 
-    btn1 = Button(addition, text='Calculate', fg='LIGHTGREEN', command=multiply).grid(row=3, column=1)
+    btn1 = Button(multiplication, text='Calculate', fg='LIGHTGREEN', command=multiply).grid(row=3, column=1)
 
     mainloop()
 
 def division():
     global entry1, entry2
-    addition = Tk()
-    addition.title('Division Application')
+    division = Tk()
+    division.title('Division Application')
+    division.configure(bg='LIGHTGREEN')
 
-    lbl1 = Label(addition, text='Division Calculator', bg='BLUE', fg='WHITE', relief='ridge').grid(row=0, column=1)
-    lbl2 = Label(addition, text='Number One: ', bg='LIGHTGREEN', fg='RED').grid(row=1, column=0)
-    lbl3 = Label(addition, text='Number Two: ', bg='LIGHTGREEN', fg='RED').grid(row=2, column=0)
+    lbl1 = Label(division, text='Division Calculator', bg='BLUE', fg='WHITE', relief='ridge').grid(row=0, column=1)
+    lbl2 = Label(division, text='Number One: ', bg='LIGHTGREEN', fg='RED').grid(row=1, column=0)
+    lbl3 = Label(division, text='Number Two: ', bg='LIGHTGREEN', fg='RED').grid(row=2, column=0)
 
-    entry1 = Entry(addition)
+    entry1 = Entry(division)
     entry1.grid(row=1, column=1)
 
-    entry2 = Entry(addition)
+    entry2 = Entry(division)
     entry2.grid(row=2, column=1)
 
-    btn1 = Button(addition, text='Calculate', fg='LIGHTGREEN', command=divise).grid(row=3, column=1)
+    btn1 = Button(division, text='Calculate', fg='LIGHTGREEN', command=divise).grid(row=3, column=1)
 
     mainloop()
 
 def squareroot():
     global spinbox
-    addition = Tk()
-    addition.title('Square Root Application')
+    squareroot = Tk()
+    squareroot.title('Square Root Application')
+    squareroot.configure(bg='LIGHTGREEN')
 
-    lbl1 = Label(addition, text='Square Root Calculator', bg='BLUE', fg='WHITE', relief='ridge').grid(row=0, column=1)
-    lbl2 = Label(addition, text='Number One: ', bg='LIGHTGREEN', fg='RED').grid(row=1, column=0)
+    lbl1 = Label(squareroot, text='Square Root Calculator', bg='BLUE', fg='WHITE', relief='ridge').grid(row=0, column=1)
+    lbl2 = Label(squareroot, text='Number One: ', bg='LIGHTGREEN', fg='RED').grid(row=1, column=0)
 
-    spinbox = Spinbox(addition, from_=0, to=100)
-    spinbox.grid(row=1, column=1)
+    spinbox1 = Spinbox(squareroot, from_=0, to=100)
+    spinbox1.grid(row=1, column=1)
 
-    btn1 = Button(addition, text='Calculate', fg='LIGHTGREEN', command=root).grid(row=2, column=1)
+    btn1 = Button(squareroot, text='Calculate', fg='LIGHTGREEN', command=root).grid(row=2, column=1)
 
     mainloop()
 
-def main():
+def guessthenumber():
+    global amount_of_tries, random_number_generator, correct, guesses, tries_left, spinbox2, answer
+    amount_of_tries = random.randint(10, 15)
+    random_number_generator = random.randint(1, 500)
+    correct = True
+    guesses = 0
+    tries_left = 0
+
+    guessnumber = Tk()
+    guessnumber.configure(bg='LIGHTGREEN')
+    lbl1 = Label(guessnumber, text='Guess The Number', bg='BLUE', fg='WHITE', relief='ridge').grid(row=0, column=0)
+    lbl2 = Label(guessnumber, text='You Will be given a number between 1 - 500. \nYou will have {} amounts of tries to guess the number. \nGoodluck!'.format(amount_of_tries), bg='LIGHTGREEN', fg='RED').grid(row=1, column=0)
+    guessnumber.title('Guess The Number')
+
+    spinbox2 = Spinbox(guessnumber, from_=1, to=500)
+    spinbox2.grid(row=2, column=0)
+
+    answer = StringVar()
+    answerlbl = Label(guessnumber, textvariable=answer, bg='LIGHTGREEN', fg='RED').grid(row=4, column=0)
+    answer.set(' ')
+
+    btn1 = Button(guessnumber, text='Guess', fg='RED', command=guess).grid(row=3, column=0)
+
+
+
+    mainloop()
+
+def guess():
+    correct = True
+    guesses = 0
+    tries_left = 0
+    while correct:
+
+        # This tests if the input from the user is a string. They need to input a number.
+        try:
+            int(spinbox2.get())
+        except ValueError:
+            messagebox.showerror('Error', 'Sorry please input a real number!')
+            continue
+
+        # Less than, greather than, and equal too.
+        if int(spinbox2.get()) < random_number_generator:
+            guesses += 1
+            tries_left = amount_of_tries - guesses
+            answer.set('Sorry my number is higher then that! \n You have {} tries left!'.format(str(tries_left)))
+
+        elif int(spinbox2.get()) > random_number_generator:
+            guesses += 1
+            tries_left = amount_of_tries - guesses
+            answer.set('Sorry my number is lower then that! \n You have {} tries left!'.format(str(tries_left)))
+
+        elif int(spinbox2.get()) == random_number_generator:
+            guesses += 1
+            answer.set('Congratulations!'.format(str(tries_left)))
+            messagebox.showinfo('Congratulations!', 'Congratulations! It took you {] tries!'.format(str(guesses)))
+            correct = False
+
+        # This prints their amount of tries at the end of the game.
+        #if tries_left <= 0:
+            messagebox.showerror('Failed!', 'Sorry you failed the game! \nBetter luck next time!')
+            correct = False
+            exit()
+
+def calculatewindow():
     global window
     window = Tk()
-    window.title('''Kevin's Hub''')
+    window.title('''Calculate Hub''')
+    window.configure(bg='LIGHTGREEN')
 
     mb = Menu(window)
     operatorstab = Menu(mb, tearoff=0)
@@ -155,10 +230,9 @@ def main():
     operatorstab.add_command(label='Multiplication', command=multiplication)
     operatorstab.add_command(label='Division', command=division)
     operatorstab.add_command(label='Square', command=squareroot)
-    operatorstab.add_separator()
     window.config(menu=operatorstab)
 
-    lbl1 = Label(window, text='''Kevin's Application''', bg='BLUE', fg='WHITE', relief='ridge').grid(row=0, column=2)
+    lbl1 = Label(window, text='''Calculation's''', bg='BLUE', fg='WHITE', relief='ridge').grid(row=0, column=2)
 
     rb1 = Radiobutton(window, text='Addition', indicatoron=0, pady=3, fg='RED', bd=2, command=addition).grid(row=1, column=0)
     rb2 = Radiobutton(window, text='Subtraction', indicatoron=0, pady=3, fg='RED', bd=2, command=subtraction).grid(row=1, column=1)
@@ -166,6 +240,16 @@ def main():
     rb4 = Radiobutton(window, text='Division', indicatoron=0, pady=3, fg='RED', bd=2, command=division).grid(row=1, column=3)
     rb5 = Radiobutton(window, text='Square Root', indicatoron=0, pady=3, fg='RED', bd=2, command=squareroot).grid(row=1, column=4)
 
+    mainloop()
+
+def main():
+    main = Tk()
+    main.title('''Kevin's Hub''')
+    main.configure(bg='LIGHTGREEN')
+    lbl1 = Label(main, text='''Kevin's Application''', bg='BLUE', fg='WHITE', relief='ridge').grid(row=0, column=1)
+    rb1 = Radiobutton(main, text='Calculate', indicatoron=0, pady=3, fg='RED', bd=2, command=calculatewindow).grid(row=1, column=0)
+    rb2 = Radiobutton(main, text='Guess The Number', indicatoron=0, pady=3, fg='RED', bd=2, command=guessthenumber).grid(row=1, column=1)
+    rb3 = Radiobutton(main, text='Test/Quiz', indicatoron=0, pady=3, fg='RED', bd=2,command=calculatewindow).grid(row=1, column=2)
     mainloop()
 
 main()
