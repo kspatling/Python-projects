@@ -154,12 +154,10 @@ def squareroot():
     mainloop()
 
 def guessthenumber():
-    global amount_of_tries, random_number_generator, correct, guesses, tries_left, spinbox2, answer
+    global amount_of_tries, random_number_generator, spinbox2, guesses
     amount_of_tries = random.randint(10, 15)
-    random_number_generator = random.randint(1, 500)
-    correct = True
-    guesses = 0
-    tries_left = 0
+    random_number_generator = random.randint(1, 2)
+    guesses = []
 
     guessnumber = Tk()
     guessnumber.configure(bg='LIGHTGREEN')
@@ -170,51 +168,41 @@ def guessthenumber():
     spinbox2 = Spinbox(guessnumber, from_=1, to=500)
     spinbox2.grid(row=2, column=0)
 
-    answer = StringVar()
-    answerlbl = Label(guessnumber, textvariable=answer, bg='LIGHTGREEN', fg='RED').grid(row=4, column=0)
-    answer.set(' ')
-
     btn1 = Button(guessnumber, text='Guess', fg='RED', command=guess).grid(row=3, column=0)
-
-
 
     mainloop()
 
+    return amount_of_tries, random_number_generator, spinbox2, guesses
+
 def guess():
-    correct = True
-    guesses = 0
     tries_left = 0
-    while correct:
+    add = 1
+    # This tests if the input from the user is a string. They need to input a number.
+    try:
+        int(spinbox2.get())
+    except ValueError:
+        messagebox.showerror('Error', 'Sorry please input a real number!')
 
-        # This tests if the input from the user is a string. They need to input a number.
-        try:
-            int(spinbox2.get())
-        except ValueError:
-            messagebox.showerror('Error', 'Sorry please input a real number!')
-            continue
+    # Less than, greather than, and equal too.
+    if int(spinbox2.get()) < random_number_generator:
+        guesses.append(add)
+        tries_left = amount_of_tries - sum(guesses)
+        messagebox.showinfo('Lower', 'Sorry my number is higher then that! \n You have {} tries left!'.format(str(tries_left)))
 
-        # Less than, greather than, and equal too.
-        if int(spinbox2.get()) < random_number_generator:
-            guesses += 1
-            tries_left = amount_of_tries - guesses
-            answer.set('Sorry my number is higher then that! \n You have {} tries left!'.format(str(tries_left)))
+    elif int(spinbox2.get()) > random_number_generator:
+        guesses.append(add)
+        tries_left = amount_of_tries - sum(guesses)
+        messagebox.showinfo('Higher', 'Sorry my number is lower then that! \n You have {} tries left!'.format(str(tries_left)))
 
-        elif int(spinbox2.get()) > random_number_generator:
-            guesses += 1
-            tries_left = amount_of_tries - guesses
-            answer.set('Sorry my number is lower then that! \n You have {} tries left!'.format(str(tries_left)))
-
-        elif int(spinbox2.get()) == random_number_generator:
-            guesses += 1
-            answer.set('Congratulations!'.format(str(tries_left)))
-            messagebox.showinfo('Congratulations!', 'Congratulations! It took you {] tries!'.format(str(guesses)))
-            correct = False
+    elif int(spinbox2.get()) == random_number_generator:
+        guesses.append(add)
+        messagebox.showinfo('Congratulations', 'Congratulations!\n It took you {} tries!'.format(str(tries_left, str(guesses))))
+        exit()
 
         # This prints their amount of tries at the end of the game.
-        #if tries_left <= 0:
-            messagebox.showerror('Failed!', 'Sorry you failed the game! \nBetter luck next time!')
-            correct = False
-            exit()
+    if tries_left <= 0:
+        messagebox.showerror('Failed!', 'Sorry you failed the game! \nBetter luck next time!')
+        exit()
 
 def calculatewindow():
     global window
