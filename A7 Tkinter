@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
+from tkinter import ttk
 from math import *
 import random
 
@@ -230,6 +231,73 @@ def calculatewindow():
 
     mainloop()
 
+def quiz():
+    global cmb1, cmb2, cmb3, cmb4, cmb5, correct
+    test = Tk()
+    test.title('''Kevin's Quiz/Test''')
+    test.configure(bg='LIGHTGREEN')
+    correct = []
+
+    lbl1 = Label(test, text='''Pop Quiz''', bg='BLUE', fg='WHITE', relief='ridge').grid(row=0, column=0)
+
+    lblq1 = Label(test, text='Which NFL team has won the most Super Bowls?', bg='LIGHTGREEN', fg='RED').grid(row=1, column=0)
+    cmb1 = ttk.Combobox(test, values=['A: Pittsburgh Steelers', 'B: New York Giants', 'C: Denver Broncos', 'D: Dallas Cowboys']).grid(row=2, column=0)
+
+    lblq2 = Label(test, text='Which of these words is NOT a term used in Cricket?', bg='LIGHTGREEN', fg='RED').grid(row=3, column=0)
+    cmb2 = ttk.Combobox(test, values=['A: Fumble', 'B: Wicket', 'C; Crease', 'D: Bowler']).grid(row=4, column=0)
+
+    lblq3 = Label(test, text='Which of these cities is well known for holding an automobile race every year around Memorial Day?', bg='LIGHTGREEN', fg='RED').grid(row=5, column=0)
+    cmb3 = ttk.Combobox(test, values=['A: Los Angeles', 'B: Indianapolis', 'C: Miami', 'D: Austin']).grid(row=6, column=0)
+
+    lblq4 = Label(test, text='Which player holds the record for the most consecutive games with a hit?', bg='LIGHTGREEN', fg='RED').grid(row=7, column=0)
+    cmb4 = ttk.Combobox(test, values=['A: Pete Rose', 'B: Rogers Hornsby', 'C: Joe DiMaggio', 'D: Ty Cobb']).grid(row=8, column=0)
+
+    lblq5 = Label(test, text='Which player has the most points scored in NBA history?', bg='LIGHTGREEN', fg='RED').grid(row=9, column=0)
+    cmb5 = ttk.Combobox(test, values=['A: Michael Jordan', 'B: Wilt Chamberlain', 'C: Kobe Bryant', 'D: Kareem Abdul-Jabbar']).grid(row=10, column=0)
+
+    btn1 = Radiobutton(test, text='Finish', indicatoron=0, pady=3, fg='RED', bd=2, command=quizanswer).grid(row=11, column=0)
+    btn2 = Radiobutton(test, text='Quit', indicatoron=0, pady=3, fg='RED', bd=2, command=test.destroy).grid(row=11, column=1)
+
+    mainloop()
+
+    return cmb1, cmb2, cmb3, cmb4, cmb5, correct
+
+def quizanswer():
+
+    if cmb1. == 'A: Pittsburgh Steelers':
+        correct.append(1)
+
+    else:
+        correct.append(0)
+
+    if cmb2.get() == 'A: Fumble':
+        correct.append(1)
+
+    else:
+        correct.append(0)
+
+    if cmb3.get() == 'B: Indianapolis':
+        correct.append(1)
+
+    else:
+        correct.append(0)
+
+    if cmb4.get() == 'C: Joe DiMaggio':
+        correct.append(1)
+
+    else:
+        correct.append(0)
+
+    if cmb5.get() == 'D: Kareem Abdul-Jabbar':
+        correct.append(1)
+
+    else:
+        correct.append(0)
+
+    sum(correct)
+
+    messagebox.showinfo('Quiz Results', '''Congratulations you've scored {}/5!'''.format(str(correct)))
+
 def main():
     main = Tk()
     main.title('''Kevin's Hub''')
@@ -237,7 +305,8 @@ def main():
     lbl1 = Label(main, text='''Kevin's Application''', bg='BLUE', fg='WHITE', relief='ridge').grid(row=0, column=1)
     rb1 = Radiobutton(main, text='Calculate', indicatoron=0, pady=3, fg='RED', bd=2, command=calculatewindow).grid(row=1, column=0)
     rb2 = Radiobutton(main, text='Guess The Number', indicatoron=0, pady=3, fg='RED', bd=2, command=guessthenumber).grid(row=1, column=1)
-    rb3 = Radiobutton(main, text='Test/Quiz', indicatoron=0, pady=3, fg='RED', bd=2,command=calculatewindow).grid(row=1, column=2)
+    rb3 = Radiobutton(main, text='Test/Quiz', indicatoron=0, pady=3, fg='RED', bd=2,command=quiz).grid(row=1, column=2)
+    rb4 = Radiobutton(main, text='Quit', indicatoron=0, pady=3, fg='RED', bd=2, command=main.quit).grid(row=2, column=1)
     mainloop()
 
 main()
