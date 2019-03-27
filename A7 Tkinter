@@ -183,6 +183,7 @@ def guess():
         int(spinbox2.get())
     except ValueError:
         messagebox.showerror('Error', 'Sorry please input a real number!')
+        exit()
 
     # Less than, greather than, and equal too.
     if int(spinbox2.get()) < random_number_generator:
@@ -241,62 +242,81 @@ def quiz():
     lbl1 = Label(test, text='''Pop Quiz''', bg='BLUE', fg='WHITE', relief='ridge').grid(row=0, column=0)
 
     lblq1 = Label(test, text='Which NFL team has won the most Super Bowls?', bg='LIGHTGREEN', fg='RED').grid(row=1, column=0)
-    cmb1 = ttk.Combobox(test, values=['A: Pittsburgh Steelers', 'B: New York Giants', 'C: Denver Broncos', 'D: Dallas Cowboys']).grid(row=2, column=0)
+    cmb1 = ttk.Combobox(test, values=('A: Pittsburgh Steelers', 'B: New York Giants', 'C: Denver Broncos', 'D: Dallas Cowboys'))
+    cmb1.grid(row=2, column=0)
 
     lblq2 = Label(test, text='Which of these words is NOT a term used in Cricket?', bg='LIGHTGREEN', fg='RED').grid(row=3, column=0)
-    cmb2 = ttk.Combobox(test, values=['A: Fumble', 'B: Wicket', 'C; Crease', 'D: Bowler']).grid(row=4, column=0)
+    cmb2 = ttk.Combobox(test, values=('A: Fumble', 'B: Wicket', 'C: Crease', 'D: Bowler'))
+    cmb2.grid(row=4, column=0)
 
     lblq3 = Label(test, text='Which of these cities is well known for holding an automobile race every year around Memorial Day?', bg='LIGHTGREEN', fg='RED').grid(row=5, column=0)
-    cmb3 = ttk.Combobox(test, values=['A: Los Angeles', 'B: Indianapolis', 'C: Miami', 'D: Austin']).grid(row=6, column=0)
+    cmb3 = ttk.Combobox(test, values=('A: Los Angeles', 'B: Indianapolis', 'C: Miami', 'D: Austin'))
+    cmb3.grid(row=6, column=0)
 
     lblq4 = Label(test, text='Which player holds the record for the most consecutive games with a hit?', bg='LIGHTGREEN', fg='RED').grid(row=7, column=0)
-    cmb4 = ttk.Combobox(test, values=['A: Pete Rose', 'B: Rogers Hornsby', 'C: Joe DiMaggio', 'D: Ty Cobb']).grid(row=8, column=0)
+    cmb4 = ttk.Combobox(test, values=('A: Pete Rose', 'B: Rogers Hornsby', 'C: Joe DiMaggio', 'D: Ty Cobb'))
+    cmb4.grid(row=8, column=0)
 
     lblq5 = Label(test, text='Which player has the most points scored in NBA history?', bg='LIGHTGREEN', fg='RED').grid(row=9, column=0)
-    cmb5 = ttk.Combobox(test, values=['A: Michael Jordan', 'B: Wilt Chamberlain', 'C: Kobe Bryant', 'D: Kareem Abdul-Jabbar']).grid(row=10, column=0)
+    cmb5 = ttk.Combobox(test, values=('A: Michael Jordan', 'B: Wilt Chamberlain', 'C: Kobe Bryant', 'D: Kareem Abdul-Jabbar'))
+    cmb5.grid(row=10, column=0)
 
     btn1 = Radiobutton(test, text='Finish', indicatoron=0, pady=3, fg='RED', bd=2, command=quizanswer).grid(row=11, column=0)
     btn2 = Radiobutton(test, text='Quit', indicatoron=0, pady=3, fg='RED', bd=2, command=test.destroy).grid(row=11, column=1)
+
+
 
     mainloop()
 
     return cmb1, cmb2, cmb3, cmb4, cmb5, correct
 
 def quizanswer():
+    q1_answer = 'A: Pittsburgh Steelers'
+    q2_answer = 'A: Fumble'
+    q3_answer = 'B: Indianapolis'
+    q4_answer = 'C: Joe DiMaggio'
+    q5_answer = 'D: Kareem Abdul-Jabbar'
 
-    if cmb1. == 'A: Pittsburgh Steelers':
-        correct.append(1)
-
-    else:
-        correct.append(0)
-
-    if cmb2.get() == 'A: Fumble':
-        correct.append(1)
-
-    else:
-        correct.append(0)
-
-    if cmb3.get() == 'B: Indianapolis':
-        correct.append(1)
+    if cmb1.get() == q1_answer:
+        correct.append('1')
 
     else:
         correct.append(0)
 
-    if cmb4.get() == 'C: Joe DiMaggio':
-        correct.append(1)
+    if cmb2.get() == q2_answer:
+        correct.append('1')
 
     else:
         correct.append(0)
 
-    if cmb5.get() == 'D: Kareem Abdul-Jabbar':
-        correct.append(1)
+    if cmb3.get() == q3_answer:
+        correct.append('1')
 
     else:
         correct.append(0)
 
-    sum(correct)
+    if cmb4.get() == q4_answer:
+        correct.append('1')
 
-    messagebox.showinfo('Quiz Results', '''Congratulations you've scored {}/5!'''.format(str(correct)))
+    else:
+        correct.append(0)
+
+    if cmb5.get() == q5_answer:
+        correct.append('1')
+
+    else:
+        correct.append(0)
+
+    total = 0
+    for i in correct:
+        total = total + int(i)
+
+    if total >= 3:
+        messagebox.showinfo('Quiz Results', '''Congratulations you've scored {}/5! \n\nThe correct awnsers where: \n\n{} \n{} \n{} \n{} \n{}'''.format(total, q1_answer, q2_answer, q3_answer, q4_answer, q5_answer))
+
+    elif total < 3:
+        messagebox.showerror('Quiz Results', '''Nice try! You've scored {}/5! \n\nThe correct awnsers where: \n\n{} \n{} \n{} \n{} \n{}'''.format(total, q1_answer, q2_answer, q3_answer, q4_answer, q5_answer))
+
 
 def main():
     main = Tk()
