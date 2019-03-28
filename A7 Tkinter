@@ -3,6 +3,27 @@ from tkinter import messagebox
 from tkinter import ttk
 from math import *
 import random
+import time
+
+def create_clock():
+    window = Toplevel()
+    blanktime = ''
+
+    lbl1 = Label(window, font=('fixedsys', 30, 'bold'), bg='BLACK', fg='RED')
+    lbl1.pack(fill=BOTH, expand=1)
+
+    def tick():
+        nonlocal blanktime
+
+        realtime = time.strftime('%H:%M:%S')
+
+        if realtime != blanktime:
+            blanktime = realtime
+            lbl1.config(text=realtime)
+
+        lbl1.after(200, tick)
+
+    tick()
 
 def debug():
     try:
@@ -198,7 +219,7 @@ def guess():
 
     elif int(spinbox2.get()) == random_number_generator:
         guesses.append(add)
-        messagebox.showinfo('Congratulations', 'Congratulations!\n It took you {} tries!'.format(str(tries_left, str(guesses))))
+        messagebox.showinfo('Congratulations', 'Congratulations!\n It took you {} tries!'.format(str(guesses)))
         exit()
 
         # This prints their amount of tries at the end of the game.
@@ -317,8 +338,8 @@ def quizanswer():
     elif total < 3:
         messagebox.showerror('Quiz Results', '''Nice try! You've scored {}/5! \n\nThe correct awnsers where: \n\n{} \n{} \n{} \n{} \n{}'''.format(total, q1_answer, q2_answer, q3_answer, q4_answer, q5_answer))
 
-
 def main():
+    global main
     main = Tk()
     main.title('''Kevin's Hub''')
     main.configure(bg='LIGHTGREEN')
@@ -326,6 +347,7 @@ def main():
     rb1 = Radiobutton(main, text='Calculate', indicatoron=0, pady=3, fg='RED', bd=2, command=calculatewindow).grid(row=1, column=0)
     rb2 = Radiobutton(main, text='Guess The Number', indicatoron=0, pady=3, fg='RED', bd=2, command=guessthenumber).grid(row=1, column=1)
     rb3 = Radiobutton(main, text='Test/Quiz', indicatoron=0, pady=3, fg='RED', bd=2,command=quiz).grid(row=1, column=2)
+    rb5 = Radiobutton(main, text='Clock', indicatoron=0, pady=3, fg='RED', bd=2,command=create_clock).grid(row=2, column=2)
     rb4 = Radiobutton(main, text='Quit', indicatoron=0, pady=3, fg='RED', bd=2, command=main.quit).grid(row=2, column=1)
     mainloop()
 
