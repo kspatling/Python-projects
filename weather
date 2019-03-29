@@ -1,0 +1,12 @@
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+
+driver = webdriver.Chrome(ChromeDriverManager().install())
+
+city = str(input("Enter the name of the city you want the weather forecast for: ")).replace(" ","-")
+
+try:
+    driver.get("https://www.google.com/search?safe=strict&rlz=1C1GCEV_enCA834CA834&ei=NFmeXKCMCsLAtQXC9on4AQ&q=weather+{}&oq=weather+{}&gs_l=psy-ab.3..0i131i70i256j0l9.12378.12968..13065...0.0..0.110.535.5j1......0....1..gws-wiz.......0i71j0i70i256.2CWAHq8czCo".format(city, city))
+    print(driver.find_elements_by_class_name("wob_t")[0].text + '°C')
+except:
+    print("Invalid input!")
