@@ -7,6 +7,7 @@ import time
 
 def create_clock():
     window = Toplevel()
+    window.title('Clock')
     blanktime = ''
 
     lbl1 = Label(window, font=('fixedsys', 30, 'bold'), bg='BLACK', fg='RED')
@@ -24,6 +25,60 @@ def create_clock():
         lbl1.after(200, tick)
 
     tick()
+
+def cookieclicker():
+    global counter, lbl2, counter, cw, btn1
+    cw = Toplevel()
+    photo = PhotoImage(file="Cookie-Download-PNG.png")
+    counter = []
+    counter.append(0)
+
+    lbl1 = Label(cw, text='Cookies')
+    lbl2 = Label(cw, text=str(counter))
+
+    btn1 = Button(cw, image=photo, command=cookielvl1)
+    btn1.image = photo
+
+    lbl1.pack()
+    lbl2.pack()
+    btn1.pack()
+
+def cookielvl1():
+    counter.append(1)
+    lbl2.config(text=str(sum(counter)))
+
+    if sum(counter) >= 50:
+        messagebox.showinfo('Hello', 'You beat the game!')
+
+def userpassword():
+    if username.get() == 'admin' and password.get() == 'admin':
+        cookieclicker()
+        win.destroy()
+
+    else:
+        messagebox.showerror('Error', 'Wrong user name or password.')
+
+def login():
+    global username, password, win
+    win = Toplevel()
+    win.title('LogMeIn')
+    win.geometry('360x160')
+    win.configure(bg='LIGHTGREEN')
+
+    lbl1 = Label(win, text='Username', bg='LIGHTGREEN', fg='RED', font=('Helvetica', 10))
+    lbl2 = Label(win, text='Password', bg='LIGHTGREEN', fg='RED', font=('Helvetica', 10))
+    username = Entry(win)
+    password = Entry(win, show='*')
+    rb1 = Radiobutton(win, text='Log In', indicatoron=0, pady=3, fg='RED', bd=2, command=userpassword, font=('Helvetica', 10))
+
+    lbl1.pack()
+    username.pack()
+    lbl2.pack()
+    password.pack()
+    rb1.pack()
+
+    mainloop()
+
 
 def debug():
     try:
@@ -347,8 +402,9 @@ def main():
     rb1 = Radiobutton(main, text='Calculate', indicatoron=0, pady=3, fg='RED', bd=2, command=calculatewindow).grid(row=1, column=0)
     rb2 = Radiobutton(main, text='Guess The Number', indicatoron=0, pady=3, fg='RED', bd=2, command=guessthenumber).grid(row=1, column=1)
     rb3 = Radiobutton(main, text='Test/Quiz', indicatoron=0, pady=3, fg='RED', bd=2,command=quiz).grid(row=1, column=2)
-    rb5 = Radiobutton(main, text='Clock', indicatoron=0, pady=3, fg='RED', bd=2,command=create_clock).grid(row=2, column=2)
-    rb4 = Radiobutton(main, text='Quit', indicatoron=0, pady=3, fg='RED', bd=2, command=main.quit).grid(row=2, column=1)
+    rb4 = Radiobutton(main, text='Clock', indicatoron=0, pady=3, fg='RED', bd=2,command=create_clock).grid(row=2, column=2)
+    rb5 = Radiobutton(main, text='Vault', indicatoron=0, pady=3, fg='RED', bd=2,command=login).grid(row=2, column=0)
+    rb6 = Radiobutton(main, text='Quit', indicatoron=0, pady=3, fg='RED', bd=2, command=main.quit).grid(row=2, column=1)
     mainloop()
 
 main()
