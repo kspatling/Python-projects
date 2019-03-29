@@ -26,29 +26,124 @@ def create_clock():
 
     tick()
 
+def cookieshop():
+    global shop, lvl2btn
+    lvl2clicker = PhotoImage(file="lvl2clicker.png")
+    lvl3clicker = PhotoImage(file='lvl3clicker.png')
+    lvlmegaclicker = PhotoImage(file='lvlmegaclicker.png')
+    shop = Toplevel()
+
+    lbl1 = Label(shop, text='Shop')
+    lbl2 = Label(shop, text='Lvl 2 Clicker: 20 Cookies', font=('Helvetica', 18, 'bold'))
+    lbl3 = Label(shop, text='Lvl 3 Clicker: 100 Cookies', font=('Helvetica', 18, 'bold'))
+    lbl4 = Label(shop, text='Lvl Mega Clicker: 200 Cookies', font=('Helvetica', 18, 'bold'))
+
+    lvl2btn = Button(shop, image=lvl2clicker, command=cookielvl2upgrade, width=110)
+    lvl2btn.image = lvl2clicker
+
+    lvl3btn = Button(shop, image=lvl3clicker, command=cookielvl3upgrade, width=110)
+    lvl3btn.image = lvl3clicker
+
+    lvl4btn = Button(shop, image=lvlmegaclicker, command=cookielvlmegaupgrade, width=110)
+    lvl4btn.image = lvlmegaclicker
+
+    lbl1.pack()
+    lbl2.pack()
+    lvl2btn.pack()
+    lbl3.pack()
+    lvl3btn.pack()
+    lbl4.pack()
+    lvl4btn.pack()
+
 def cookieclicker():
-    global counter, lbl2, counter, cw, btn1
+    global counter, lbl2, counter, cw, btn1, lvl2, lvl3, lvlmega
     cw = Toplevel()
     photo = PhotoImage(file="Cookie-Download-PNG.png")
+    photo2 = PhotoImage(file="shop.png")
     counter = []
-    counter.append(0)
+    lvl2 = []
+    lvl3 = []
+    lvlmega = []
 
     lbl1 = Label(cw, text='Cookies')
-    lbl2 = Label(cw, text=str(counter))
+    lbl2 = Label(cw, text='0')
 
     btn1 = Button(cw, image=photo, command=cookielvl1)
     btn1.image = photo
 
+    btn2 = Button(cw, image=photo2, command=cookieshop)
+    btn2.image = photo2
+
     lbl1.pack()
     lbl2.pack()
     btn1.pack()
+    btn2.pack()
 
 def cookielvl1():
     counter.append(1)
     lbl2.config(text=str(sum(counter)))
 
-    if sum(counter) >= 50:
-        messagebox.showinfo('Hello', 'You beat the game!')
+def cookielvl2upgrade():
+    if sum(lvl2) >= 1:
+        messagebox.showerror('Error', 'Sorry you have already purchased this upgrade!')
+        shop.destroy()
+
+    if sum(counter) >= 20:
+        counter.append(-20)
+        btn1.configure(command=cookielvl2)
+        lvl2.append(1)
+        shop.destroy()
+
+    else:
+        messagebox.showerror('Error', 'Insufficient cookies! You need 20!')
+        shop.destroy()
+
+
+def cookielvl2():
+    counter.append(2)
+    lbl2.config(text=str(sum(counter)))
+
+def cookielvl3upgrade():
+    if sum(lvl3) >= 1:
+        messagebox.showerror('Error', 'Sorry you have already purchased this upgrade!')
+        shop.destroy()
+
+    if sum(counter) >= 100:
+        counter.append(-100)
+        btn1.configure(command=cookielvl3)
+        lvl3.append(1)
+        shop.destroy()
+
+    else:
+        messagebox.showerror('Error', 'Insufficient cookies! You need 100!')
+        shop.destroy()
+
+
+def cookielvl3():
+    counter.append(3)
+    lbl2.config(text=str(sum(counter)))
+
+def cookielvlmegaupgrade():
+    if sum(lvlmega) >= 1:
+        messagebox.showerror('Error', 'Sorry you have already purchased this upgrade!')
+        shop.destroy()
+
+    if sum(counter) >= 200:
+        counter.append(-200)
+        btn1.configure(command=cookielvlmega)
+        lvl3.append(1)
+        shop.destroy()
+
+    else:
+        messagebox.showerror('Error', 'Insufficient cookies! You need 200!')
+        shop.destroy()
+
+
+def cookielvlmega():
+    counter.append(10)
+    lbl2.config(text=str(sum(counter)))
+
+
 
 def userpassword():
     if username.get() == 'admin' and password.get() == 'admin':
@@ -76,8 +171,6 @@ def login():
     lbl2.pack()
     password.pack()
     rb1.pack()
-
-    mainloop()
 
 
 def debug():
@@ -393,6 +486,7 @@ def quizanswer():
     elif total < 3:
         messagebox.showerror('Quiz Results', '''Nice try! You've scored {}/5! \n\nThe correct awnsers where: \n\n{} \n{} \n{} \n{} \n{}'''.format(total, q1_answer, q2_answer, q3_answer, q4_answer, q5_answer))
 
+
 def main():
     global main
     main = Tk()
@@ -404,7 +498,8 @@ def main():
     rb3 = Radiobutton(main, text='Test/Quiz', indicatoron=0, pady=3, fg='RED', bd=2,command=quiz).grid(row=1, column=2)
     rb4 = Radiobutton(main, text='Clock', indicatoron=0, pady=3, fg='RED', bd=2,command=create_clock).grid(row=2, column=2)
     rb5 = Radiobutton(main, text='Vault', indicatoron=0, pady=3, fg='RED', bd=2,command=login).grid(row=2, column=0)
-    rb6 = Radiobutton(main, text='Quit', indicatoron=0, pady=3, fg='RED', bd=2, command=main.quit).grid(row=2, column=1)
+    rb6 = Radiobutton(main, text='Quit', indicatoron=0, pady=3, fg='RED', bd=2, command=main.destroy).grid(row=2, column=1)
     mainloop()
+
 
 main()
