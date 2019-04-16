@@ -1,0 +1,13 @@
+import boto3
+import random as rng
+
+def random():
+    rnd = rng.randrange(111, 999)
+    return rnd
+
+code = str(random()) + ' ' + str(random()) + ' ' + str(random())
+authenticate = 'Your code is: ' + code
+
+client = boto3.client('sns', 'us-east-1')
+
+client.publish(PhoneNumber='+16138086739', Message=authenticate)
