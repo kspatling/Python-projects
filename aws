@@ -11,3 +11,43 @@ authenticate = 'Your code is: ' + code
 client = boto3.client('sns', 'us-east-1')
 
 client.publish(PhoneNumber='+16138086739', Message=authenticate)
+
+
+from spookyotp import (get_random_secret, TOTP, from_uri)
+from tkinter import *
+from tkinter import messagebox
+
+secret = get_random_secret(n_bytes = 10)
+totp = TOTP(secret,'Kevin Enterprises',' ')
+totp.save_qr_code('qr.png')
+
+def authenticate():
+
+	try:
+		if totp.compare(e1.get()):
+			messagebox.showinfo('Success', 'Welcome to the vault!')
+			exit()
+
+	except ValueError:
+		messagebox.showwarning('Error', 'Please do not use a space!')
+
+	else:
+		messagebox.showerror('Alert', 'The police have been called to your location!')
+		exit()
+
+window = Tk()
+
+lbl1 = Label(window, text='2 STEP FA')
+lbl1.pack()
+
+img1 = PhotoImage(file='qr.png')
+lbl2 = Label(window, image=img1)
+lbl2.pack()
+
+e1 = Entry(window)
+e1.pack()
+
+btn1 = Button(window, text='Submit', command=authenticate)
+btn1.pack()
+
+mainloop()
