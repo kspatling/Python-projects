@@ -1,0 +1,109 @@
+from tkinter import *
+import pygame
+from tkinter import ttk
+from tkinter import filedialog
+import shutil
+from pathlib import Path
+
+
+def reloadsonglist():
+    write = True
+    file = open('songfile.txt', 'r+')
+
+    file = open('songfile.txt')
+
+    while write:
+        line = file.readline()
+
+        if len(line) == 0:
+            break
+
+        line = line.split('.')
+        cb1['values'] = (line)
+
+def importsong():
+
+    window.filename = filedialog.askopenfilename(initialdir="/", title="Select file", filetypes=(("MP3 FILES", "*.mp3"), ("all files", "*.*")))
+    sourcefile = window.filename
+    musicdestination = r'C:/Users/s250992/PycharmProjects/Big Project'
+
+    try:
+        shutil.move(sourcefile, musicdestination)
+
+    except:
+        exit()
+
+    sourcefile = Path(sourcefile).stem
+    file = open('songfile.txt', 'r+')
+
+    while True:
+        line = file.readline()
+
+        if len(line) == 0:
+            break
+
+    file.write('{}.{}'.format(line, sourcefile))
+    file.close()
+    reloadsonglist()
+
+def play():
+    global file
+    file = '{}.mp3'.format(cb1.get())
+    pygame.init()
+    pygame.mixer.init()
+    pygame.mixer.music.load(file)
+    pygame.mixer.music.play()
+
+def pause():
+    pygame.mixer.music.pause()
+
+def unpause():
+    pygame.mixer.music.unpause()
+
+def startscreen():
+    global window, lbl1, btn1
+    window = Tk()
+    window.configure(bg='#000000')
+    window.geometry('500x500')
+    window.title('Firefly Music')
+
+    lbl1 = Label(window, text='Firefly', font=('Helvetica', 50, 'bold'), fg='#1DB954', bg='#000000')
+    lbl1.pack(pady=150, anchor=S)
+
+    btn1 = Button(window, text='[ ENTER ]', font=('Helvetica', 25, 'bold'), fg='#1DB954', bg='#000000', command=main)
+    btn1.pack(anchor=N)
+
+    mainloop()
+
+def main():
+    global cb1
+    lbl1.forget()
+    btn1.forget()
+
+    lbl2 = Label(window, text='Music Player', font=('Helvetica', 30, 'bold'), fg='#1DB954', bg='#000000')
+    lbl2.pack(anchor=N)
+
+    lbl3 = Label(window, text='Songs', font=('Helvetica', 12, 'bold'), fg='#1DB954', bg='#000000')
+    lbl3.place(x=50, y=100)
+
+    stylecb = ttk.Style()
+    stylecb.theme_create('combostyle', parent='alt', settings={'TCombobox': {'configure': {'selectbackground': '#000000', 'fieldbackground': '#000000', 'background': '#1DB954'} } } )
+    stylecb.theme_use('combostyle')
+
+    cb1 = ttk.Combobox(window, value=())
+    cb1.place(x=50, y=120)
+    reloadsonglist()
+
+    btn2 = Button(window, text='Play', font=('Helvetica', 12, 'bold'), fg='#1DB954', bg='#000000', command=play)
+    btn2.place(x=350, y=160)
+
+    btn3 = Button(window, text='Pause', font=('Helvetica', 12, 'bold'), fg='#1DB954', bg='#000000', command=pause)
+    btn3.place(x=350, y=200)
+
+    btn4 = Button(window, text='Unpause', font=('Helvetica', 12, 'bold'), fg='#1DB954', bg='#000000', command=unpause)
+    btn4.place(x=350, y=240)
+
+    btn5 = Button(window, text='Import Song', font=('Helvetica', 12, 'bold'), fg='#1DB954', bg='#000000', command=importsong)
+    btn5.place(x=50, y=150)
+
+startscreen()
