@@ -49,9 +49,9 @@ def importsong():
     reloadsonglist()
 
 def ytimport():
-    ytlink = YouTube(e1.get()).download()
-    ytlink.download(r'C:/Users/s250992/Desktop/Youtube Download Pass Through')
-    yttitle = ytlink.title()
+    yt = YouTube(e1.get())
+    stream = yt.(r'C:/Users/s250992/Desktop/Youtube Download Pass Through')
+    yttitle = yt.title()
 
     file = open('songfile.txt', 'r+')
 
