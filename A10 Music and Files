@@ -4,8 +4,11 @@ from tkinter import ttk
 from tkinter import filedialog
 import shutil
 from pathlib import Path
+from pytube import YouTube
+import moviepy.editor as mp
 
-def songs():
+
+def reloadsonglist():
     write = True
     file = open('songfile.txt', 'r+')
 
@@ -17,20 +20,74 @@ def songs():
         if len(line) == 0:
             break
 
-        line = line.split('  ')
-        print(str(line)[1:-1], end='')
-        
+        line = line.split('.')
+        cb1['values'] = (line)
+
 def importsong():
-    window.filename = filedialog.askopenfilename(initialdir="/", title="Select file",
-                                               filetypes=(("MP3 FILES", "*.mp3"), ("all files", "*.*")))
+
+    window.filename = filedialog.askopenfilename(initialdir="/", title="Select file", filetypes=(("MP3 FILES", "*.mp3"), ("all files", "*.*")))
     sourcefile = window.filename
     musicdestination = r'C:/Users/s250992/PycharmProjects/Big Project'
 
-    shutil.move(sourcefile, musicdestination)
+    try:
+        shutil.move(sourcefile, musicdestination)
+
+    except:
+        exit()
+
     sourcefile = Path(sourcefile).stem
-    cb1['values'] = (*cb1['values'], sourcefile)
+    file = open('songfile.txt', 'r+')
+
+    while True:
+        line = file.readline()
+
+        if len(line) == 0:
+            break
+
+    file.write('{}.{}'.format(line, sourcefile))
+    file.close()
+    reloadsonglist()
+
+def ytimport():
+    ytlink = YouTube(e1.get()).download()
+    ytlink.download(r'C:/Users/s250992/Desktop/Youtube Download Pass Through')
+    yttitle = ytlink.title()
+
+    file = open('songfile.txt', 'r+')
+
+    while True:
+        line = file.readline()
+
+        if len(line) == 0:
+            break
+
+    file.write('{}.{}'.format(line, yttitle))
+    file.close()
+
+    clip = mp.VideoFileClip(r'C:/Users/s250992/Desktop/Youtube Download Pass Through/{}.mp4'.format(yttitle))
+    newclip = clip.audio.write_audiofile(r'C:/Users/s250992/PycharmProjects/Big Project')
+
+    reloadsonglist()
+
+def importsongyoutube():
+    global e1
+
+    ytwindow = Toplevel(window)
+    ytwindow.configure(bg='#000000')
+    ytwindow.geometry('250x100')
+    ytwindow.title('Firefly Music')
+
+    lbl4 = Label(ytwindow, text='Youtube URL:', font=('Helvetica', 12, 'bold'), fg='#1DB954', bg='#000000')
+    lbl4.place(x=0, y=15)
+
+    lbl4 = Button(ytwindow, text='Import', font=('Helvetica', 12, 'bold'), fg='#1DB954', bg='#000000', command=ytimport)
+    lbl4.place(x=95, y=55)
+
+    e1 = Entry(ytwindow)
+    e1.place(x=115, y=18)
 
 def play():
+    global file
     file = '{}.mp3'.format(cb1.get())
     pygame.init()
     pygame.mixer.init()
@@ -46,13 +103,14 @@ def unpause():
 def startscreen():
     global window, lbl1, btn1
     window = Tk()
-    window.configure(bg='#3399ff')
+    window.configure(bg='#000000')
     window.geometry('500x500')
+    window.title('Firefly Music')
 
-    lbl1 = Label(window, text='Music Player', font=('Helvetica', 50, 'bold'), fg='#ff5050', bg='#3399ff')
+    lbl1 = Label(window, text='Firefly', font=('Helvetica', 50, 'bold'), fg='#1DB954', bg='#000000')
     lbl1.pack(pady=150, anchor=S)
 
-    btn1 = Button(window, text='[ ENTER ]', font=('Helvetica', 25, 'bold'), fg='#ff5050', bg='#3399ff', command=main)
+    btn1 = Button(window, text='[ ENTER ]', font=('Helvetica', 25, 'bold'), fg='#1DB954', bg='#000000', command=main)
     btn1.pack(anchor=N)
 
     mainloop()
@@ -62,27 +120,34 @@ def main():
     lbl1.forget()
     btn1.forget()
 
-    value = []
-
-    lbl2 = Label(window, text='Music Player', font=('Helvetica', 30, 'bold'), fg='#ff5050', bg='#3399ff')
+    lbl2 = Label(window, text='Music Player', font=('Helvetica', 30, 'bold'), fg='#1DB954', bg='#000000')
     lbl2.pack(anchor=N)
 
-    lbl3 = Label(window, text='Songs', font=('Helvetica', 12, 'bold'), fg='#ff5050', bg='#3399ff')
+    lbl3 = Label(window, text='Songs', font=('Helvetica', 12, 'bold'), fg='#1DB954', bg='#000000')
     lbl3.place(x=50, y=100)
 
-    cb1 = ttk.Combobox(window, values=('Old Town Road', 'Endgame Trailer'))
-    cb1.place(x=50, y=120)
+    stylecb = ttk.Style()
+    stylecb.theme_create('combostyle', parent='alt', settings={'TCombobox': {'configure': {'selectbackground': '#000000', 'fieldbackground': '#000000', 'background': '#1DB954'} } } )
+    stylecb.theme_use('combostyle')
 
-    btn2 = Button(window, text='Play', font=('Helvetica', 12, 'bold'), fg='#ff5050', bg='#3399ff', command=play)
+    cb1 = ttk.Combobox(window, value=())
+    cb1.place(x=50, y=120)
+    reloadsonglist()
+
+    btn2 = Button(window, text='Play', font=('Helvetica', 12, 'bold'), fg='#1DB954', bg='#000000', command=play)
     btn2.place(x=350, y=160)
 
-    btn3 = Button(window, text='Pause', font=('Helvetica', 12, 'bold'), fg='#ff5050', bg='#3399ff', command=pause)
+    btn3 = Button(window, text='Pause', font=('Helvetica', 12, 'bold'), fg='#1DB954', bg='#000000', command=pause)
     btn3.place(x=350, y=200)
 
-    btn4 = Button(window, text='Unpause', font=('Helvetica', 12, 'bold'), fg='#ff5050', bg='#3399ff', command=unpause)
+    btn4 = Button(window, text='Unpause', font=('Helvetica', 12, 'bold'), fg='#1DB954', bg='#000000', command=unpause)
     btn4.place(x=350, y=240)
 
-    btn5 = Button(window, text='Import Song', font=('Helvetica', 12, 'bold'), fg='#ff5050', bg='#3399ff', command=importsong)
+    btn5 = Button(window, text='Import Song', font=('Helvetica', 12, 'bold'), fg='#1DB954', bg='#000000', command=importsong)
     btn5.place(x=50, y=150)
+
+    btn6 = Button(window, text='Import A Youtube Song', font=('Helvetica', 12, 'bold'), fg='#1DB954', bg='#000000', command=importsongyoutube)
+    btn6.place(x=50, y=190)
+
 
 startscreen()
