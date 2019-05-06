@@ -16,44 +16,104 @@ void setup() {
   }
 }
 
-#include <HCSR04.h>
+int nextNote = 0;
+int szMelody = sizeof(melody) / sizeof(int);
 
-int melody[] = { 
-0, 0, 494, 415, 0, 349, 349, 415, 494, 415, 0, 0, 494, 415, 0, 349, 349, 415, 494, 415, 0, 622, 622, 622, 622, 622, 622, 554, 494, 415, 415, 622, 554, 554, 415, 415, 370, 0, 554, 554, 622, 494, 466, 466, 415, 415, 415, 622, 554, 494, 415, 415, 622, 554, 554, 415, 415, 370, 0, 554, 554, 622, 494, 466, 466, 208, 466, 208, 466, 208, 466, 278, 311, 311, 278, 311, 0, 247, 278, 278, 247, 278, 0, 247, 278, 278, 247, 278, 278, 247, 278, 247, 278, 311, 278, 247, 208, 278, 311, 311, 278, 311, 0, 247, 278, 278, 247, 278, 0, 247, 278, 278, 247, 278, 247, 208, 208, 278, 247, 278, 311, 278, 247, 208, 311, 311, 278, 278, 311, 415, 311, 311, 247, 0, 208, 208, 208, 208, 278, 247, 233, 208, 311, 311, 278, 278, 311, 415, 311, 278, 247, 0, 208, 208, 208, 208, 278, 247, 233, 208, 278, 311, 311, 278, 311, 208, 247, 278, 278, 247, 278, 185, 247, 278, 278, 247, 278, 185, 278, 247, 278, 311, 278, 247, 208, 278, 311, 311, 278, 311, 208, 247, 278, 278, 247, 278, 185, 247, 278, 278, 247, 278, 247, 185, 278, 247, 278, 311, 278, 247, 208, 311, 311, 278, 278, 311, 415, 311, 311, 247, 0, 208, 208, 208, 208, 278, 247, 233, 208, 311, 311, 278, 278, 311, 415, 311, 278, 247, 0, 208, 208, 208, 208, 0, 622, 622, 622, 622, 622, 622, 554, 494, 415, 415, 622, 554, 554, 415, 415, 370, 0, 554, 554, 622, 494, 466, 466, 415, 415, 415, 622, 554, 494, 415, 415, 622, 554, 554, 415, 415, 370, 0, 554, 554, 622, 494, 415, 415, 415, 415, 415, 0 
-};
 
-int noteDurations[] = { 
-1776, 444, 1332, 888, 888, 222, 222, 444, 444, 444, 1776, 444, 1332, 888, 888, 222, 222, 444, 444, 444, 444, 444, 222, 222, 222, 222, 444, 444, 444, 222, 222, 222, 444, 444, 222, 222, 222, 444, 888, 222, 222, 444, 444, 222, 222, 222, 222, 444, 444, 444, 222, 222, 222, 444, 444, 222, 222, 222, 444, 888, 222, 222, 444, 444, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 444, 444, 222, 222, 222, 222, 444, 444, 222, 222, 222, 222, 444, 222, 222, 222, 222, 222, 222, 222, 222, 444, 222, 222, 222, 222, 444, 444, 222, 222, 222, 222, 444, 444, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 444, 222, 222, 222, 222, 444, 444, 444, 888, 444, 222, 222, 444, 444, 444, 444, 444, 444, 444, 222, 222, 222, 222, 444, 444, 444, 888, 444, 222, 222, 444, 444, 444, 444, 444, 444, 444, 222, 222, 222, 222, 444, 444, 222, 222, 222, 222, 444, 444, 222, 222, 222, 222, 444, 444, 222, 222, 222, 222, 222, 222, 444, 222, 222, 222, 222, 444, 444, 222, 222, 222, 222, 444, 444, 222, 222, 222, 222, 222, 222, 444, 222, 222, 222, 222, 222, 222, 444, 222, 222, 222, 222, 444, 444, 444, 888, 444, 222, 222, 444, 444, 444, 444, 444, 444, 444, 222, 222, 222, 222, 444, 444, 444, 888, 444, 222, 222, 444, 444, 444, 444, 444, 222, 222, 222, 222, 444, 444, 444, 222, 222, 222, 444, 444, 222, 222, 222, 444, 888, 222, 222, 444, 444, 222, 222, 222, 222, 444, 444, 444, 222, 222, 222, 444, 444, 222, 222, 222, 444, 888, 222, 222, 444, 444, 222, 222, 222, 222, 0 
-};
-
-int pinMelody = 10;
-
-HCSR04 hc(7,8);
-
-void playmusic() {
-  
-  for (int thisNote = 0; thisNote < sizeof(melody) / sizeof(int); thisNote++)
-  {    
+void playNextNote(int thisNote) {
     tone(pinMelody, melody[thisNote], noteDurations[thisNote] * .7);    
     delay(noteDurations[thisNote]);    
     noTone(pinMelody);
-  }
 }
 
 void setup() { 
-  Serial.begin(9600); 
+    Serial.begin(9600); 
+    pinMode(trigPin, OUTPUT);
+    pinMode(echoPin, INPUT);
 }
 
-void loop() { 
-  
-  Serial.println( hc.dist() ); 
+void loop() {
+    digitalWrite(trigPin, LOW);
+    delayMicroseconds(2);
 
-  if (hc.dist() < 6) {
-    playmusic();
+    digitalWrite(trigPin, HIGH);
+    delayMicroseconds(10);
+
+    digitalWrite(trigPin, LOW);
+
+    duration = pulseIn(echoPin, HIGH);
+
+    distance = duration/58.2;
+
+    Serial.println(distance);
+
+    delay(50);
+
+
+    if (distance < 6) {
+        playNextNote(nextNote);
+        if (nextNote < szMelody) {
+            nextNote++;
+        } else {
+            nextNote = 0;
+        }
+    }
+
+    if (distance > 6) {
+        noTone(pinMelody);
+        nextNote = 0;
+    }
+  
+}
+
+static int thisNote;
+static bool playing;
+static unsigned long nextcheck;
+static unsigned long nextnote;
+
+void loop()
+{
+  unsigned long	curtime;
+
+  curtime = millis();
+
+  if (curtime > nextcheck) {
+    digitalWrite(trigPin, LOW);
+    delayMicroseconds(2);
+ 
+    digitalWrite(trigPin, HIGH);
+    delayMicroseconds(10);
+ 
+    digitalWrite(trigPin, LOW);
+ 
+    duration = pulseIn(echoPin, HIGH);
+ 
+    distance = duration/58.2;
+
+    if (distance < 6) {
+      if (!playing) {
+        playing = true;
+        thisNote = 0;
+      }
+    } else {
+      if (playing) {
+        playing = false;
+        noTone(pinMelody);
+      }
+    }
   }
 
-  if (hc.dist() > 6) {
-    noTone(pinMelody);
+  if (!playing) {
+    return;
   }
-  
+
+  if (curtime > nextnote) {
+    if (noteDurations[thisNote] == 0) {
+      // end of song, either stop or start over
+      playing = false;
+    } else {
+      tone(pinMelody, melody[thisNote], noteDurations[thisNote] * 0.7);
+      nextnote = curtime + noteDurations[thisNote];
+    }
+  }
 }
