@@ -1,0 +1,109 @@
+import pygame, sys
+import random
+
+pygame.init()
+
+def changecolor():
+    changecolor = random.randrange(1, 255)
+    return changecolor
+
+def randomspawn():
+    randomspawn = random.randrange(1, 500)
+    return randomspawn
+
+xheight = 500
+yheight = 500
+xcube1 = 0
+ycube1 = 0
+xcube2 = 500
+ycube2 = 500
+movementspeed = 2
+size1 = 5
+size2 = 5
+circlecolor = ((changecolor(), changecolor(), changecolor()))
+randomspawnx = randomspawn()
+randomspawny = randomspawn()
+
+window = pygame.display.set_mode((xheight, yheight))
+pygame.display.set_caption('Blocky Moves')
+
+running = True
+while running:
+    pygame.time.delay(10)
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+
+    key = pygame.key.get_pressed()
+
+        #P1
+    if key[pygame.K_RIGHT]:
+        xcube1 += movementspeed
+
+    if key[pygame.K_LEFT]:
+        xcube1 -= movementspeed
+
+    if key[pygame.K_UP]:
+        ycube1 -= movementspeed
+
+    if key[pygame.K_DOWN]:
+        ycube1 += movementspeed
+
+    if xcube1 > xheight:
+        xcube1 -= 5
+
+    if xcube1 < xheight * 0:
+        xcube1 += 5
+
+    if ycube1 < yheight:
+        ycube1 += 5
+
+    if ycube1 > yheight * 0:
+        ycube1 -= 5
+
+        # P2
+    if key[pygame.K_d]:
+        xcube2 += movementspeed
+
+    if key[pygame.K_a]:
+        xcube2 -= movementspeed
+
+    if key[pygame.K_w]:
+        ycube2 -= movementspeed
+
+    if key[pygame.K_s]:
+        ycube2 += movementspeed
+
+    if xcube2 > xheight:
+        xcube2 -= 5
+
+    if xcube2 < xheight * 0:
+        xcube2 += 5
+
+    if ycube2 < yheight:
+        ycube2 += 5
+
+    if ycube2 > yheight * 0:
+        ycube2 -= 5
+
+    if running == True:
+        circle = pygame.draw.circle(window, circlecolor, [randomspawnx, randomspawny], 15)
+        print(randomspawnx, randomspawny)
+
+        if xcube1 == randomspawnx:
+            if ycube1 == randomspawny:
+                size1 += 5
+
+        if xcube2 == randomspawnx:
+            if ycube2 == randomspawny:
+                size2 += 5
+
+
+    window.fill((255, 255, 255))
+    circle1 = pygame.draw.circle(window, circlecolor, [xcube1, ycube1], size1)
+    circle2 = pygame.draw.circle(window, circlecolor, [xcube2, ycube2], size2)
+    pygame.display.update()
+
+pygame.quit()
