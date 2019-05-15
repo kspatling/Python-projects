@@ -1,0 +1,224 @@
+from tkinter import *
+from tkinter import messagebox
+
+boardtop = [' ', ' ', ' ']
+boardmid = [' ', ' ', ' ']
+boardbtm = [' ', ' ', ' ']
+EX = [1]
+OH = [0]
+
+
+def check():
+    if boardtop[0] == 'X' and boardtop[1] == 'X' and boardtop[2] == 'X' or boardmid[0] == 'X' and boardmid[1] == 'X' and boardmid[2] == 'X' or boardbtm[0] == 'X' and boardbtm[1] == 'X' and boardbtm[2] == 'X':
+        messagebox.showinfo('Winner', 'X has won the game!')
+        
+    elif boardtop[0] == 'X' and boardmid[0] == 'X' and boardbtm[0] == 'X' or boardtop[1] == 'X' and boardmid[1] == 'X' and boardbtm[1] == 'X' or boardtop[2] == 'X' and boardmid[2] == 'X' and boardbtm[2] == 'X':
+        messagebox.showinfo('Winner', 'X has won the game!')
+
+    elif boardtop[0] == 'X' and boardmid[1] == 'X' and boardbtm[2] == 'X' or boardtop[2] == 'X' and boardmid[1] == 'X' and boardbtm[0] == 'X':
+        messagebox.showinfo('Winner', 'X has won the game!')
+
+    if boardtop[0] == 'O' and boardtop[1] == 'O' and boardtop[2] == 'O' or boardmid[0] == 'O' and boardmid[1] == 'O' and boardmid[2] == 'O' or boardbtm[0] == 'O' and boardbtm[1] == 'O' and boardbtm[2] == 'O':
+        messagebox.showinfo('Winner', 'O has won the game!')
+
+    elif boardtop[0] == 'O' and boardmid[0] == 'O' and boardbtm[0] == 'O' or boardtop[1] == 'O' and boardmid[1] == 'O' and boardbtm[1] == 'O' or boardtop[2] == 'O' and boardmid[2] == 'O' and boardbtm[2] == 'O':
+        messagebox.showinfo('Winner', 'O has won the game!')
+
+    elif boardtop[0] == 'O' and boardmid[1] == 'O' and boardbtm[2] == 'O' or boardtop[2] == 'O' and boardmid[1] == 'O' and boardbtm[0] == 'O':
+        messagebox.showinfo('Winner', 'O has won the game!')
+
+
+def button1():
+    if sum(EX) > sum(OH):
+        lbl2.configure(text='Turn: O')
+        btn1.configure(text='X')
+        btn1.configure(state='disabled')
+        boardtop[0] = 'X'
+        OH.append(1)
+
+    elif sum(OH) == sum(EX):
+        lbl2.configure(text='Turn: X')
+        btn1.configure(text='O')
+        btn1.configure(state='disabled')
+        boardtop[0] = 'O'
+        EX.append(1)
+
+    check()
+
+def button2():
+    if sum(EX) > sum(OH):
+        lbl2.configure(text='Turn: O')
+        btn2.configure(text='X')
+        btn2.configure(state='disabled')
+        boardmid[0] = 'X'
+        OH.append(1)
+
+    elif sum(OH) == sum(EX):
+        lbl2.configure(text='Turn: X')
+        btn2.configure(text='O')
+        btn2.configure(state='disabled')
+        boardmid[0] = 'O'
+        EX.append(1)
+
+    check()
+
+def button3():
+    if sum(EX) > sum(OH):
+        lbl2.configure(text='Turn: O')
+        btn3.configure(text='X')
+        btn3.configure(state='disabled')
+        boardbtm[0] = 'X'
+        OH.append(1)
+
+    elif sum(OH) == sum(EX):
+        lbl2.configure(text='Turn: X')
+        btn3.configure(text='O')
+        btn3.configure(state='disabled')
+        boardbtm[0] = 'O'
+        EX.append(1)
+
+    check()
+
+def button4():
+    if sum(EX) > sum(OH):
+        lbl2.configure(text='Turn: O')
+        btn4.configure(text='X')
+        btn4.configure(state='disabled')
+        boardtop[1] = 'X'
+        OH.append(1)
+
+    elif sum(OH) == sum(EX):
+        lbl2.configure(text='Turn: X')
+        btn4.configure(text='O')
+        btn4.configure(state='disabled')
+        boardtop[1] = 'O'
+        EX.append(1)
+
+    check()
+
+def button5():
+    if sum(EX) > sum(OH):
+        lbl2.configure(text='Turn: O')
+        btn5.configure(text='X')
+        btn5.configure(state='disabled')
+        boardmid[1] = 'X'
+        OH.append(1)
+
+    elif sum(OH) == sum(EX):
+        lbl2.configure(text='Turn: X')
+        btn5.configure(text='O')
+        btn5.configure(state='disabled')
+        boardmid[1] = 'O'
+        EX.append(1)
+
+    check()
+
+def button6():
+    if sum(EX) > sum(OH):
+        lbl2.configure(text='Turn: O')
+        btn6.configure(text='X')
+        btn6.configure(state='disabled')
+        boardbtm[1] = 'X'
+        OH.append(1)
+
+    elif sum(OH) == sum(EX):
+        lbl2.configure(text='Turn: X')
+        btn6.configure(text='O')
+        btn6.configure(state='disabled')
+        boardbtm[1] = 'O'
+        EX.append(1)
+
+    check()
+
+def button7():
+    if sum(EX) > sum(OH):
+        lbl2.configure(text='Turn: O')
+        btn7.configure(text='X')
+        btn7.configure(state='disabled')
+        boardtop[2] = 'X'
+        OH.append(1)
+
+    elif sum(OH) == sum(EX):
+        lbl2.configure(text='Turn: X')
+        btn7.configure(text='O')
+        btn7.configure(state='disabled')
+        boardtop[2] = 'O'
+        EX.append(1)
+
+    check()
+
+def button8():
+    if sum(EX) > sum(OH):
+        lbl2.configure(text='Turn: O')
+        btn8.configure(text='X')
+        btn8.configure(state='disabled')
+        boardmid[2] = 'X'
+        OH.append(1)
+
+    elif sum(OH) == sum(EX):
+        lbl2.configure(text='Turn: X')
+        btn8.configure(text='O')
+        btn8.configure(state='disabled')
+        boardmid[2] = 'O'
+        EX.append(1)
+
+    check()
+
+def button9():
+    if sum(EX) > sum(OH):
+        lbl2.configure(text='Turn: O')
+        btn9.configure(text='X')
+        btn9.configure(state='disabled')
+        boardbtm[2] = 'X'
+        OH.append(1)
+
+    elif sum(OH) == sum(EX):
+        lbl2.configure(text='Turn: X')
+        btn9.configure(text='O')
+        btn9.configure(state='disabled')
+        boardbtm[2] = 'O'
+        EX.append(1)
+
+    check()
+
+def main():
+    global lbl2, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9
+    window = Tk()
+    window.geometry('320x400')
+    window.configure(bg='#47bc47')
+
+    lbl1 = Label(text='Tic Tac Toe', font=('Helvetica', 24, 'bold'), fg='#cc2c14', bg='#47bc47')
+    lbl1.place(x=70, y=0)
+
+    lbl2 = Label(text='Turn: X', font=('Helvetica', 24, 'bold'), fg='#cc2c14', bg='#47bc47')
+    lbl2.place(x=70, y=355)
+
+    btn1 = Button(text=' ', font=('Helvetica', 24, 'bold'), fg='#cc2c14', bg='#47bc47', command=button1)
+    btn1.place(x=10, y=50, width=100, height=100)
+
+    btn2 = Button(text=' ', font=('Helvetica', 24, 'bold'), fg='#cc2c14', bg='#47bc47', command=button2)
+    btn2.place(x=10, y=150, width=100, height=100)
+
+    btn3 = Button(text=' ', font=('Helvetica', 24, 'bold'), fg='#cc2c14', bg='#47bc47', command=button3)
+    btn3.place(x=10, y=250, width=100, height=100)
+
+    btn4 = Button(text=' ', font=('Helvetica', 24, 'bold'), fg='#cc2c14', bg='#47bc47', command=button4)
+    btn4.place(x=110, y=50, width=100, height=100)
+
+    btn5 = Button(text=' ', font=('Helvetica', 24, 'bold'), fg='#cc2c14', bg='#47bc47', command=button5)
+    btn5.place(x=110, y=150, width=100, height=100)
+
+    btn6 = Button(text=' ', font=('Helvetica', 24, 'bold'), fg='#cc2c14', bg='#47bc47', command=button6)
+    btn6.place(x=110, y=250, width=100, height=100)
+
+    btn7 = Button(text=' ', font=('Helvetica', 24, 'bold'), fg='#cc2c14', bg='#47bc47', command=button7)
+    btn7.place(x=210, y=50, width=100, height=100)
+
+    btn8 = Button(text=' ', font=('Helvetica', 24, 'bold'), fg='#cc2c14', bg='#47bc47', command=button8)
+    btn8.place(x=210, y=150, width=100, height=100)
+
+    btn9 = Button(text=' ', font=('Helvetica', 24, 'bold'), fg='#cc2c14', bg='#47bc47', command=button9)
+    btn9.place(x=210, y=250, width=100, height=100)
+    mainloop()
+
+main()
