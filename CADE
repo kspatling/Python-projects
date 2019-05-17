@@ -1,0 +1,19 @@
+import speech_recognition as sr
+import pyaudio
+
+running = True
+
+while running:
+
+    voice = sr.Recognizer()
+
+    with sr.Microphone() as source:
+        print('Say Something: ')
+        audio = voice.listen(source)
+        text = voice.recognize_google(audio)
+
+        if text == 'Cade':
+            print('Nice=')
+
+        else:
+            print('Nope')
