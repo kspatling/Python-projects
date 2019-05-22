@@ -23,6 +23,7 @@ def reloadsonglist():
         line = line.split('.')
         cb1['values'] = (line)
 
+
 def importsong():
 
     window.filename = filedialog.askopenfilename(initialdir="/", title="Select file", filetypes=(("MP3 FILES", "*.mp3"), ("all files", "*.*")))
@@ -48,10 +49,11 @@ def importsong():
     file.close()
     reloadsonglist()
 
+
 def ytimport():
     yt = YouTube(e1.get())
-    stream = yt.(r'C:/Users/s250992/Desktop/Youtube Download Pass Through')
-    yttitle = yt.title()
+    ytTitle = yt.title
+    ytVideo = YouTube(e1.get()).streams.first().download()
 
     file = open('songfile.txt', 'r+')
 
@@ -61,13 +63,14 @@ def ytimport():
         if len(line) == 0:
             break
 
-    file.write('{}.{}'.format(line, yttitle))
+    file.write('{}.{}'.format(line, ytTitle))
     file.close()
 
-    clip = mp.VideoFileClip(r'C:/Users/s250992/Desktop/Youtube Download Pass Through/{}.mp4'.format(yttitle))
-    newclip = clip.audio.write_audiofile(r'C:/Users/s250992/PycharmProjects/Big Project')
+    clip = mp.VideoFileClip('{}.mp4'.format(ytTitle))
+    clip.audio.write_audiofile('{}.mp3'.format(ytTitle))
 
     reloadsonglist()
+
 
 def importsongyoutube():
     global e1
@@ -86,6 +89,7 @@ def importsongyoutube():
     e1 = Entry(ytwindow)
     e1.place(x=115, y=18)
 
+
 def play():
     global file
     file = '{}.mp3'.format(cb1.get())
@@ -94,11 +98,14 @@ def play():
     pygame.mixer.music.load(file)
     pygame.mixer.music.play()
 
+
 def pause():
     pygame.mixer.music.pause()
 
+
 def unpause():
     pygame.mixer.music.unpause()
+
 
 def startscreen():
     global window, lbl1, btn1
@@ -114,6 +121,7 @@ def startscreen():
     btn1.pack(anchor=N)
 
     mainloop()
+
 
 def main():
     global cb1
