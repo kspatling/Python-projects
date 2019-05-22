@@ -11,7 +11,7 @@ OH = [0]
 def check():
     if boardtop[0] == 'X' and boardtop[1] == 'X' and boardtop[2] == 'X' or boardmid[0] == 'X' and boardmid[1] == 'X' and boardmid[2] == 'X' or boardbtm[0] == 'X' and boardbtm[1] == 'X' and boardbtm[2] == 'X':
         messagebox.showinfo('Winner', 'X has won the game!')
-        
+
     elif boardtop[0] == 'X' and boardmid[0] == 'X' and boardbtm[0] == 'X' or boardtop[1] == 'X' and boardmid[1] == 'X' and boardbtm[1] == 'X' or boardtop[2] == 'X' and boardmid[2] == 'X' and boardbtm[2] == 'X':
         messagebox.showinfo('Winner', 'X has won the game!')
 
