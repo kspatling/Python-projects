@@ -1,0 +1,141 @@
+from tkinter import *
+from spookyotp import(get_random_secret, TOTP, from_uri)
+import random as rng
+import boto3
+from tkinter import messagebox
+
+secret = get_random_secret(n_bytes=10)
+totp = TOTP(secret, 'Kevin Enterprises', '{}@gmail.com')
+totp.save_qr_code('qr.png')
+
+
+def random():
+    rnd = rng.randrange(111, 999)
+    return rnd
+
+def wipeone():
+    global e3, lbl4, lbl5, e3, blank3, btn2, btn3
+    lbl1.forget()
+    lbl2.forget()
+    lbl3.forget()
+    blank1.forget()
+    blank2.forget()
+    e1.forget()
+    e2.forget()
+    btn1.forget()
+
+    lbl4 = Label(window, image=lock)
+    lbl4.pack()
+
+    lbl5 = Label(window, text='Please Enter Your Code', font=('Helvetica', 18, 'bold'), fg='#e2634f')
+    lbl5.pack()
+
+    e3 = Entry(window)
+    e3.pack()
+
+    blank3 = Label(window)
+    blank3.pack()
+
+    btn2 = Button(window, text='Submit', font=('Helvetica', 12, 'bold'), fg='#e2634f', command=dual)
+    btn2.pack()
+
+    btn3 = Button(window, text='Re-Send Code', font=('Helvetica', 10, 'bold'), fg='#e2634f', command=client)
+    btn3.pack()
+
+def wipetwo():
+    lbl4.forget()
+    lbl5.forget()
+    e3.forget()
+    blank3.forget()
+    btn2.forget()
+    btn3.forget()
+
+def client():
+    global code
+    wipeone()
+    code = str(random()) + ' ' + str(random()) + ' ' + str(random())
+    authenticate = 'Hello {} your code is: {}'.format(e1.get(), code)
+
+    client = boto3.client('sns', 'us-east-1')
+
+    client.publish(PhoneNumber='+1{}'.format(e2.get()), Message=authenticate)
+
+def check():
+
+    if code == e3.get():
+        spooky()
+
+    else:
+        lbl7 = Label(window, image=lock)
+        lbl7.pack()
+
+def dual():
+    check()
+    wipetwo()
+
+
+def main():
+    global window, lbl1, lbl2, lbl3, blank1, blank2, e1, e2, btn1, lock
+    window = Tk()
+    lock = PhotoImage(file='lock.png')
+
+    lbl1 = Label(window, image=lock)
+    lbl1.pack()
+
+    lbl2 = Label(window, text='Please Enter Your Name', font=('Helvetica', 18, 'bold'), fg='#e2634f')
+    lbl2.pack()
+
+    e1 = Entry(window)
+    e1.pack()
+
+    blank1 = Label(window)
+    blank1.pack()
+
+    lbl3 = Label(window, text='Please Enter Your Number', font=('Helvetica', 17, 'bold'), fg='#e2634f')
+    lbl3.pack()
+
+    e2 = Entry(window)
+    e2.pack()
+
+    blank2 = Label(window)
+    blank2.pack()
+
+    btn1 = Button(window, text='Submit', font=('Helvetica', 12, 'bold'), fg='#e2634f', command=client)
+    btn1.pack()
+
+    mainloop()
+
+
+def authenticate():
+
+    try:
+        if totp.compare(e4.get()):
+            messagebox.showinfo('Success', 'Welcome to the vault!')
+            exit()
+
+    except ValueError:
+        messagebox.showwarning('Error', 'Please do not use a space!')
+
+    else:
+        messagebox.showerror('Alert', 'The police have been called to your location!')
+        exit()
+
+def spooky():
+    global e4
+    wipetwo()
+    lbl8 = Label(window, text='2 STEP FA', font=('Helvetica', 17, 'bold'), fg='#e2634f')
+    lbl8.pack()
+
+    qrcode = PhotoImage(file='qr.png')
+    lbl9 = Label(window, image=qrcode)
+    lbl9.pack()
+
+    e4 = Entry(window)
+    e4.pack()
+
+    btn4 = Button(window, text='Submit', command=authenticate, font=('Helvetica', 12, 'bold'), fg='#e2634f')
+    btn4.pack()
+
+    mainloop()
+
+main()
