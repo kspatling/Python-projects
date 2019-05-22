@@ -1,0 +1,19 @@
+import pygame
+
+pygame.init()
+running = True
+
+xheight = 1590
+yheight = 850
+window = pygame.display.set_mode((xheight, yheight))
+pygame.display.set_caption('INTERGALACTIC GOLD RUSH')
+
+while running:
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+            
+    key = pygame.key.get_pressed()
+    
+    
