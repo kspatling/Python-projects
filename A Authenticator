@@ -4,15 +4,23 @@ import random as rng
 import boto3
 from tkinter import messagebox
 
+# This sets up a 10 bit hash link for the computer to get the code more easily.
 secret = get_random_secret(n_bytes=10)
+
+# This sets up the GOOGLE API information, What will present itself with.
 totp = TOTP(secret, 'Kevin Enterprises', '{}@gmail.com')
+
+# This saves the qr code as a file, to be then put into the application after.
 totp.save_qr_code('qr.png')
 
 
+# This generates my random code, 1 string of 3 numbers.
 def random():
     rnd = rng.randrange(111, 999)
     return rnd
 
+
+# This wipes the application screen. Forgetting the buttons, labels and entry tabs.
 def wipeone():
     global e3, lbl4, lbl5, e3, blank3, btn2, btn3
     lbl1.forget()
@@ -24,24 +32,32 @@ def wipeone():
     e2.forget()
     btn1.forget()
 
+    # This shows a picture of a local
     lbl4 = Label(window, image=lock)
     lbl4.pack()
 
+    # This is the text to display telling the user to input their code
     lbl5 = Label(window, text='Please Enter Your Code', font=('Helvetica', 18, 'bold'), fg='#e2634f')
     lbl5.pack()
 
+    # This is an entry box for the code
     e3 = Entry(window)
     e3.pack()
 
+    # Blank space
     blank3 = Label(window)
     blank3.pack()
 
+    # This is the submit button, it will wipe the screen and open up the next authenticator window
     btn2 = Button(window, text='Submit', font=('Helvetica', 12, 'bold'), fg='#e2634f', command=dual)
     btn2.pack()
 
+    # This resends the code if the user didn't get the code or they somehow lost the code
     btn3 = Button(window, text='Re-Send Code', font=('Helvetica', 10, 'bold'), fg='#e2634f', command=client)
     btn3.pack()
 
+
+# This wipes the second application screen
 def wipetwo():
     lbl4.forget()
     lbl5.forget()
@@ -50,89 +66,119 @@ def wipetwo():
     btn2.forget()
     btn3.forget()
 
+
+# This wipes the application screen, then generates the code for the user, then it creates the sns message, then sends the user the message.
 def client():
     global code
     wipeone()
+
+    # This creates the code string
     code = str(random()) + ' ' + str(random()) + ' ' + str(random())
+
+    # This creates the code message
     authenticate = 'Hello {} your code is: {}'.format(e1.get(), code)
 
+    # This defines the sns bot's location and function
     client = boto3.client('sns', 'us-east-1')
 
+    # This takes the bots function and sends an sns based on phonenumber and message
     client.publish(PhoneNumber='+1{}'.format(e2.get()), Message=authenticate)
 
+
+# This check's the code
 def check():
 
+    # This check's if the code matches, if it does it opens the second authenticator window
     if code == e3.get():
         spooky()
 
+    # If not it will show a picture of a lock and you have to restart
     else:
         lbl7 = Label(window, image=lock)
         lbl7.pack()
 
+# This cleans the window and check's at the same time
 def dual():
     check()
     wipetwo()
 
 
+# This is the main window you are greeted with
 def main():
     global window, lbl1, lbl2, lbl3, blank1, blank2, e1, e2, btn1, lock
     window = Tk()
+
+    # Defines the lock picture
     lock = PhotoImage(file='lock.png')
 
+    # Places the lock picture
     lbl1 = Label(window, image=lock)
     lbl1.pack()
 
     lbl2 = Label(window, text='Please Enter Your Name', font=('Helvetica', 18, 'bold'), fg='#e2634f')
     lbl2.pack()
 
+    # Takes their name
     e1 = Entry(window)
     e1.pack()
 
+    # Blank space
     blank1 = Label(window)
     blank1.pack()
 
     lbl3 = Label(window, text='Please Enter Your Number', font=('Helvetica', 17, 'bold'), fg='#e2634f')
     lbl3.pack()
 
+    # Takes their phone number
     e2 = Entry(window)
     e2.pack()
 
     blank2 = Label(window)
     blank2.pack()
 
+    # Submit the user's information
     btn1 = Button(window, text='Submit', font=('Helvetica', 12, 'bold'), fg='#e2634f', command=client)
     btn1.pack()
 
     mainloop()
 
 
+# This handles the qr code authenticator
 def authenticate():
 
+    # Tries their code, if it works then it will print Welcome!
     try:
         if totp.compare(e4.get()):
             messagebox.showinfo('Success', 'Welcome to the vault!')
             exit()
 
+    # If their is a space it will return
     except ValueError:
         messagebox.showwarning('Error', 'Please do not use a space!')
 
+    # If they get the google code wrong it will call the police
     else:
         messagebox.showerror('Alert', 'The police have been called to your location!')
         exit()
 
+
+# This is the main screen for the google codes.
 def spooky():
     global e4
     wipetwo()
     lbl8 = Label(window, text='2 STEP FA', font=('Helvetica', 17, 'bold'), fg='#e2634f')
     lbl8.pack()
 
+    # This grabs the qr code, and displays it onto the application
     qrcode = PhotoImage(file='qr.png')
     lbl9 = Label(window, image=qrcode)
     lbl9.pack()
 
+    # This grabs the code from the google authenticator
     e4 = Entry(window)
     e4.pack()
 
+    # This then submits and checks the code.
     btn4 = Button(window, text='Submit', command=authenticate, font=('Helvetica', 12, 'bold'), fg='#e2634f')
     btn4.pack()
 
