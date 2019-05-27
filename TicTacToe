@@ -1,39 +1,62 @@
 from tkinter import *
 from tkinter import messagebox
 
+# This creates a board for the game, defined as boardtop, boardmid and boardbtm
 boardtop = [' ', ' ', ' ']
 boardmid = [' ', ' ', ' ']
 boardbtm = [' ', ' ', ' ']
+
+# This defines the turns for X and O
 EX = [1]
 OH = [0]
 
 
+# This checks the cases for the X and O winning cases.
 def check():
+
     if boardtop[0] == 'X' and boardtop[1] == 'X' and boardtop[2] == 'X' or boardmid[0] == 'X' and boardmid[1] == 'X' and boardmid[2] == 'X' or boardbtm[0] == 'X' and boardbtm[1] == 'X' and boardbtm[2] == 'X':
         messagebox.showinfo('Winner', 'X has won the game!')
+        quit()
 
     elif boardtop[0] == 'X' and boardmid[0] == 'X' and boardbtm[0] == 'X' or boardtop[1] == 'X' and boardmid[1] == 'X' and boardbtm[1] == 'X' or boardtop[2] == 'X' and boardmid[2] == 'X' and boardbtm[2] == 'X':
         messagebox.showinfo('Winner', 'X has won the game!')
+        quit()
 
     elif boardtop[0] == 'X' and boardmid[1] == 'X' and boardbtm[2] == 'X' or boardtop[2] == 'X' and boardmid[1] == 'X' and boardbtm[0] == 'X':
         messagebox.showinfo('Winner', 'X has won the game!')
+        quit()
 
     if boardtop[0] == 'O' and boardtop[1] == 'O' and boardtop[2] == 'O' or boardmid[0] == 'O' and boardmid[1] == 'O' and boardmid[2] == 'O' or boardbtm[0] == 'O' and boardbtm[1] == 'O' and boardbtm[2] == 'O':
         messagebox.showinfo('Winner', 'O has won the game!')
+        quit()
 
     elif boardtop[0] == 'O' and boardmid[0] == 'O' and boardbtm[0] == 'O' or boardtop[1] == 'O' and boardmid[1] == 'O' and boardbtm[1] == 'O' or boardtop[2] == 'O' and boardmid[2] == 'O' and boardbtm[2] == 'O':
         messagebox.showinfo('Winner', 'O has won the game!')
+        quit()
 
     elif boardtop[0] == 'O' and boardmid[1] == 'O' and boardbtm[2] == 'O' or boardtop[2] == 'O' and boardmid[1] == 'O' and boardbtm[0] == 'O':
         messagebox.showinfo('Winner', 'O has won the game!')
+        quit()
 
 
+# These button defines handles the placing of X and O's. They also define who's turn it is
 def button1():
+    # This defines who's turn it is. Whoever has the higher number is not it's turn.
     if sum(EX) > sum(OH):
+
+        # This sets the label at the bottom to whoevers turn it is
         lbl2.configure(text='Turn: O')
+
+        # This sets the button's text to X or O
         btn1.configure(text='X')
+
+        # This disables the button so the user cannot click it again.
         btn1.configure(state='disabled')
+
+        # Set's the board at the top to X or O
         boardtop[0] = 'X'
+
+        # Changes who's turn it is
         OH.append(1)
 
     elif sum(OH) == sum(EX):
@@ -44,6 +67,7 @@ def button1():
         EX.append(1)
 
     check()
+
 
 def button2():
     if sum(EX) > sum(OH):
@@ -62,6 +86,7 @@ def button2():
 
     check()
 
+
 def button3():
     if sum(EX) > sum(OH):
         lbl2.configure(text='Turn: O')
@@ -78,6 +103,7 @@ def button3():
         EX.append(1)
 
     check()
+
 
 def button4():
     if sum(EX) > sum(OH):
@@ -96,6 +122,7 @@ def button4():
 
     check()
 
+
 def button5():
     if sum(EX) > sum(OH):
         lbl2.configure(text='Turn: O')
@@ -112,6 +139,7 @@ def button5():
         EX.append(1)
 
     check()
+
 
 def button6():
     if sum(EX) > sum(OH):
@@ -130,6 +158,7 @@ def button6():
 
     check()
 
+
 def button7():
     if sum(EX) > sum(OH):
         lbl2.configure(text='Turn: O')
@@ -146,6 +175,7 @@ def button7():
         EX.append(1)
 
     check()
+
 
 def button8():
     if sum(EX) > sum(OH):
@@ -164,6 +194,7 @@ def button8():
 
     check()
 
+
 def button9():
     if sum(EX) > sum(OH):
         lbl2.configure(text='Turn: O')
@@ -181,6 +212,8 @@ def button9():
 
     check()
 
+
+# This is the main tic tac toe screen. It generates every button box and text label.
 def main():
     global lbl2, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9
     window = Tk()
@@ -220,5 +253,6 @@ def main():
     btn9 = Button(text=' ', font=('Helvetica', 24, 'bold'), fg='#cc2c14', bg='#47bc47', command=button9)
     btn9.place(x=210, y=250, width=100, height=100)
     mainloop()
+
 
 main()
