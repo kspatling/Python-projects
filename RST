@@ -1,19 +1,51 @@
 import pygame
+import sys
+from pygame.locals import *
 
 pygame.init()
-running = True
+clock = pygame.time.Clock()
+screen = pygame.display.set_mode((500, 500))
+pygame.mouse.set_visible(0)
 
-xheight = 1590
-yheight = 850
-window = pygame.display.set_mode((xheight, yheight))
+bgmusic = 'Space_Music.mp3'
+pygame.init()
+pygame.mixer.init()
+pygame.mixer.music.load(bgmusic)
+pygame.mixer.music.play(-1)
+
+SHOOT_SOUND = pygame.mixer.Sound('shoot.wav')
+SHOOT_SOUND.set_volume(8.0)
+
+ship = pygame.image.load("spaceship.png")
+ship_top = screen.get_height() - ship.get_height()
+ship_left = screen.get_width()/2 - ship.get_width()/2
+screen.blit(ship, (ship_left, ship_top))
+
+bg = pygame.image.load("background_space.png")
+shot = pygame.image.load("laser.png")
+shoot_y = 0
+
 pygame.display.set_caption('INTERGALACTIC GOLD RUSH')
 
-while running:
+
+while True:
+    clock.tick(60)
+    screen.blit(bg, (0,0))
+    x, y = pygame.mouse.get_pos()
+    screen.blit(ship, (x-ship.get_width()/2, ship_top))
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
-            
-    key = pygame.key.get_pressed()
+            sys.exit()
+        elif event.type == MOUSEBUTTONDOWN:
+            SHOOT_SOUND.play()
+            shoot_y = 500
+            shoot_x = x - 11
+
+    if shoot_y > 0:
+        screen.blit(shot, (shoot_x, shoot_y))
+        shoot_y -= 10
+
+    pygame.display.update()
     
     
