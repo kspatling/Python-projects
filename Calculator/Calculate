@@ -1,11 +1,10 @@
 import pygame
 import random
 from tkinter import *
-import time
 
 def play():
     WIDTH = 500
-    HEIGHT = 800
+    HEIGHT = 500
     FPS = 60
     score = 0
     enemy_score = 0
@@ -73,7 +72,13 @@ def play():
             all_sprites.add(laser)
             lasers.add(laser)
 
-        def upgrade_shoot(self):
+        def shoot2(self):
+            laser2 = Laser(self.rect.centerx - 5, self.rect.top)
+            laser22 = Laser(self.rect.centerx, self.rect.top)
+            laser222 = Laser(self.rect.centerx + 5, self.rect.top)
+            all_sprites.add(laser2, laser22, laser222)
+            lasers.add(laser2, laser22, laser222)
+
 
     class Laser(pygame.sprite.Sprite):
         def __init__(self, x, y):
@@ -130,7 +135,7 @@ def play():
 
             if upgrade == 0:
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                        player.shoot()
+                        player.shoot2()
                         shoot_sound.play()
 
 
@@ -163,42 +168,89 @@ def dual():
     start_screen.destroy()
     play()
 
-def story():
-    story_screen = Toplevel(start_screen)
-    story_screen.geometry('500x800')
+def back1():
+    story.destroy()
+    menu()
 
-    story_screen_photo = PhotoImage(file='start_screen.png')
-    background_photo = Label(story_screen, image=story_screen_photo)
+def back2():
+    manual.destroy()
+    menu()
+
+
+def shop():
+    shop_screen = Tk()
+    shop_screen.geometry('500x800')
+    shop_screen.title('INTERGALACTIC GOLD RUSH')
+
+    screen_photo = PhotoImage(file='space_screen.png')
+    background_photo = Label(shop_screen, image=screen_photo)
     background_photo.place(x=0, y=0, relwidth=1, relheight=1)
 
-    label_2 = Label(story_screen, text='The story of INTERGALACTIC GOLD RUSH STARTS YEARS BACK.', font=('Helvetica', 15, 'bold'), fg='#e8d210', bg='#000000')
-    label_2.place(x=100, y=100)
 
-    button_4 = Button(story_screen, text='BACK!', font=('Fixedsys', 17, 'bold'), fg='#e8d210', bg='#000000')
+def story():
+    global story
+    start_screen.destroy()
+    story = Tk()
+    story.geometry('500x800')
+    story.title('INTERGALACTIC GOLD RUSH')
+
+    story_photo = PhotoImage(file='story_screen.png')
+    background_photo = Label(story, image=story_photo)
+    background_photo.place(x=0, y=0, relwidth=1, relheight=1)
+
+    label_2 = Label(story, text='The story of INTERGALACTIC GOLD RUSH starts years back.\nJonsei is an american gold miner from the 1920. Jonesi was offered\nfree expedition to space on the look for new minerals and ores.\nSince she was very familar with working around these substances\nJonesi knew she would be getting into some serious cash. Taking up\non the offer she was offered the finest class of ship, the SS Belanger.\nThis class of ship contained the most updated systems most reliable\nguns and the fastest speed to date. During her expedition she came\ninto contact with space pirates, these are the savages of the galaxy.\nThey storm in groups to over run and take over other peoples ships.\nFortunatly for Jonesi she saw them coming from a distance, prepared\n with her guns you must take out the space pirates and protect\n the treasure you have found!', font=('Helvetica', 15, 'bold'), fg='#e8d210', bg='#000000')
+    label_2.place(x=0, y=100)
+
+    label_3 = Label(story, text='STORY', font=('Fixedsys', 35, 'bold'), fg='#e8d210', bg='#000000')
+    label_3.place(x=175, y=10)
+
+    button_4 = Button(story, text='BACK!', font=('Fixedsys', 17, 'bold'), fg='#e8d210', bg='#000000', command=back1)
+    button_4.place(x=196, y=500)
+
+    mainloop()
+
+def manual():
+    global manual
+    start_screen.destroy()
+    manual = Tk()
+    manual.geometry('500x800')
+    manual.title('INTERGALACTIC GOLD RUSH')
+
+    manual_photo = PhotoImage(file='space_screen.png')
+    background_photo = Label(manual, image=manual_photo)
+    background_photo.place(x=0, y=0, relwidth=1, relheight=1)
+
+    label_4 = Label(manual, text='MANUAL', font=('Fixedsys', 35, 'bold'), fg='#e8d210', bg='#000000')
+    label_4.place(x=170, y=10)
+
+    label_5 = Label(manual, text='\nMovement: Use the mouse to move LEFT & RIGHT!\n\nShooting: Left click the mouse to shoot your gun!\n\nShop: Press M to access the shop!', font=('Fixedsys', 17, 'bold'), fg='#e8d210', bg='#000000')
+    label_5.place(x=25, y=100)
+
+    button_4 = Button(manual, text='BACK!', font=('Fixedsys', 17, 'bold'), fg='#e8d210', bg='#000000', command=back1)
     button_4.place(x=196, y=500)
 
     mainloop()
 
 def menu():
-    global start_screen
+    global start_screen, screen_photo
     start_screen = Tk()
     start_screen.geometry('500x800')
+    start_screen.title('INTERGALACTIC GOLD RUSH')
 
-    start_screen_photo = PhotoImage(file='start_screen.png')
-    background_photo = Label(start_screen, image=start_screen_photo)
+    menu_photo = PhotoImage(file='shop_screen.png')
+    background_photo = Label(start_screen, image=menu_photo)
     background_photo.place(x=0, y=0, relwidth=1, relheight=1)
 
     label_1 = Label(start_screen, text='INTERGALACTIC\nGOLD\nRUSH', font=('Fixedsys', 30, 'bold'), fg='#e8d210', bg='#000000')
     label_1.place(x=90, y=200)
 
-    start_button = PhotoImage(file='start_button.png')
     button_1 = Button(start_screen, text='PLAY!', font=('Fixedsys', 17, 'bold'), fg='#e8d210', bg='#000000', command=dual)
     button_1.place(x=195, y=400)
 
     button_2 = Button(start_screen, text='STORY', font=('Fixedsys', 17, 'bold'), fg='#e8d210', bg='#000000', command=story)
     button_2.place(x=196, y=500)
 
-    button_3 = Button(start_screen, text='MANUAL', font=('Fixedsys', 17, 'bold'), fg='#e8d210', bg='#000000', command=story)
+    button_3 = Button(start_screen, text='MANUAL', font=('Fixedsys', 17, 'bold'), fg='#e8d210', bg='#000000', command=manual)
     button_3.place(x=187, y=600)
 
     mainloop()
