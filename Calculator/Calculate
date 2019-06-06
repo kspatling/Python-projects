@@ -1,0 +1,206 @@
+import pygame
+import random
+from tkinter import *
+import time
+
+def play():
+    WIDTH = 500
+    HEIGHT = 800
+    FPS = 60
+    score = 0
+    enemy_score = 0
+    upgrade = 0
+
+    pygame.init()
+    pygame.mixer.init()
+
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption("INTERGALACTIC GOLD RUSH")
+    clock = pygame.time.Clock()
+
+    space_background = pygame.image.load("background_space.png")
+    space_background_rect = space_background.get_rect()
+
+    laser_image = pygame.image.load("laser.png")
+    space_ship = pygame.image.load("space_ship.png")
+    enemy_space_ship = pygame.image.load('enemy_space_ship.png')
+    shoot_sound = pygame.mixer.Sound('shoot.wav')
+
+    space_music = 'space_music.mp3'
+    pygame.mixer.music.load(space_music)
+    pygame.mixer.music.play(-1)
+
+    player_score_font = pygame.font.match_font('Fixedsys')
+    def player_score(display, score, size, xfont, yfont):
+        score_font = pygame.font.Font(player_score_font, size)
+        score_look = score_font.render(score, True, (232, 210, 16))
+        score_rect = score_look.get_rect()
+        score_rect.midtop = (xfont, yfont)
+        display.blit(score_look, score_rect)
+
+    enemy_kill_font = pygame.font.match_font('Fixedsys')
+    def enemy_kills(display, score, size, xfont, yfont):
+        kills_font = pygame.font.Font(player_score_font, size)
+        kills_look = kills_font.render(score, True, (232, 210, 16))
+        score_rect = kills_look.get_rect()
+        score_rect.midtop = (xfont, yfont)
+        display.blit(kills_look, score_rect)
+
+
+    class PlayerShip(pygame.sprite.Sprite):
+        def __init__(self):
+            pygame.sprite.Sprite.__init__(self)
+            self.image = space_ship
+            self.rect = self.image.get_rect()
+            self.rect.centerx = WIDTH/2
+            self.rect.bottom = HEIGHT - 10
+
+        def update(self):
+            self.speedx = 0
+
+            x, y = pygame.mouse.get_pos()
+
+            self.rect.centerx = x
+
+            if self.rect.right > WIDTH:
+                self.rect.right = WIDTH
+
+            if self.rect.left < 0:
+                self.rect.left = 0
+
+        def shoot(self):
+            laser = Laser(self.rect.centerx, self.rect.top)
+            all_sprites.add(laser)
+            lasers.add(laser)
+
+        def upgrade_shoot(self):
+
+    class Laser(pygame.sprite.Sprite):
+        def __init__(self, x, y):
+            pygame.sprite.Sprite.__init__(self)
+            self.image = laser_image
+            self.rect = self.image.get_rect()
+            self.rect.bottom = y
+            self.rect.centerx = x
+            self.speedy = -10
+
+        def update(self):
+            self.rect.y += self.speedy
+
+            if self.rect.bottom < 0:
+                self.kill()
+
+    class EnemyShip(pygame.sprite.Sprite):
+        def __init__(self):
+            pygame.sprite.Sprite.__init__(self)
+            self.image = enemy_space_ship
+            self.rect = self.image.get_rect()
+            self.rect.x = random.randrange(WIDTH - self.rect.width)
+            self.rect.y = random.randrange(-100, -40)
+            self.speedy = random.randrange(3, 10)
+            self.speedx = random.randrange(-3, 3)
+
+        def update(self):
+            self.rect.x += self.speedx
+            self.rect.y += self.speedy
+
+            if self.rect.top > HEIGHT + 10 or self.rect.left < -10 or self.rect.right > WIDTH:
+                self.rect.x = random.randrange(WIDTH - self.rect.width)
+                self.rect.y = random.randrange(-100, -40)
+                self.speedy = random.randrange(1, 8)
+
+
+    all_sprites = pygame.sprite.Group()
+    player = PlayerShip()
+    lasers = pygame.sprite.Group()
+    enemies = pygame.sprite.Group()
+    all_sprites.add(player)
+
+    for i in range(15):
+        enemy = EnemyShip()
+        all_sprites.add(enemy)
+        enemies.add(enemy)
+
+    running = True
+    while running:
+        clock.tick(FPS)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+            if upgrade == 0:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                        player.shoot()
+                        shoot_sound.play()
+
+
+        all_sprites.update()
+
+        collision_bullet = pygame.sprite.groupcollide(enemies, lasers, True, True)
+
+        for hit in collision_bullet:
+            enemy = EnemyShip()
+            all_sprites.add(enemy)
+            enemies.add(enemy)
+            score += 25
+            enemy_score += 1
+
+        collision_player = pygame.sprite.spritecollide(player, enemies,  False)
+
+        if collision_player:
+             running = False
+
+        screen.fill((000, 000, 000))
+        screen.blit(space_background, space_background_rect)
+        all_sprites.draw(screen)
+        player_score(screen, str(score), 50, WIDTH / 2, 25)
+        enemy_kills(screen, 'Enemies Killed: {}'.format(str(enemy_score)), 15, 0, 25)
+        pygame.display.flip()
+
+    pygame.quit()
+
+def dual():
+    start_screen.destroy()
+    play()
+
+def story():
+    story_screen = Toplevel(start_screen)
+    story_screen.geometry('500x800')
+
+    story_screen_photo = PhotoImage(file='start_screen.png')
+    background_photo = Label(story_screen, image=story_screen_photo)
+    background_photo.place(x=0, y=0, relwidth=1, relheight=1)
+
+    label_2 = Label(story_screen, text='The story of INTERGALACTIC GOLD RUSH STARTS YEARS BACK.', font=('Helvetica', 15, 'bold'), fg='#e8d210', bg='#000000')
+    label_2.place(x=100, y=100)
+
+    button_4 = Button(story_screen, text='BACK!', font=('Fixedsys', 17, 'bold'), fg='#e8d210', bg='#000000')
+    button_4.place(x=196, y=500)
+
+    mainloop()
+
+def menu():
+    global start_screen
+    start_screen = Tk()
+    start_screen.geometry('500x800')
+
+    start_screen_photo = PhotoImage(file='start_screen.png')
+    background_photo = Label(start_screen, image=start_screen_photo)
+    background_photo.place(x=0, y=0, relwidth=1, relheight=1)
+
+    label_1 = Label(start_screen, text='INTERGALACTIC\nGOLD\nRUSH', font=('Fixedsys', 30, 'bold'), fg='#e8d210', bg='#000000')
+    label_1.place(x=90, y=200)
+
+    start_button = PhotoImage(file='start_button.png')
+    button_1 = Button(start_screen, text='PLAY!', font=('Fixedsys', 17, 'bold'), fg='#e8d210', bg='#000000', command=dual)
+    button_1.place(x=195, y=400)
+
+    button_2 = Button(start_screen, text='STORY', font=('Fixedsys', 17, 'bold'), fg='#e8d210', bg='#000000', command=story)
+    button_2.place(x=196, y=500)
+
+    button_3 = Button(start_screen, text='MANUAL', font=('Fixedsys', 17, 'bold'), fg='#e8d210', bg='#000000', command=story)
+    button_3.place(x=187, y=600)
+
+    mainloop()
+
+menu()
