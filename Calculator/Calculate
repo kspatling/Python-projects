@@ -3,12 +3,16 @@ import random
 from tkinter import *
 
 def play():
+    global use_ship, armour_upgrade
     WIDTH = 500
-    HEIGHT = 500
+    HEIGHT = 800
     FPS = 60
     score = 0
     enemy_score = 0
-    upgrade = 0
+    armour_upgrade = 0
+    gun_upgrade = 0
+    min_enemy_speed = 4
+    max_enemy_speed = 12
 
     pygame.init()
     pygame.mixer.init()
@@ -20,8 +24,9 @@ def play():
     space_background = pygame.image.load("background_space.png")
     space_background_rect = space_background.get_rect()
 
+    use_ship = 'space_ship.png'
     laser_image = pygame.image.load("laser.png")
-    space_ship = pygame.image.load("space_ship.png")
+    space_ship = pygame.image.load(use_ship)
     enemy_space_ship = pygame.image.load('enemy_space_ship.png')
     shoot_sound = pygame.mixer.Sound('shoot.wav')
 
@@ -39,7 +44,7 @@ def play():
 
     enemy_kill_font = pygame.font.match_font('Fixedsys')
     def enemy_kills(display, score, size, xfont, yfont):
-        kills_font = pygame.font.Font(player_score_font, size)
+        kills_font = pygame.font.Font(enemy_kill_font, size)
         kills_look = kills_font.render(score, True, (232, 210, 16))
         score_rect = kills_look.get_rect()
         score_rect.midtop = (xfont, yfont)
@@ -73,9 +78,9 @@ def play():
             lasers.add(laser)
 
         def shoot2(self):
-            laser2 = Laser(self.rect.centerx - 5, self.rect.top)
+            laser2 = Laser(self.rect.centerx - 20, self.rect.top)
             laser22 = Laser(self.rect.centerx, self.rect.top)
-            laser222 = Laser(self.rect.centerx + 5, self.rect.top)
+            laser222 = Laser(self.rect.centerx + 20, self.rect.top)
             all_sprites.add(laser2, laser22, laser222)
             lasers.add(laser2, laser22, laser222)
 
@@ -102,7 +107,7 @@ def play():
             self.rect = self.image.get_rect()
             self.rect.x = random.randrange(WIDTH - self.rect.width)
             self.rect.y = random.randrange(-100, -40)
-            self.speedy = random.randrange(3, 10)
+            self.speedy = random.randrange(min_enemy_speed, max_enemy_speed)
             self.speedx = random.randrange(-3, 3)
 
         def update(self):
@@ -133,11 +138,21 @@ def play():
             if event.type == pygame.QUIT:
                 running = False
 
-            if upgrade == 0:
+            if gun_upgrade == 0:
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                        player.shoot2()
-                        shoot_sound.play()
+                    player.shoot()
+                    shoot_sound.play()
 
+            elif gun_upgrade == 1:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    player.shoot2()
+                    shoot_sound.play()
+
+
+        key = pygame.key.get_pressed()
+
+        if key[pygame.K_m]:
+            shop()
 
         all_sprites.update()
 
@@ -147,7 +162,7 @@ def play():
             enemy = EnemyShip()
             all_sprites.add(enemy)
             enemies.add(enemy)
-            score += 25
+            score += 3000
             enemy_score += 1
 
         collision_player = pygame.sprite.spritecollide(player, enemies,  False)
@@ -176,36 +191,29 @@ def back2():
     manual.destroy()
     menu()
 
-
-def shop():
-    shop_screen = Tk()
-    shop_screen.geometry('500x800')
-    shop_screen.title('INTERGALACTIC GOLD RUSH')
-
-    screen_photo = PhotoImage(file='space_screen.png')
-    background_photo = Label(shop_screen, image=screen_photo)
-    background_photo.place(x=0, y=0, relwidth=1, relheight=1)
+def armour_upgrade():
+    use_ship = 'upgraded_space_ship.png'
 
 
 def story():
     global story
     start_screen.destroy()
     story = Tk()
-    story.geometry('500x800')
+    story.geometry('635x800')
     story.title('INTERGALACTIC GOLD RUSH')
 
     story_photo = PhotoImage(file='story_screen.png')
     background_photo = Label(story, image=story_photo)
     background_photo.place(x=0, y=0, relwidth=1, relheight=1)
 
-    label_2 = Label(story, text='The story of INTERGALACTIC GOLD RUSH starts years back.\nJonsei is an american gold miner from the 1920. Jonesi was offered\nfree expedition to space on the look for new minerals and ores.\nSince she was very familar with working around these substances\nJonesi knew she would be getting into some serious cash. Taking up\non the offer she was offered the finest class of ship, the SS Belanger.\nThis class of ship contained the most updated systems most reliable\nguns and the fastest speed to date. During her expedition she came\ninto contact with space pirates, these are the savages of the galaxy.\nThey storm in groups to over run and take over other peoples ships.\nFortunatly for Jonesi she saw them coming from a distance, prepared\n with her guns you must take out the space pirates and protect\n the treasure you have found!', font=('Helvetica', 15, 'bold'), fg='#e8d210', bg='#000000')
+    label_2 = Label(story, text='The story of INTERGALACTIC GOLD RUSH starts years back.\nJonsei is an american gold miner from the 1920. Jonesi was offered\nfree expedition to space on the look for new minerals and ores.\nSince she was very familar with working around these substances\nJonesi knew she would be getting into some serious cash. Taking up\non the offer she was offered the finest class of ship, the SS Belanger.\nThis class of ship contained the most updated systems most reliable\nguns and the fastest speed to date. During her expedition she came\ninto contact with space pirates, these are the savages of the galaxy.\nThey storm in groups to over run and take over other peoples ships.\nFortunatly for Jonesi she saw them coming from a distance, prepared\n with her guns you must take out the space pirates and protect\n the treasure you have found!', font=('Fixedsys', 10, 'bold'), fg='#e8d210', bg='#000000')
     label_2.place(x=0, y=100)
 
     label_3 = Label(story, text='STORY', font=('Fixedsys', 35, 'bold'), fg='#e8d210', bg='#000000')
-    label_3.place(x=175, y=10)
+    label_3.place(x=235, y=10)
 
     button_4 = Button(story, text='BACK!', font=('Fixedsys', 17, 'bold'), fg='#e8d210', bg='#000000', command=back1)
-    button_4.place(x=196, y=500)
+    button_4.place(x=265, y=500)
 
     mainloop()
 
@@ -221,13 +229,33 @@ def manual():
     background_photo.place(x=0, y=0, relwidth=1, relheight=1)
 
     label_4 = Label(manual, text='MANUAL', font=('Fixedsys', 35, 'bold'), fg='#e8d210', bg='#000000')
-    label_4.place(x=170, y=10)
+    label_4.place(x=155, y=10)
 
-    label_5 = Label(manual, text='\nMovement: Use the mouse to move LEFT & RIGHT!\n\nShooting: Left click the mouse to shoot your gun!\n\nShop: Press M to access the shop!', font=('Fixedsys', 17, 'bold'), fg='#e8d210', bg='#000000')
+    label_5 = Label(manual, text='\nMovement: Use the mouse to move LEFT & RIGHT!\n\nShooting: Left click the mouse to shoot your gun!\n\nShop: Press M to access the shop!', font=('Fixedsys', 16, 'bold'), fg='#e8d210', bg='#000000')
     label_5.place(x=25, y=100)
 
-    button_4 = Button(manual, text='BACK!', font=('Fixedsys', 17, 'bold'), fg='#e8d210', bg='#000000', command=back1)
+    button_4 = Button(manual, text='BACK!', font=('Fixedsys', 17, 'bold'), fg='#e8d210', bg='#000000', command=back2)
     button_4.place(x=196, y=500)
+
+    mainloop()
+
+def shop():
+    shop_screen = Tk()
+    shop_screen.geometry('500x500')
+    shop_screen.title('INTERGALACTIC GOLD RUSH')
+
+    shop_photo = PhotoImage(file='shop_screen.png')
+    background_photo = Label(shop_screen, image=shop_photo)
+    background_photo.place(x=0, y=0, relwidth=1, relheight=1)
+
+    label_6 = Label(shop_screen, text='SHOP', font=('Fixedsys', 17, 'bold'), fg='#e8d210', bg='#000000')
+    label_6.place(x=205, y=20)
+
+    label_7 = Label(shop_screen, text='Armour: 3000 GOLD', font=('Fixedsys', 17, 'bold'), fg='#e8d210', bg='#000000')
+    label_7.place(x=95, y=70)
+
+    button_5 = Button(shop_screen, text='PURCHASE', font=('Fixedsys', 17, 'bold'), fg='#e8d210', bg='#000000', command=armour_upgrade)
+    button_5.place(x=165, y=120)
 
     mainloop()
 
