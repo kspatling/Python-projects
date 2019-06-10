@@ -24,9 +24,7 @@ def play():
     space_background = pygame.image.load("background_space.png")
     space_background_rect = space_background.get_rect()
 
-    use_ship = 'space_ship.png'
     laser_image = pygame.image.load("laser.png")
-    space_ship = pygame.image.load(use_ship)
     enemy_space_ship = pygame.image.load('enemy_space_ship.png')
     shoot_sound = pygame.mixer.Sound('shoot.wav')
 
@@ -50,14 +48,46 @@ def play():
         score_rect.midtop = (xfont, yfont)
         display.blit(kills_look, score_rect)
 
+    def death():
+        pygame.quit()
+        death = Tk()
+        death.geometry('500x800')
+        death.title('INTERGALACTIC GOLD RUSH')
+
+        f = open('highscore.txt', 'r')
+
+        line = f.readlines()
+
+        highscore = line[0]
+
+        if int(score) > int(highscore):
+            f = open('highscore.txt', 'w')
+            f.write(str(score))
+            highscore = score
+
+        lose_photo = PhotoImage(file='end_screen.png')
+        background_photo = Label(death, image=lose_photo)
+        background_photo.place(x=0, y=0, relwidth=1, relheight=1)
+
+        label_8 = Label(death, text='YOUR SCORE: {}'.format(str(score)), font=('Fixedsys', 25, 'bold'), fg='#e8d210', bg='#000000')
+        label_8.place(x=60, y=200)
+
+        label_9 = Label(death, text='HIGHSCORE: {}'.format(str(highscore)), font=('Fixedsys', 25, 'bold'), fg='#e8d210', bg='#000000')
+        label_9.place(x=60, y=200)
+
+        mainloop()
+
 
     class PlayerShip(pygame.sprite.Sprite):
         def __init__(self):
             pygame.sprite.Sprite.__init__(self)
-            self.image = space_ship
+            self.use_ship = 'space_ship.png'
+            self.space_ship = pygame.image.load(self.use_ship)
+            self.image = self.space_ship
             self.rect = self.image.get_rect()
             self.rect.centerx = WIDTH/2
             self.rect.bottom = HEIGHT - 10
+
 
         def update(self):
             self.speedx = 0
@@ -154,6 +184,13 @@ def play():
         if key[pygame.K_m]:
             shop()
 
+        if key[pygame.K_w]:
+            if gun_upgrade == 0:
+                gun_upgrade = 1
+
+            elif gun_upgrade == 1:
+                gun_upgrade = 0
+
         all_sprites.update()
 
         collision_bullet = pygame.sprite.groupcollide(enemies, lasers, True, True)
@@ -168,9 +205,9 @@ def play():
         collision_player = pygame.sprite.spritecollide(player, enemies,  False)
 
         if collision_player:
-             running = False
+            running = False
+            death()
 
-        screen.fill((000, 000, 000))
         screen.blit(space_background, space_background_rect)
         all_sprites.draw(screen)
         player_score(screen, str(score), 50, WIDTH / 2, 25)
@@ -190,10 +227,6 @@ def back1():
 def back2():
     manual.destroy()
     menu()
-
-def armour_upgrade():
-    use_ship = 'upgraded_space_ship.png'
-
 
 def story():
     global story
@@ -254,7 +287,7 @@ def shop():
     label_7 = Label(shop_screen, text='Armour: 3000 GOLD', font=('Fixedsys', 17, 'bold'), fg='#e8d210', bg='#000000')
     label_7.place(x=95, y=70)
 
-    button_5 = Button(shop_screen, text='PURCHASE', font=('Fixedsys', 17, 'bold'), fg='#e8d210', bg='#000000', command=armour_upgrade)
+    button_5 = Button(shop_screen, text='PURCHASE', font=('Fixedsys', 17, 'bold'), fg='#e8d210', bg='#000000')
     button_5.place(x=165, y=120)
 
     mainloop()
