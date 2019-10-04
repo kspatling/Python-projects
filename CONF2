@@ -1,0 +1,190 @@
+from tkinter import *
+from tkinter import messagebox
+from lxml import html
+import requests
+
+class webscraping():
+
+    def __init__(self):
+
+        x, y = 5, 5
+
+        self.items = 0
+        self.login = ''
+
+        self.belangerwebsite = requests.get('https://sites.google.com/a/ocsb.ca/belanger/home/ics-4u-computer-science/deadlines')
+        self.belangertree = html.fromstring(self.belangerwebsite.content)
+        self.conference = self.belangertree.xpath('//*[@id="sites-canvas-main-content"]/table/tbody/tr/td/div/div[2]/table/tbody/tr[' + str(x) + ']/td[2]/b/text()')
+        self.dates = self.belangertree.xpath('//*[@id="sites-canvas-main-content"]/table/tbody/tr/td/div/div[2]/table/tbody/tr[' + str(y) + ']/td[1]/text()')
+
+        self.weatherwebsite = requests.get('https://www.wunderground.com/weather/ca/ottawa?bannertypeclick=htmlSticker&GO=SEARCH')
+        self.weathertree = html.fromstring(self.weatherwebsite.content)
+        self.weather = self.weathertree.xpath('//*[@id="inner-content"]/div[3]/div[1]/div/div[1]/div[1]/lib-city-current-conditions/div/div[2]/div/div/div[2]/lib-display-unit/span/span[1]/text()')
+        self.weather = str(self.weather).strip('[').strip(']').strip("'")
+        self.weather_celsius = round((int(self.weather) - 32) * (5 / 9))
+
+        self.nikeweb_alphadunk = requests.get('https://www.nike.com/ca/t/alphadunk-basketball-shoe-p1LMSj/BQ5401-002')
+        self.alphadunktree = html.fromstring(self.nikeweb_alphadunk.content)
+        self.alpha_dunk = self.alphadunktree.xpath('//*[@id="RightRail"]/div/div[1]/div/div[1]/div[2]/div/div/text()')
+
+    def mainwindow(self):
+
+        self.window = Tk()
+        self.window.title('PAVILL')
+        self.window.geometry('600x600')
+        self.window.configure(bg='#f1d745')
+
+        self.logo = PhotoImage(file='PAVILL.png')
+        self.lbl1 = Label(self.window, image=self.logo, borderwidth=0)
+        self.lbl1.place(x=115, y=20)
+
+        self.lbl2 = Label(self.window, text='Cart: {}'.format(self.items), font=('Helvetica', 11, 'bold'), bg='#f1d745', fg='#342831')
+        self.lbl2.place(x=539, y=575)
+
+        self.btn1 = Button(self.window, text='Login', borderwidth=0, font=('Helvetica', 12, 'bold'), bg='#f1d745', fg='#342831', command=self.maintologin)
+        self.btn1.place(x=10, y=500)
+
+        self.btn2 = Button(self.window, text='Register', borderwidth=0, font=('Helvetica', 12, 'bold'), bg='#f1d745', fg='#342831', command=self.maintoregister)
+        self.btn2.place(x=10, y=550)
+
+        self.shop_button = PhotoImage(file='Shop Button.png')
+        self.btn3 = Button(self.window, image=self.shop_button, width=150, height=36, borderwidth=0, command=self.maintoshop)
+        self.btn3.place(x=224, y=260)
+
+        self.business_button = PhotoImage(file='Business Panel Button.png')
+        self.btn4 = Button(self.window, image=self.business_button, width=188, height=77, borderwidth=0)
+        self.btn4.place(x=204, y=400)
+
+        mainloop()
+
+    def shopwindow(self):
+
+        self.lbl4 = Label(self.window, text='Products', font=('Helvetica', 24, 'bold'), bg='#f1d745', fg='#342831')
+        self.lbl4.place(x=231, y=140)
+
+        self.lbl5 = Label(self.window, text='Products', font=('Helvetica', 24, 'bold'), bg='#f1d745', fg='#342831')
+
+
+    def maintoshop(self):
+
+        self.btn1.place_forget()
+        self.btn2.place_forget()
+        self.btn3.place_forget()
+        self.btn4.place_forget()
+
+        self.shopwindow()
+
+
+    def maintologin(self):
+
+        self.window2 = Toplevel(self.window)
+        self.window2.title('PAVILL')
+        self.window2.geometry('300x150')
+        self.window2.configure(bg='#f1d745')
+
+        self.lbl6 = Label(self.window2, text='Email', borderwidth=0, font=('Helvetica', 12, 'bold'), bg='#f1d745', fg='#342831')
+        self.lbl6.place(x=125, y=10)
+
+        self.e1 = Entry(self.window2, width=30)
+        self.e1.place(x=60, y=35)
+
+        self.lbl7 = Label(self.window2, text='Password', borderwidth=0, font=('Helvetica', 12, 'bold'), bg='#f1d745',fg='#342831')
+        self.lbl7.place(x=110, y=60)
+
+        self.e2 = Entry(self.window2, width=30, show='*')
+        self.e2.place(x=60, y=95)
+
+        self.btn5 = Button(self.window2, text='Login', borderwidth=0, font=('Helvetica', 12, 'bold'), bg='#f1d745', fg='#342831', command=self.logintochecklogin)
+        self.btn5.place(x=122, y=120)
+
+        mainloop()
+
+    def logintochecklogin(self):
+
+        self.email = self.e1.get().lower()
+        self.password = self.e2.get()
+
+        try:
+            self.f = open('{}'.format(self.email), 'r')
+
+            self.lines = self.f.readlines()
+
+            self.userpassword = self.lines[1]
+
+            if self.password == self.userpassword:
+
+                self.login = self.email
+                self.btn1.place_forget()
+                self.btn2.place_forget()
+                messagebox.showinfo('Loged In', 'Successful Login Attempt!')
+                self.window2.destroy()
+
+                self.lbl8 = Label(self.window, text='Account: {}'.format(self.email), borderwidth=0, font=('Helvetica', 10, 'bold'), bg='#f1d745',fg='#342831')
+                self.lbl8.place(x=5, y=580)
+
+                self.btn6 = Button(self.window, text='Logout', borderwidth=0, font=('Helvetica', 10, 'bold'), bg='#f1d745', fg='#342831', command=self.loggedintologout)
+                self.btn6.place(x=400, y=575)
+
+            else:
+                messagebox.showerror('Error', 'We had a problem signing you in! Check your Email and Password')
+
+        except:
+            messagebox.showerror('Error', 'We had a problem signing you in! Check your Email and Password')
+
+
+    def maintoregister(self):
+
+        self.window2 = Toplevel(self.window)
+        self.window2.title('PAVILL')
+        self.window2.geometry('300x150')
+        self.window2.configure(bg='#f1d745')
+
+        self.lbl6 = Label(self.window2, text='Email', borderwidth=0, font=('Helvetica', 12, 'bold'), bg='#f1d745',fg='#342831')
+        self.lbl6.place(x=125, y=10)
+
+        self.e1 = Entry(self.window2, width=30)
+        self.e1.place(x=60, y=35)
+
+        self.lbl7 = Label(self.window2, text='Password', borderwidth=0, font=('Helvetica', 12, 'bold'), bg='#f1d745',fg='#342831')
+        self.lbl7.place(x=110, y=60)
+
+        self.e2 = Entry(self.window2, width=30, show='*')
+        self.e2.place(x=60, y=95)
+
+        self.btn5 = Button(self.window2, text='Register', borderwidth=0, font=('Helvetica', 12, 'bold'), bg='#f1d745',fg='#342831', command=self.registertocheckregister)
+        self.btn5.place(x=115, y=120)
+
+
+    def registertocheckregister(self):
+
+        try:
+            self.email = self.e1.get().lower()
+            self.password = self.e2.get()
+
+            self.f = open('{}'.format(self.email), 'w+')
+
+            self.f.write('{}\n{}'.format(self.email, self.password))
+            messagebox.showinfo('Loged In', 'Successful Created An Account!')
+            self.window2.destroy()
+
+        except:
+            messagebox.showerror('Error', 'We had a problem signing you in! Check your Email and Password!')
+
+
+    def loggedintologout(self):
+
+        self.lbl8.place_forget()
+        self.btn1.place(x=10, y=500)
+        self.btn2.place(x=10, y=550)
+        self.login = ''
+
+
+
+
+def main():
+    mw = webscraping()
+    mw.mainwindow()
+
+# Open the project file and call the main program/
+if __name__ == "__main__":
+    main()
