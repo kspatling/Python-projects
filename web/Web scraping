@@ -13,7 +13,7 @@ class webscraping():
 
         self.items = 0
         self.login = ''
-        self.code = str(random.randrange(1111111, 9999999999))
+        self.code = str(random.randrange(11111, 99999))
 
         self.names_stuff = {
 
@@ -152,8 +152,8 @@ class webscraping():
                 self.login = self.email
                 self.btn1.place_forget()
                 self.btn2.place_forget()
-                messagebox.showinfo('Loged In', 'Successful Login Attempt!')
                 self.window2.destroy()
+                messagebox.showinfo('Loged In', 'Successful Login Attempt!')
 
                 self.lbl8 = Label(self.window, text='Account: {}'.format(self.email), borderwidth=0, font=('Helvetica', 10, 'bold'), bg='#f1d745',fg='#342831')
                 self.lbl8.place(x=5, y=580)
@@ -203,7 +203,7 @@ class webscraping():
 
         self.connect = smtplib.SMTP_SSL('smtp.gmail.com', 465)
         self.connect.login('pavillmailconfirmation@gmail.com', 'Securepass123')
-        self.connect.sendmail('pavillmailconfirmation@gmail.com', '{}'.format(self.e1.get()), str(self.code))
+        self.connect.sendmail('pavillmailconfirmation@gmail.com', 'Verification Code: {}'.format(self.e1.get()), str(self.code))
         self.connect.quit()
 
         self.btn9 = Button(self.window3, text='Confirm', borderwidth=0, font=('Helvetica', 12, 'bold'), bg='#f1d745', fg='#342831', command=self.confirmregister)
