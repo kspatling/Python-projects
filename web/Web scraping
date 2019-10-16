@@ -1,3 +1,4 @@
+# I defined the libraries/assests im going to use below.
 from tkinter import *
 from tkinter import messagebox
 from lxml import html
@@ -5,56 +6,119 @@ import requests
 import random
 import smtplib
 
+# I create a class to store my functions in.
 class webscraping():
 
+    # I create an __init__ constructor to define my webscraping links, and other important variables.
     def __init__(self):
 
+        # I create variables for your website so I can webscrap the different conference dates.
         x, y = 5, 5
 
+
+        # Here I define my login email that they sign into. Changes once they sign in.
         self.login = ''
+
+        # Here I generate a random code for my email verification
         self.code = str(random.randrange(11111, 99999))
+
+        # Here I define an empty cart, later when they add stuff to the cart, it will append the products.
         self.cart = []
         self.items = 0
 
+
+        # Here I request Belanger website link.
         self.belangerwebsite = requests.get('https://sites.google.com/a/ocsb.ca/belanger/home/ics-4u-computer-science/deadlines')
+
+        # Here I load the content, and create an imaginary string for it.
         self.belangertree = html.fromstring(self.belangerwebsite.content)
+
+        # Here I grab the conference # it is, "e.x. Conference 2"
         self.conference = self.belangertree.xpath('//*[@id="sites-canvas-main-content"]/table/tbody/tr/td/div/div[2]/table/tbody/tr[' + str(x) + ']/td[2]/b/text()')
+
+        # Here I grab the month and dates the conference is, and pairs them with that it is.
         self.dates = self.belangertree.xpath('//*[@id="sites-canvas-main-content"]/table/tbody/tr/td/div/div[2]/table/tbody/tr[' + str(y) + ']/td[1]/text()')
 
+
+        # Here I request the weather website.
         self.weatherwebsite = requests.get('https://www.wunderground.com/weather/ca/ottawa?bannertypeclick=htmlSticker&GO=SEARCH')
+
+        # Here I load the content on the weather site.
         self.weathertree = html.fromstring(self.weatherwebsite.content)
+
+        # Here I grab the weather in F
         self.weather = self.weathertree.xpath('//*[@id="inner-content"]/div[3]/div[1]/div/div[1]/div[1]/lib-city-current-conditions/div/div[2]/div/div/div[2]/lib-display-unit/span/span[1]/text()')
+
+        # Here I strip the excess characters that I don't need.
         self.weather = str(self.weather).strip('[').strip(']').strip("'")
+
+        # I do the calculation to change Farenheight to Calcius.
         self.weather_celsius = round((int(self.weather) - 32) * (5 / 9))
 
+        # Here I request from nike the shoe link.
         self.nikeweb_alphadunk = requests.get('https://www.nike.com/ca/t/alphadunk-basketball-shoe-p1LMSj/BQ5401-002')
+
+        # Here I load the information from the shoe link.
         self.alphadunktree = html.fromstring(self.nikeweb_alphadunk.content)
+
+        # Here I grab the $ amount of the shoe.
         self.alpha_dunk_cost = self.alphadunktree.xpath('//*[@id="RightRail"]/div/div[1]/div/div[1]/div[2]/div/div/text()')
+
+        # Here I remove the excess stuff that I don't need on the string.
         self.alpha_dunk_cost = str(self.alpha_dunk_cost).strip('[').strip(']').strip("'")
+
+        # Here I grab the description of the product.
         self.alpha_dunk_desc = self.alphadunktree.xpath('//*[@id="RightRail"]/div/div[3]/div[1]/p/text()')
+
+        # Here I remove the excess stuff that I don't need on the string.
         self.alpha_dunk_desc = str(self.alpha_dunk_desc).strip('[').strip(']').strip("'")
 
+
+        # Here I request the vaporknit strike snood.
         self.nikeweb_vaporknit = requests.get('https://www.nike.com/ca/t/vaporknit-strike-snood-jkxHTp/BV7069-010')
+
+        # Here I load the information from the vaporknit strike snood link.
         self.vaporknittree = html.fromstring(self.nikeweb_vaporknit.content)
+
+        # Here I grab the cost of the vapor knit hood.
         self.vapor_knit_cost = self.vaporknittree.xpath('//*[@id="RightRail"]/div/div[1]/div/div[1]/div[2]/div/div/text()')
+
+        # Here I remove the excess stuff that I don't need on the string.
         self.vapor_knit_cost = str(self.vapor_knit_cost).strip('[').strip(']').strip("'")
+
+        # Here I grab the cost of the vapor knit hood.
         self.vapor_knit_desc = self.vaporknittree.xpath('//*[@id="RightRail"]/div/div[2]/div[1]/p/text()')
+
+        # Here I remove the excess stuff that I don't need on the string.
         self.vapor_knit_desc = str(self.vapor_knit_desc).strip('[').strip(']').strip("'")
 
 
+    # Here I define my main open window.
     def mainwindow(self):
 
+        # I define the tkinter window.
         self.window = Tk()
+
+        # I set the window title, geometry and configure the background color.
         self.window.title('PAVILL')
         self.window.geometry('600x600')
         self.window.configure(bg='#f1d745')
 
+
+        # Here I create a photo image which is my logo.
         self.logo = PhotoImage(file='PAVILL.png')
+
+        # Here I set the label to the image PAVILL.
         self.lbl1 = Label(self.window, image=self.logo, borderwidth=0)
+
+        # Here I place the image.
         self.lbl1.place(x=115, y=20)
 
+        # Here I define the cart button, and the amount of items in the cart is equal to the amount of things in a list.
         self.btn15 = Button(self.window, text='Cart: {}'.format(len(self.cart)), font=('Helvetica', 11, 'bold'), bg='#f1d745', fg='#342831', command=self.tothecheckoutwindow)
         self.btn15.place(x=539, y=575)
+
+        # Here I disable the button for now so they can't checkout with 0 items or before loging in.
         self.btn15.configure(state=DISABLED)
 
         self.btn1 = Button(self.window, text='Login', borderwidth=0, font=('Helvetica', 12, 'bold'), bg='#f1d745', fg='#342831', command=self.maintologin)
@@ -63,15 +127,21 @@ class webscraping():
         self.btn2 = Button(self.window, text='Register', borderwidth=0, font=('Helvetica', 12, 'bold'), bg='#f1d745', fg='#342831', command=self.maintoregister)
         self.btn2.place(x=10, y=550)
 
+
+        # Here I define the shop button, so when people click this button they will be brought to the shopping menu.
         self.shop_button = PhotoImage(file='Shop Button.png')
         self.btn3 = Button(self.window, image=self.shop_button, width=150, height=36, borderwidth=0, command=self.maintoshop)
         self.btn3.place(x=224, y=260)
 
+        # I have a business panel where you can look at purchases, and from who.
         self.business_button = PhotoImage(file='Business Panel Button.png')
         self.btn4 = Button(self.window, image=self.business_button, width=188, height=77, borderwidth=0)
         self.btn4.place(x=204, y=400)
+
+        # I disable the button because I did not have enough time to put this in.
         self.btn4.configure(state=DISABLED)
 
+        # Here I web scrape the weather, and input it here.
         self.lbl9 = Label(self.window, text='{}°C'.format(self.weather_celsius), font=('Helvetica', 14, 'bold'), bg='#f1d745', fg='#342831')
         self.lbl9.place(x=522, y=45)
 
@@ -82,16 +152,20 @@ class webscraping():
         self.lbl4 = Label(self.window, text='Products', font=('Helvetica', 24, 'bold'), bg='#f1d745', fg='#342831')
         self.lbl4.place(x=231, y=140)
 
+        # Here I create the nike shop button, once they click it, they will be brought to the nike shop.
         self.nikephoto = PhotoImage(file='nike.png')
         self.btn7 = Button(self.window, image=self.nikephoto, command=self.shopwindowtonike)
         self.btn7.place(x=120, y=300)
 
+        # Here I create the adidas shop button, once they click it, they will be brought to the adidas shop.
+        # Disabled because I didn't have enough time to complete it but it is the same concept as the nike product.
         self.adidasphoto = PhotoImage(file='adidas.png')
         self.btn8 = Button(self.window, image=self.adidasphoto)
         self.btn8.place(x=320, y=300)
         self.btn8.configure(state=DISABLED)
 
 
+    # When they click to go to nike, it forgets the past buttons and opens the nike window.
     def shopwindowtonike(self):
 
         self.lbl4.place_forget()
@@ -102,6 +176,7 @@ class webscraping():
 
     def nikewindow(self):
 
+        # Sets they product number they selected to 0.
         self.productnike = 0
 
         self.btn10 = Button(self.window, text='Nike Alpha Dunks', font=('Helvetica', 12, 'bold'), bg='#f1d745', fg='#342831', command=self.nikeproductplacement1)
@@ -112,28 +187,34 @@ class webscraping():
 
 
 
+    # Once they click the alpha bounch it will set their product chosen to 1 so the system knows which labels to make for it.
     def nikeproductplacement1(self):
 
         self.productnike += 1
         self.nikeproductplacement()
 
+    # Same as above but sets product chosen to 2, and opens the window.
     def nikeproductplacement2(self):
 
         self.productnike += 2
         self.nikeproductplacement()
 
+    # Sets the cart checkout button to normal, so they can checkout when they put stuff in their cart.
     def nikeproductplacement(self):
 
         self.btn15.configure(state=NORMAL)
 
+        # I define my pre-variables, and change these acourding to their product chosen
         self.photonikeproduct = ''
         self.nikeproductname = ''
         self.nikeproductcost = ''
         self.nikeproductdesc = ''
 
+        # I forget the image buttons from the nike product page.
         self.btn10.place_forget()
         self.btn11.place_forget()
 
+        # If the product is equal to 1 (Nike Alpha Dunk) then it changes the variables.
         if self.productnike == 1:
 
             self.photonikeproduct = 'alphadunk.png'
@@ -141,6 +222,7 @@ class webscraping():
             self.nikeproductcost = self.alpha_dunk_cost
             self.nikeproductdesc = self.alpha_dunk_desc
 
+        # If the product is equal to 2 (Vapor Knit) then it changes the variables.
         elif self.productnike == 2:
 
             self.photonikeproduct = 'vaporknit.png'
@@ -148,32 +230,42 @@ class webscraping():
             self.nikeproductcost = self.vapor_knit_cost
             self.nikeproductdesc = self.vapor_knit_desc
 
+        # I load in the selected variable now change above. This is the product photo.
         self.photonikeproductimage = PhotoImage(file=self.photonikeproduct)
 
+        # Here I place the image photo of the product.
         self.lbl10 = Label(self.window, image=self.photonikeproductimage)
         self.lbl10.place(x=80, y=170)
 
+        # I then set the product name to what the product is, Nike Alpha Dunk or Nike Vapor Knit Snood
         self.lbl11 = Label(self.window, text=self.nikeproductname, font=('Helvetica', 14, 'bold'), bg='#f1d745', fg='#342831')
         self.lbl11.place(x=360, y=170)
 
+        # Here I webscrap and define my webscraped variables above to grab the price of the product.
         self.lbl12 = Label(self.window, text='Price: ${}'.format(self.nikeproductcost), font=('Helvetica', 14, 'bold'), bg='#f1d745', fg='#342831')
         self.lbl12.place(x=360, y=230)
 
+        # Here I webscrap the definition and create a button to display the product description to the consumer.
         self.btn12 = Button(self.window, text='Description', font=('Helvetica', 14, 'bold'), bg='#f1d745', fg='#342831', command=self.nikeproductdescription)
         self.btn12.place(x=378, y=290)
 
+        # Here I set the quantity label.
         self.lbl13 = Label(self.window, text='Quantity', font=('Helvetica', 14, 'bold'), bg='#f1d745', fg='#342831')
         self.lbl13.place(x=395, y=360)
 
+        # Here This is where they add quantity to their cart.
         self.sb1 = Spinbox(self.window, from_=0, to=100)
         self.sb1.place(x=370, y=400)
 
+        # This takes the spinbox ammount and adds that to their cart.
         self.btn13 = Button(self.window, text='Add To Cart', font=('Helvetica', 12, 'bold'), bg='#f1d745', fg='#342831', command=self.nikeaddtocart)
         self.btn13.place(x=382, y=460)
 
+        # Back button to go back to the nike product page so they could possibly buy more items.
         self.btn14 = Button(self.window, text='←', font=('Helvetica', 14, 'bold'), bg='#f1d745', fg='#342831', command=self.backtonikewindow)
         self.btn14.place(x=25, y=25)
 
+    # Goes back to the main nike product page window.
     def backtonikewindow(self):
 
         self.lbl10.place_forget()
@@ -191,6 +283,7 @@ class webscraping():
 
         self.nikewindow()
 
+    # Takes the customer to the product window.
     def tothecheckoutwindow(self):
 
         self.lbl10.place_forget()
@@ -204,65 +297,93 @@ class webscraping():
 
         self.checkoutwindow()
 
+
+    # I create the checkout window.
     def checkoutwindow(self):
 
         self.lbl15 = Label(self.window, text='Nike Alpha Dunk', font=('Helvetica', 12, 'bold'), bg='#f1d745', fg='#342831')
         self.lbl15.place(x=100, y=150)
 
+        # I grab the quantity of the Alpha Dunk Shoes by checking the cart list for Alpha then counts it.
         self.lbl16 = Label(self.window, text='Quantity: {}'.format(self.cart.count('Alpha')), font=('Helvetica', 12, 'bold'), bg='#f1d745', fg='#342831')
         self.lbl16.place(x=100, y=190)
 
         self.lbl17 = Label(self.window, text='Nike Vapor Knit', font=('Helvetica', 12, 'bold'), bg='#f1d745', fg='#342831')
         self.lbl17.place(x=100, y=300)
 
+        # I grab the quantity of the Vapor Knit Snood by checking the cart list for Vapor then counts it.
+        self.lbl18 = Label(self.window, text='Quantity: {}'.format(self.cart.count('Vapor')), font=('Helvetica', 12, 'bold'), bg='#f1d745', fg='#342831')
+        self.lbl18.place(x=100, y=340)
+
         self.btn14 = Button(self.window, text='←', font=('Helvetica', 14, 'bold'), bg='#f1d745', fg='#342831', command=self.backtonikewindow)
         self.btn14.place(x=25, y=25)
 
 
+    # Here I display the nike product description in the messagebox.
     def nikeproductdescription(self):
 
+        # I grab the product description variable and display it.
         messagebox.showinfo('Product Description', self.nikeproductdesc)
 
+    # Adding products to the cart.
     def nikeaddtocart(self):
 
+        # It grabs the amount from the spinbox and defines it as itemadd
         self.itemadd = int(self.sb1.get())
+
+        # Adding to cart is equal to True.
         self.addingtocart = True
 
+        # If they have not selected anything, then it will not add anything.
         if self.itemadd == 0:
             messagebox.showerror('Error', 'You cannot add nothing to your cart!')
 
             self.backtonikewindow()
 
+        # If the nike product is equal to Alpha, then it will add x amount of Alpha.
         if self.productnike == 1:
 
             while self.addingtocart:
 
+                # If the items to add are equal to 0 then it will not add anymore.
                 if self.itemadd == 0:
 
                     self.addingtocart = False
 
                 else:
 
+                    # Here It appends to the cart, Alpha.
                     self.cart.append('Alpha')
+
+                    # Counts down the items to add.
                     self.itemadd = self.itemadd - 1
+
+                    # Reupdates the cart variable to update the amount of items in the cart.
                     self.btn15.configure(text='Cart: {}'.format(len(self.cart)))
 
         elif self.productnike == 2:
 
             while self.addingtocart:
 
+                # If the items to add are equal to 0 then it will not add anymore.
                 if self.itemadd == 0:
 
                     self.addingtocart = False
 
                 else:
 
+                    # Here It appends to the cart, Vapor.
                     self.cart.append('Vapor')
+
+                    # Counts down the items to add.
                     self.itemadd = self.itemadd - 1
+
+                    # Reupdates the cart variable to update the amount of items in the cart.
                     self.btn15.configure(text='Cart: {}'.format(len(self.cart)))
 
         mainloop()
 
+    # This handles with if they try to go shopping, and have not logged in it will not allow them.
     def maintoshop(self):
 
         if self.login == '':
@@ -277,8 +398,10 @@ class webscraping():
             self.shopwindow()
 
 
+    # I create the login window.
     def maintologin(self):
 
+        # Creates a window ontop of the regular window.
         self.window2 = Toplevel(self.window)
         self.window2.title('PAVILL')
         self.window2.geometry('300x150')
@@ -287,15 +410,18 @@ class webscraping():
         self.lbl6 = Label(self.window2, text='Email', borderwidth=0, font=('Helvetica', 12, 'bold'), bg='#f1d745', fg='#342831')
         self.lbl6.place(x=125, y=10)
 
+        # Grab their email.
         self.e1 = Entry(self.window2, width=30)
         self.e1.place(x=60, y=35)
 
         self.lbl7 = Label(self.window2, text='Password', borderwidth=0, font=('Helvetica', 12, 'bold'), bg='#f1d745',fg='#342831')
         self.lbl7.place(x=110, y=60)
 
+        # Grab their password. Also changes all the characters to * so they can't see the password.
         self.e2 = Entry(self.window2, width=30, show='*')
         self.e2.place(x=60, y=95)
 
+        # Checks the login account information.
         self.btn5 = Button(self.window2, text='Login', borderwidth=0, font=('Helvetica', 12, 'bold'), bg='#f1d745', fg='#342831', command=self.logintochecklogin)
         self.btn5.place(x=122, y=120)
 
@@ -304,16 +430,22 @@ class webscraping():
 
     def logintochecklogin(self):
 
+        # Grabs the email and password inputed, puts the email in all lower case so that caps doesn't matter.
         self.email = self.e1.get().lower()
         self.password = self.e2.get()
 
+        # Trys's to open the file of their email. If this cannot happen then it will go into except and give them an error.
         try:
             self.f = open('{}'.format(self.email), 'r')
 
+            # If it works it will read the lines of the files.
             self.lines = self.f.readlines()
 
+            # Grabs the 2nd line of the file, which is the password.
             self.userpassword = self.lines[1]
 
+            # If the inputed password is equal to the password in the file, then it will set the login to their email.
+            # So it confirms somebody has loged in. It also closes all the windows.
             if self.password == self.userpassword:
 
                 self.login = self.email
@@ -322,19 +454,24 @@ class webscraping():
                 self.window2.destroy()
                 messagebox.showinfo('Loged In', 'Successful Login Attempt!')
 
+                # Puts the account logged into, and gives them an option to logout of your account.
                 self.lbl8 = Label(self.window, text='Account: {}'.format(self.email), borderwidth=0, font=('Helvetica', 10, 'bold'), bg='#f1d745',fg='#342831')
                 self.lbl8.place(x=5, y=580)
 
+                # Logout of the account.
                 self.btn6 = Button(self.window, text='Logout', borderwidth=0, font=('Helvetica', 10, 'bold'), bg='#f1d745', fg='#342831', command=self.loggedintologout)
                 self.btn6.place(x=400, y=575)
 
+            # If all else fails it will give them an error.
             else:
                 messagebox.showerror('Error', 'We had a problem signing you in! Check your Email and Password')
 
+        # If they have not created an account it will give them an error.
         except:
             messagebox.showerror('Error', 'We had a problem signing you in! Check your Email and Password')
 
 
+    # This creates the register window for creating an account.
     def maintoregister(self):
 
         self.window2 = Toplevel(self.window)
@@ -345,15 +482,18 @@ class webscraping():
         self.lbl6 = Label(self.window2, text='Email', borderwidth=0, font=('Helvetica', 12, 'bold'), bg='#f1d745',fg='#342831')
         self.lbl6.place(x=125, y=10)
 
+        # This grabs their email.
         self.e1 = Entry(self.window2, width=30)
         self.e1.place(x=60, y=35)
 
         self.lbl7 = Label(self.window2, text='Password', borderwidth=0, font=('Helvetica', 12, 'bold'), bg='#f1d745',fg='#342831')
         self.lbl7.place(x=110, y=60)
 
+        # This grabs their password.
         self.e2 = Entry(self.window2, width=30, show='*')
         self.e2.place(x=60, y=95)
 
+        # Registers them and send email.
         self.btn5 = Button(self.window2, text='Register', borderwidth=0, font=('Helvetica', 12, 'bold'), bg='#f1d745',fg='#342831', command=self.registertocheckregister)
         self.btn5.place(x=115, y=120)
 
@@ -365,14 +505,23 @@ class webscraping():
         self.window3.geometry('330x30')
         self.window3.configure(bg='#f1d745')
 
+        # Grab the code they have inputed.
         self.e3 = Entry(self.window3, width=38)
         self.e3.place(x=5, y=5)
 
+        # Conncets to the smtplib servers, then defines using smtp gmail, and I grabed the schools port for SSL which is 465.
         self.connect = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+        
+        # I then login with my own gmail account, it will connect through the smtp servers to gmail servers.
         self.connect.login('pavillmailconfirmation@gmail.com', 'Securepass123')
+        
+        # If it is a sucess, it will send an email from my email, to their email provided, then the code message.
         self.connect.sendmail('pavillmailconfirmation@gmail.com', '{}'.format(self.e1.get()), '{}{}'.format('Verification Code is ', str(self.code)))
+        
+        # I then disconnect myself from the server.
         self.connect.quit()
 
+        # Confirm buttons check if their code matches my code.
         self.btn9 = Button(self.window3, text='Confirm', borderwidth=0, font=('Helvetica', 12, 'bold'), bg='#f1d745', fg='#342831', command=self.confirmregister)
         self.btn9.place(x=250, y=1)
 
@@ -387,7 +536,10 @@ class webscraping():
 
     def confirmregister(self):
 
+        # if their code matches my code
         if self.e3.get() == self.code:
+            
+            # It will try to create a file with their email. If it somehow doesnt work then it will have a problem with registering account.
             try:
                 self.email = self.e1.get().lower()
                 self.password = self.e2.get()
@@ -405,10 +557,11 @@ class webscraping():
             messagebox.showerror('Error', 'Wrong code! Try again!')
 
 
+# Defines my main class.
 def main():
     mw = webscraping()
     mw.mainwindow()
 
-# Open the project file and call the main program/
+# Open the project file and call the main program class.
 if __name__ == "__main__":
     main()
