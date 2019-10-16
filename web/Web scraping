@@ -11,13 +11,10 @@ class webscraping():
 
         x, y = 5, 5
 
-        self.items = 0
         self.login = ''
         self.code = str(random.randrange(11111, 99999))
-
-        self.names_stuff = {
-
-        }
+        self.cart = []
+        self.items = 0
 
         self.belangerwebsite = requests.get('https://sites.google.com/a/ocsb.ca/belanger/home/ics-4u-computer-science/deadlines')
         self.belangertree = html.fromstring(self.belangerwebsite.content)
@@ -35,14 +32,14 @@ class webscraping():
         self.alpha_dunk_cost = self.alphadunktree.xpath('//*[@id="RightRail"]/div/div[1]/div/div[1]/div[2]/div/div/text()')
         self.alpha_dunk_cost = str(self.alpha_dunk_cost).strip('[').strip(']').strip("'")
         self.alpha_dunk_desc = self.alphadunktree.xpath('//*[@id="RightRail"]/div/div[3]/div[1]/p/text()')
-        self.alpha_dunk_desc = str(self.alpha_dunk_cost).strip('[').strip(']').strip("'")
+        self.alpha_dunk_desc = str(self.alpha_dunk_desc).strip('[').strip(']').strip("'")
 
         self.nikeweb_vaporknit = requests.get('https://www.nike.com/ca/t/vaporknit-strike-snood-jkxHTp/BV7069-010')
         self.vaporknittree = html.fromstring(self.nikeweb_vaporknit.content)
-        self.vapor_knit_cost = self.alphadunktree.xpath('//*[@id="RightRail"]/div/div[1]/div/div[1]/div[2]/div/div/text()')
-        self.vapor_knit_cost = str(self.alpha_dunk_cost).strip('[').strip(']').strip("'")
-        self.vapor_knit_desc = self.alphadunktree.xpath('//*[@id="RightRail"]/div/div[2]/div[1]/p/text()')
-        self.vapor_knit_desc = str(self.alpha_dunk_cost).strip('[').strip(']').strip("'")
+        self.vapor_knit_cost = self.vaporknittree.xpath('//*[@id="RightRail"]/div/div[1]/div/div[1]/div[2]/div/div/text()')
+        self.vapor_knit_cost = str(self.vapor_knit_cost).strip('[').strip(']').strip("'")
+        self.vapor_knit_desc = self.vaporknittree.xpath('//*[@id="RightRail"]/div/div[2]/div[1]/p/text()')
+        self.vapor_knit_desc = str(self.vapor_knit_desc).strip('[').strip(']').strip("'")
 
 
     def mainwindow(self):
@@ -56,8 +53,9 @@ class webscraping():
         self.lbl1 = Label(self.window, image=self.logo, borderwidth=0)
         self.lbl1.place(x=115, y=20)
 
-        self.lbl2 = Label(self.window, text='Cart: {}'.format(self.items), font=('Helvetica', 11, 'bold'), bg='#f1d745', fg='#342831')
-        self.lbl2.place(x=539, y=575)
+        self.btn15 = Button(self.window, text='Cart: {}'.format(len(self.cart)), font=('Helvetica', 11, 'bold'), bg='#f1d745', fg='#342831', command=self.tothecheckoutwindow)
+        self.btn15.place(x=539, y=575)
+        self.btn15.configure(state=DISABLED)
 
         self.btn1 = Button(self.window, text='Login', borderwidth=0, font=('Helvetica', 12, 'bold'), bg='#f1d745', fg='#342831', command=self.maintologin)
         self.btn1.place(x=10, y=500)
@@ -72,6 +70,7 @@ class webscraping():
         self.business_button = PhotoImage(file='Business Panel Button.png')
         self.btn4 = Button(self.window, image=self.business_button, width=188, height=77, borderwidth=0)
         self.btn4.place(x=204, y=400)
+        self.btn4.configure(state=DISABLED)
 
         self.lbl9 = Label(self.window, text='{}°C'.format(self.weather_celsius), font=('Helvetica', 14, 'bold'), bg='#f1d745', fg='#342831')
         self.lbl9.place(x=522, y=45)
@@ -84,17 +83,185 @@ class webscraping():
         self.lbl4.place(x=231, y=140)
 
         self.nikephoto = PhotoImage(file='nike.png')
-        self.btn7 = Button(self.window, image=self.nikephoto)
+        self.btn7 = Button(self.window, image=self.nikephoto, command=self.shopwindowtonike)
         self.btn7.place(x=120, y=300)
 
         self.adidasphoto = PhotoImage(file='adidas.png')
         self.btn8 = Button(self.window, image=self.adidasphoto)
         self.btn8.place(x=320, y=300)
+        self.btn8.configure(state=DISABLED)
 
 
-    #def shopwindowtonike(self):
+    def shopwindowtonike(self):
+
+        self.lbl4.place_forget()
+        self.btn7.place_forget()
+        self.btn8.place_forget()
+        self.nikewindow()
 
 
+    def nikewindow(self):
+
+        self.productnike = 0
+
+        self.btn10 = Button(self.window, text='Nike Alpha Dunks', font=('Helvetica', 12, 'bold'), bg='#f1d745', fg='#342831', command=self.nikeproductplacement1)
+        self.btn10.place(x=225, y=250)
+
+        self.btn11 = Button(self.window, text='Nike Vapor Knit ', font=('Helvetica', 12, 'bold'), bg='#f1d745', fg='#342831', command=self.nikeproductplacement2)
+        self.btn11.place(x=230, y=400)
+
+
+
+    def nikeproductplacement1(self):
+
+        self.productnike += 1
+        self.nikeproductplacement()
+
+    def nikeproductplacement2(self):
+
+        self.productnike += 2
+        self.nikeproductplacement()
+
+    def nikeproductplacement(self):
+
+        self.btn15.configure(state=NORMAL)
+
+        self.photonikeproduct = ''
+        self.nikeproductname = ''
+        self.nikeproductcost = ''
+        self.nikeproductdesc = ''
+
+        self.btn10.place_forget()
+        self.btn11.place_forget()
+
+        if self.productnike == 1:
+
+            self.photonikeproduct = 'alphadunk.png'
+            self.nikeproductname = 'Nike Alpha Dunk'
+            self.nikeproductcost = self.alpha_dunk_cost
+            self.nikeproductdesc = self.alpha_dunk_desc
+
+        elif self.productnike == 2:
+
+            self.photonikeproduct = 'vaporknit.png'
+            self.nikeproductname = 'Nike Vapor Knit'
+            self.nikeproductcost = self.vapor_knit_cost
+            self.nikeproductdesc = self.vapor_knit_desc
+
+        self.photonikeproductimage = PhotoImage(file=self.photonikeproduct)
+
+        self.lbl10 = Label(self.window, image=self.photonikeproductimage)
+        self.lbl10.place(x=80, y=170)
+
+        self.lbl11 = Label(self.window, text=self.nikeproductname, font=('Helvetica', 14, 'bold'), bg='#f1d745', fg='#342831')
+        self.lbl11.place(x=360, y=170)
+
+        self.lbl12 = Label(self.window, text='Price: ${}'.format(self.nikeproductcost), font=('Helvetica', 14, 'bold'), bg='#f1d745', fg='#342831')
+        self.lbl12.place(x=360, y=230)
+
+        self.btn12 = Button(self.window, text='Description', font=('Helvetica', 14, 'bold'), bg='#f1d745', fg='#342831', command=self.nikeproductdescription)
+        self.btn12.place(x=378, y=290)
+
+        self.lbl13 = Label(self.window, text='Quantity', font=('Helvetica', 14, 'bold'), bg='#f1d745', fg='#342831')
+        self.lbl13.place(x=395, y=360)
+
+        self.sb1 = Spinbox(self.window, from_=0, to=100)
+        self.sb1.place(x=370, y=400)
+
+        self.btn13 = Button(self.window, text='Add To Cart', font=('Helvetica', 12, 'bold'), bg='#f1d745', fg='#342831', command=self.nikeaddtocart)
+        self.btn13.place(x=382, y=460)
+
+        self.btn14 = Button(self.window, text='←', font=('Helvetica', 14, 'bold'), bg='#f1d745', fg='#342831', command=self.backtonikewindow)
+        self.btn14.place(x=25, y=25)
+
+    def backtonikewindow(self):
+
+        self.lbl10.place_forget()
+        self.lbl11.place_forget()
+        self.lbl12.place_forget()
+        self.lbl13.place_forget()
+        self.sb1.place_forget()
+        self.btn12.place_forget()
+        self.btn13.place_forget()
+        self.btn14.place_forget()
+        self.lbl15.place_forget()
+        self.lbl16.place_forget()
+        self.lbl17.place_forget()
+        self.lbl18.place_forget()
+
+        self.nikewindow()
+
+    def tothecheckoutwindow(self):
+
+        self.lbl10.place_forget()
+        self.lbl11.place_forget()
+        self.lbl12.place_forget()
+        self.lbl13.place_forget()
+        self.sb1.place_forget()
+        self.btn12.place_forget()
+        self.btn13.place_forget()
+        self.btn14.place_forget()
+
+        self.checkoutwindow()
+
+    def checkoutwindow(self):
+
+        self.lbl15 = Label(self.window, text='Nike Alpha Dunk', font=('Helvetica', 12, 'bold'), bg='#f1d745', fg='#342831')
+        self.lbl15.place(x=100, y=150)
+
+        self.lbl16 = Label(self.window, text='Quantity: {}'.format(self.cart.count('Alpha')), font=('Helvetica', 12, 'bold'), bg='#f1d745', fg='#342831')
+        self.lbl16.place(x=100, y=190)
+
+        self.lbl17 = Label(self.window, text='Nike Vapor Knit', font=('Helvetica', 12, 'bold'), bg='#f1d745', fg='#342831')
+        self.lbl17.place(x=100, y=300)
+
+        self.btn14 = Button(self.window, text='←', font=('Helvetica', 14, 'bold'), bg='#f1d745', fg='#342831', command=self.backtonikewindow)
+        self.btn14.place(x=25, y=25)
+
+
+    def nikeproductdescription(self):
+
+        messagebox.showinfo('Product Description', self.nikeproductdesc)
+
+    def nikeaddtocart(self):
+
+        self.itemadd = int(self.sb1.get())
+        self.addingtocart = True
+
+        if self.itemadd == 0:
+            messagebox.showerror('Error', 'You cannot add nothing to your cart!')
+
+            self.backtonikewindow()
+
+        if self.productnike == 1:
+
+            while self.addingtocart:
+
+                if self.itemadd == 0:
+
+                    self.addingtocart = False
+
+                else:
+
+                    self.cart.append('Alpha')
+                    self.itemadd = self.itemadd - 1
+                    self.btn15.configure(text='Cart: {}'.format(len(self.cart)))
+
+        elif self.productnike == 2:
+
+            while self.addingtocart:
+
+                if self.itemadd == 0:
+
+                    self.addingtocart = False
+
+                else:
+
+                    self.cart.append('Vapor')
+                    self.itemadd = self.itemadd - 1
+                    self.btn15.configure(text='Cart: {}'.format(len(self.cart)))
+
+        mainloop()
 
     def maintoshop(self):
 
@@ -203,7 +370,7 @@ class webscraping():
 
         self.connect = smtplib.SMTP_SSL('smtp.gmail.com', 465)
         self.connect.login('pavillmailconfirmation@gmail.com', 'Securepass123')
-        self.connect.sendmail('pavillmailconfirmation@gmail.com', 'Verification Code: {}'.format(self.e1.get()), str(self.code))
+        self.connect.sendmail('pavillmailconfirmation@gmail.com', '{}'.format(self.e1.get()), '{}{}'.format('Verification Code is ', str(self.code)))
         self.connect.quit()
 
         self.btn9 = Button(self.window3, text='Confirm', borderwidth=0, font=('Helvetica', 12, 'bold'), bg='#f1d745', fg='#342831', command=self.confirmregister)
@@ -245,8 +412,3 @@ def main():
 # Open the project file and call the main program/
 if __name__ == "__main__":
     main()
-
-
-
-# For the products kevin use a for statement to recognize all the products and make a new window for the product they create
-# With a while statement or something so you dont have a to create a new window everytime
