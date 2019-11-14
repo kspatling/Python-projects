@@ -1,0 +1,467 @@
+# Kevin Spatling
+
+
+# This takes the input of the users's word.
+word = input('Enter your word: ')
+
+# Asks the user which cipher they want to use.
+pick_cipher = input('Would you like to use Caesar Cipher (CC), Multiplicative Cipher (MC), Reverse Cipher (RC) or Exchange Cipher (EC)?').upper()
+
+# Make's their word a list.
+word = list(word)
+
+# Set's the brute force starting key at 1, for caesar cipher.
+bruteforce_total = 1
+
+# Gets the output word, and gets the dictionary and names to compare the brute force with.
+outputchar = []
+dict_names = []
+
+
+# This is the key's for the mutlitplicative cipher, to convert the key number to the alphabetic number.
+multiplicative_cipher = {
+
+    '0': 'A', '1': 'B', '2': 'C', '3': 'D', '4': 'E', '5': 'F', '6': 'G', '7': 'H', '8': 'I', '9': 'J', '10': 'K', '11': 'L', '12': 'M', '13': 'N', '14': 'O', '15': 'P', '16': 'Q', '17': 'R', '18': 'S', '19': 'T', '20': 'U', '21': 'V', '22': 'W', '23': 'X', '24': 'Y', '25': 'Z',
+    'a': '0', 'b': '1', 'c': '2', 'd': '3', 'e': '4', 'f': '5', 'g': '6', 'h': '7', 'i': '8', 'j': '9', 'k': '10', 'l': '11', 'm': '12', 'n': '13', 'o': '14', 'p': '15', 'q': '16', 'r': '17', 's': '18', 't': '19', 'u': '20', 'v': '21', 'w': '22', 'x': '23', 'y': '24', 'z': '25'
+
+}
+
+# Read the english words file and the common names file.
+englishWords = open('englishWords.txt', 'r')
+humanNames = open('humanNames.txt', 'r')
+
+# Read's all the lines in the file.
+read_englishWords = englishWords.readlines()
+read_humanNames = humanNames.readlines()
+
+# This says for the number of items in english words, put it in the list but take out the next line characters.
+for x in read_englishWords:
+
+    dict_names.append(x.strip('\n'))
+
+# This says for the number of items in human names, put it in the list but take out the next line characters.
+for y in read_humanNames:
+
+    dict_names.append(y.strip('\n'))
+
+# This finds the inverse shift for the multiplicative cipher.
+def findInverse(inverseshift):
+
+    # Gets the modulo 26 of their
+    inverseshift = inverseshift % 26
+
+    # Tries each number in the range of 1-26
+    for x in range(1, 26):
+
+        # If the number is 1 means it's not a atribute.
+        if ((inverseshift * x) % 26 == 1):
+
+            # Return the inverse modular.
+            return x
+
+    # Return 1 value only.
+    return 1
+
+# Determines if the user has picked caesar cipher.
+if pick_cipher == 'CC':
+
+    # Asks if they want to do with their text.
+    dec_enc = input('Would you like to Decrypt (D) or Encrypt (E) or Brute Force (BF) your message: ').upper()
+
+    # Encrypt stream.
+    if dec_enc == 'E':
+
+        # Grabs the key shift value of the characters.
+        key_value = input('What is your key value?: ')
+
+        # For the number of letters in their word.
+        for x in word:
+
+            # Converts their letter in the word to a ascii character key. Then it will add their key shift value.
+            output = ord(x) + int(key_value)
+
+            # If the letter is uppercase.
+            if x.isupper():
+
+                # If the ascii value is greater then the ascii value of Z.
+                if output > ord('Z'):
+
+                    # This will -26 to set it back to A and continue counting from their. This is to make sure that we do not overcount past Z.
+                    output = output - 26
+
+            # If the ascii value is lower then the ascii value of z.
+            if x.islower():
+
+                # This will -26 to set it back to a and continue counting from their. This is to make sure that we do not overcount past z.
+                if output > ord('z'):
+
+                    # -26 to set back to a.
+                    output = output - 26
+
+            # If the letter is a space.
+            if x == ' ':
+
+                # Then it will just change it to a number value but ultimately do nothing as it will change back into a character.
+                output = ord(x)
+
+            # This tries if the letter is a number. If it is divisible by 0 that means its a number.
+            try:
+
+                if int(x) * 0 == 0:
+
+                    # THis does the same as space.
+                    output = ord(x)
+
+            # If it is not a number just continue on.
+            except:
+                pass
+
+            # This will input the characer's that it has encrypted into the encrypted word list.
+            outputchar.append(chr(output))
+
+            # Takes a list, and creates a string out of them.
+            makeitastring = ''.join(map(str, outputchar))
+
+        # Prints the encrypted text.
+        print(makeitastring)
+
+    # If they want to decrypt.
+    if dec_enc == 'D':
+
+        # Grab the key value of their shift.
+        key_value = input('What is your key value?: ')
+
+        # For the number of letters in their word.
+        for x in word:
+
+            # Gets the ascii value of their letter, and subtracts the key shift.
+            output = ord(x) - int(key_value)
+
+            # If the letter is uppercase.
+            if x.isupper():
+
+                # Make sure the ascii letter does not suprass A, sets it back to Z.
+                if output < ord('A'):
+
+                    # Add's 26 to go back to Z if it is lower then A
+                    output = output + 26
+
+            # If it is lower case.
+            if x.islower():
+
+                # Then it will make sure that it isn't less then the a ascii value.
+                if output < ord('a'):
+
+                    # If it is then add 26 to set back to z.
+                    output = output + 26
+
+            # If it is a space, do nothing.
+            if x == ' ':
+
+                # Does nothing but just a filler.
+                output = ord(x)
+
+            # This tries if the letter is a number. If it is divisible by 0 that means its a number.
+            try:
+
+                # This does the same as space.
+                if int(x) * 0 == 0:
+
+
+                    output = ord(x)
+
+            # If it is not a number just continue on.
+            except:
+
+                pass
+
+            # Add's to the decrypted word list.
+            outputchar.append(chr(output))
+
+        # Makes the list a string.
+        makeitastring = ''.join(map(str, outputchar))
+
+        # Print the final result.
+        print(makeitastring)
+
+    if dec_enc == 'BF':
+
+        # This makes sure the total key shift is less then 25.
+        if bruteforce_total >= 26:
+
+            # Stops the program after it is done all the keys.
+            quit()
+
+        # While the keyshift is less then 26.
+        while bruteforce_total < 26:
+
+            # For the numer of letter's in the word.
+            for x in word:
+
+                # Change that letter to an ascii value then we will minus the keyshift key because we are trying to decrypt the word.
+                output = ord(x) - bruteforce_total
+
+                # If the word is upper case.
+                if x.isupper():
+
+                    # If the letter is less then A.
+                    if output < ord('A'):
+
+                        # Then it will add 26 to go back to Z.
+                        output = output + 26
+
+                # If the letter is a lower case.
+                if x.islower():
+
+                    # If the value is lower then a it will set it to z.
+                    if output < ord('a'):
+
+                        output = output + 26
+
+                # If it is a space it does nothing.
+                if x == ' ':
+
+                    output = ord(x)
+
+                # Try's if it a number or character.
+                try:
+
+                    if int(x) * 0 == 0:
+                        output = ord(x)
+
+                except:
+
+                    pass
+
+                # Set's it back to a character and put's it into the list.
+                outputchar.append(chr(output))
+
+            # Makes it back into a string.
+            makeitastring = ''.join(map(str, outputchar))
+
+            # Turn's this into a comparable list.
+            compare = list(makeitastring.split(' '))
+
+            # For the number of letter's in the list.
+            for x in compare:
+
+                # This means if their are any elements in compare, for any elements in dict_names.
+                result = any(elem in compare for elem in dict_names)
+
+            # If it is true, then it will make it a possible value.
+            if result:
+
+                print('\033[1;32mKey #{} '.format(bruteforce_total) + makeitastring)
+
+            # If this is false, then it makes it red.
+            else:
+
+                print('\033[1;31mKey #{} '.format(bruteforce_total) + makeitastring)
+
+            # This turns the list into a string.
+            makeitastring = ''.join(map(str, outputchar))
+
+            # Add's to the key value.
+            bruteforce_total = bruteforce_total + 1
+
+            # Final output
+            outputchar = []
+
+# This is my multiplicative cipher.
+if pick_cipher == 'MC':
+
+    # If they want to encrypt or decrypt.
+    dec_enc = input('Would you like to Decrypt (D) or Encrypt (E) your message: ').upper()
+
+    # If they pick encrypt.
+    if dec_enc == 'E':
+
+        # Get the key shift value.
+        key_value = input('What is your key?: ')
+
+        # While this is true.
+        while True:
+
+            # The shift will be the inverse of the key shift.
+            shift = findInverse(int(key_value))
+
+            # If the shift is equal to 1 then it means it is not a valid key shift.
+            if shift == 1:
+
+                key_value = input('That is an invalid key shift! What is your key?: ')
+
+            # If it is not.
+            else:
+
+                # For the number of letters in the word.
+                for x in word:
+
+                    if x == ' ':
+
+                        # If it is a space then input a space.
+                        output_new = ' '
+
+                        outputchar.append(output_new)
+
+                    # If the letter is a upper case.
+                    if x.isupper():
+
+                        # This finds the reverse of the multiplicative cipher, going backwards from value to key, and not key to value.
+                        output = (list(multiplicative_cipher.keys())[list(multiplicative_cipher.values()).index(x)])
+
+                        # The new output will be the integer of the output x the key value modulo 26.
+                        output_new = ((int(output) * int(key_value)) % 26)
+
+                        # The final output will be the string of this value. This grabs from the dictionary the key.
+                        final_output = multiplicative_cipher[str(output_new)]
+
+                        # Then it will input that character.
+                        outputchar.append(final_output)
+
+                    # If the character is lower.
+                    if x.islower():
+
+                        # It grabs the key value from the dictionary.
+                        output = multiplicative_cipher[str(x)]
+
+                        # it multiplies this by their key value and modulo 26.
+                        output_new = ((int(output) * int(key_value)) % 26)
+
+                        # This then gets the reverse of that key vaue turnning it back into a character.
+                        final_output = (list(multiplicative_cipher.keys())[list(multiplicative_cipher.values()).index(str(output_new))])
+
+                        # input that into the list
+                        outputchar.append(final_output)
+
+                    # This tries if it is a number.
+                    try:
+
+                        if int(x) * 0 == 0:
+                            outputchar.append(str(x))
+
+                    except:
+
+                        pass
+
+
+                # Change the list into a string.
+                makeitastring = ''.join(map(str, outputchar))
+
+                # Print the string and stop the while loop.
+                print(makeitastring)
+                break
+
+# Sames as encrypt but reversed.
+    if dec_enc == 'D':
+
+        key_value = input('What is your key?: ')
+
+        while True:
+
+            shift = findInverse(int(key_value))
+
+            if shift == 1:
+
+                key_value = input('That is an invalid key shift! What is your key?: ')
+
+            else:
+
+                for x in word:
+
+                    if x == ' ':
+
+                        output_new = ' '
+
+                        outputchar.append(output_new)
+
+                    if x.isupper():
+
+                        output = (list(multiplicative_cipher.keys())[list(multiplicative_cipher.values()).index(x)])
+
+                        output_new = ((int(output) * int(shift)) % 26)
+
+                        final_output = multiplicative_cipher[str(output_new)]
+
+                        outputchar.append(final_output)
+
+                    if x.islower():
+
+                        output = multiplicative_cipher[str(x)]
+
+                        output_new = ((int(output) * int(shift)) % 26)
+
+                        final_output = (list(multiplicative_cipher.keys())[list(multiplicative_cipher.values()).index(str(output_new))])
+
+                        outputchar.append(final_output)
+
+                    try:
+
+                        if int(x) * 0 == 0:
+                            outputchar.append(str(x))
+
+                    except:
+
+                        pass
+
+                makeitastring = ''.join(map(str, outputchar))
+
+                print(makeitastring)
+                break
+
+# This is the reverse cipher.
+if pick_cipher == 'RC':
+
+    # Encrypt or decrypt the cipher.
+    dec_enc = input('Would you like to Decrypt (D) or Encrypt (E) your message: ').upper()
+
+    # If they choose encrypt or decrypt.
+    if dec_enc in ['E', 'D']:
+
+        # The reversed message.
+        reversed_message = ''
+
+        # Changes their word into a string.
+        word = ''.join(map(str, word))
+
+        # For the amount of letters in the word.
+        for x in word:
+
+            # It will make the reversed message equal to the letter + what was already their. So A, pA, ppA, lppA, elppA.
+            reversed_message = x + reversed_message
+            print(reversed_message)
+
+        # Print the reversed letter
+        print(reversed_message)
+
+# This is the exchange cipher.
+if pick_cipher == 'EC':
+
+    # This asks if they want to encrypt or decrypt.
+    dec_enc = input('Would you like to Decrypt (D) or Encrypt (E) your message: ').upper()
+
+    # Makes their word a string from a list.
+    word = ''.join(map(str, word))
+
+    # If they pick encrypt.
+    if dec_enc == 'E':
+
+        # Make a variable for both the alphabet and letters, and the substituted values for each.
+        original, encrypted = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 'rfdtvqnysulzbxigcpowmkehajTSWJMPCBNVHEDZKLYOUXFAIQRG5647382910'
+
+        # This will make a translation between the 2 strings. So it takes the word, and translate it between the strings. So a becomes r and so on.
+        print("Original Text: {} | Encrypted Message: {}".format(word, word.translate(word.maketrans(original, encrypted))))
+
+    # If it is decrypt.
+    else:
+
+        # Make a variable for both the alphabet and letters, and the substituted values for each.
+        original, encrypted = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 'rfdtvqnysulzbxigcpowmkehajTSWJMPCBNVHEDZKLYOUXFAIQRG5647382910'
+
+        # This will make a translation between the encrypted to the original text.
+        print("Encrypted Message: {} | Original Text: {}".format(word, word.translate(word.maketrans(encrypted, original))))
+
+
+
+
+
+
