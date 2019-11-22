@@ -1,0 +1,101 @@
+import pygame
+
+WHITE = (255, 255, 255)
+RED = (255, 0, 0)
+CHASER = (30, 30, 200)
+BLACK = (0, 0, 0)
+schaser, srunner = 4, 3
+
+WIDTH, HEIGHT = 500, 500
+RECT1X, RECT1Y = WIDTH/2 - 50, HEIGHT/2 - 50
+RECT2X, RECT2Y = WIDTH/2 + 50, HEIGHT/2 + 50
+
+pygame.init()
+pygame.font.init()
+
+size = (WIDTH, HEIGHT)
+screen = pygame.display.set_mode(size)
+pygame.display.set_caption("Rectangle Yessuh")
+clock = pygame.time.Clock()
+
+
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            quit()
+
+    screen.fill(WHITE)
+
+    rectangle_one = pygame.draw.rect(screen, RED, [RECT1X, RECT1Y, 15, 15], 0)
+    rectangle_two = pygame.draw.rect(screen, CHASER, [RECT2X, RECT2Y, 15, 15], 0)
+    border_one = pygame.draw.rect(screen, CHASER, [0, 0, 10000, 5], 0)
+    border_two = pygame.draw.rect(screen, RED, [495, 0, 5, 10000], 0)
+    border_three = pygame.draw.rect(screen, RED, [0, 495, 10000, 5], 0)
+    border_four = pygame.draw.rect(screen, CHASER, [0, 0, 5, 10000], 0)
+    myfont = pygame.font.SysFont('Comic Sans MS', 30)
+
+    keys = pygame.key.get_pressed()
+
+    if keys[pygame.K_d]:
+        RECT1X = RECT1X + srunner
+
+    if keys[pygame.K_a]:
+        RECT1X = RECT1X - srunner
+
+    if keys[pygame.K_w]:
+        RECT1Y = RECT1Y - srunner
+
+    if keys[pygame.K_s]:
+        RECT1Y = RECT1Y + srunner
+
+    if keys[pygame.K_RIGHT]:
+        RECT2X = RECT2X + schaser
+
+    if keys[pygame.K_LEFT]:
+        RECT2X = RECT2X - schaser
+
+    if keys[pygame.K_UP]:
+        RECT2Y = RECT2Y - schaser
+
+    if keys[pygame.K_DOWN]:
+        RECT2Y = RECT2Y + schaser
+
+    if RECT1X >= 481:
+        RECT1X =- 3
+
+    if RECT1X <= 5:
+        RECT1X =+ 5
+
+    if RECT1Y >= 481:
+        RECT1Y =- 3
+
+    if RECT1Y <= 0:
+        RECT1Y =+ 3
+
+    if RECT2X <= 0:
+        RECT2X =+ 497
+
+    if RECT2X >= 481:
+        RECT2X =+ 481
+
+    if RECT2Y <= 0:
+        RECT2Y =+ 481
+
+    if RECT2Y >= 481:
+        RECT2Y =+ 481
+
+    if pygame.Rect.colliderect(rectangle_one, rectangle_two):
+
+        pygame.Rect.move(rectangle_one, 10, 10)
+
+        textsurface = myfont.render('Tagged', True, (0, 0, 0))
+        screen.blit(textsurface, (RECT1X - 40, RECT1Y - 60))
+
+        RED = (30, 30, 200)
+        CHASER = (255, 0, 0)
+        srunner, schaser = 4, 3
+
+    pygame.display.flip()
+    clock.tick(60)
+
+pygame.quit()
