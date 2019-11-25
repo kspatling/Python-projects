@@ -1,101 +1,181 @@
 import pygame
 
-WHITE = (255, 255, 255)
-RED = (255, 0, 0)
-CHASER = (30, 30, 200)
-BLACK = (0, 0, 0)
-schaser, srunner = 4, 3
+class Tag():
 
-WIDTH, HEIGHT = 500, 500
-RECT1X, RECT1Y = WIDTH/2 - 50, HEIGHT/2 - 50
-RECT2X, RECT2Y = WIDTH/2 + 50, HEIGHT/2 + 50
+    def __init__(self):
 
-pygame.init()
-pygame.font.init()
+        pygame.init()
+        pygame.font.init()
 
-size = (WIDTH, HEIGHT)
-screen = pygame.display.set_mode(size)
-pygame.display.set_caption("Rectangle Yessuh")
-clock = pygame.time.Clock()
+        self.WHITE = (255, 255, 255)
+        self.RED = (255, 0, 0)
+        self.CHASER = (30, 30, 200)
+        self.BLACK = (0, 0, 0)
+        self.GREEN = (0, 255, 0)
+        self.schaser = 4
+        self.srunner = 3
+
+        self.WIDTH, self.HEIGHT = 500, 500
+        self.RECT1X, self.RECT1Y = self.WIDTH/2 - 50, self.HEIGHT/2 - 50
+        self.RECT2X, self.RECT2Y = self.WIDTH/2 + 50, self.HEIGHT/2 + 50
+
+        self.size = (self.WIDTH, self.HEIGHT)
+        self.screen = pygame.display.set_mode(self.size)
+        pygame.display.set_caption("Rectangle Yessuh")
+        self.clock = pygame.time.Clock()
+
+        self.myfont = pygame.font.SysFont('Comic Sans MS', 30)
+        self.startmenutext = self.myfont.render('Lazer Tag', True, (0, 0, 0))
+        self.inforunnertext = self.myfont.render('This is a runner!', True, (0, 0, 0))
+        self.infochasertext = self.myfont.render('This is the chaser!', True, (0, 0, 0))
+        self.startgametext = self.myfont.render('Start', True, (0, 0, 0))
+        self.taggedtext = self.myfont.render('Tagged', True, (0, 0, 0))
+
+    def mainmenu(self):
+
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    quit()
+
+            self.screen.fill(self.WHITE)
+            self.screen.blit(self.startmenutext, (self.RECT1X - 20, self.RECT1Y - 95))
+            pygame.draw.rect(self.screen, self.GREEN, [183, 300, 120, 40], 0)
+            self.screen.blit(self.startgametext, (self.RECT1X, self.RECT1Y + 97))
+
+            self.mousex = pygame.mouse.get_pos()[0]
+            self.mousey = pygame.mouse.get_pos()[1]
+            self.mouseclick = pygame.mouse.get_pressed()[0]
+
+            if self.mousex >= 180  and self.mousex <= 300:
+
+                if self.mousey >= 297  and self.mousey <= 337:
+
+                    if self.mouseclick == 1:
+                        self.informationscreen()
+
+            pygame.display.flip()
+            self.clock.tick(60)
 
 
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            quit()
+    def informationscreen(self):
 
-    screen.fill(WHITE)
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    quit()
 
-    rectangle_one = pygame.draw.rect(screen, RED, [RECT1X, RECT1Y, 15, 15], 0)
-    rectangle_two = pygame.draw.rect(screen, CHASER, [RECT2X, RECT2Y, 15, 15], 0)
-    border_one = pygame.draw.rect(screen, CHASER, [0, 0, 10000, 5], 0)
-    border_two = pygame.draw.rect(screen, RED, [495, 0, 5, 10000], 0)
-    border_three = pygame.draw.rect(screen, RED, [0, 495, 10000, 5], 0)
-    border_four = pygame.draw.rect(screen, CHASER, [0, 0, 5, 10000], 0)
-    myfont = pygame.font.SysFont('Comic Sans MS', 30)
+            self.screen.fill(self.WHITE)
+            pygame.draw.rect(self.screen, self.GREEN, [183, 300, 120, 40], 0)
+            self.screen.blit(self.startgametext, (self.RECT1X, self.RECT1Y + 97))
+            self.screen.blit(self.infochasertext, (self.RECT1X - 40, self.RECT1Y - 15))
+            self.screen.blit(self.inforunnertext, (self.RECT1X - 40, self.RECT1Y - 103))
 
-    keys = pygame.key.get_pressed()
+            self.rectangle_one = pygame.draw.rect(self.screen, self.RED, [self.RECT1X - 75, self.RECT1Y - 90, 15, 15], 0)
+            self.rectangle_two = pygame.draw.rect(self.screen, self.CHASER, [self.RECT1X - 75, self.RECT1Y, 15, 15], 0)
 
-    if keys[pygame.K_d]:
-        RECT1X = RECT1X + srunner
+            self.mousex = pygame.mouse.get_pos()[0]
+            self.mousey = pygame.mouse.get_pos()[1]
+            self.mouseclick = pygame.mouse.get_pressed()[2]
 
-    if keys[pygame.K_a]:
-        RECT1X = RECT1X - srunner
+            if self.mousex >= 180  and self.mousex <= 300:
 
-    if keys[pygame.K_w]:
-        RECT1Y = RECT1Y - srunner
+                if self.mousey >= 297  and self.mousey <= 337:
 
-    if keys[pygame.K_s]:
-        RECT1Y = RECT1Y + srunner
+                    if self.mouseclick == 1:
 
-    if keys[pygame.K_RIGHT]:
-        RECT2X = RECT2X + schaser
+                        self.startgame()
 
-    if keys[pygame.K_LEFT]:
-        RECT2X = RECT2X - schaser
+            pygame.display.flip()
+            self.clock.tick(60)
 
-    if keys[pygame.K_UP]:
-        RECT2Y = RECT2Y - schaser
 
-    if keys[pygame.K_DOWN]:
-        RECT2Y = RECT2Y + schaser
+    def startgame(self):
 
-    if RECT1X >= 481:
-        RECT1X =- 3
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    quit()
 
-    if RECT1X <= 5:
-        RECT1X =+ 5
+            self.screen.fill(self.WHITE)
+            self.keys = pygame.key.get_pressed()
 
-    if RECT1Y >= 481:
-        RECT1Y =- 3
+            pygame.draw.rect(self.screen, self.CHASER, [0, 0, 10000, 5], 0)
+            pygame.draw.rect(self.screen, self.RED, [495, 0, 5, 10000], 0)
+            pygame.draw.rect(self.screen, self.RED, [0, 495, 10000, 5], 0)
+            pygame.draw.rect(self.screen, self.CHASER, [0, 0, 5, 10000], 0)
 
-    if RECT1Y <= 0:
-        RECT1Y =+ 3
+            self.rectangle_one = pygame.draw.rect(self.screen, self.RED, [self.RECT1X, self.RECT1Y, 15, 15], 0)
+            self.rectangle_two = pygame.draw.rect(self.screen, self.CHASER, [self.RECT2X, self.RECT2Y, 15, 15], 0)
 
-    if RECT2X <= 0:
-        RECT2X =+ 497
+            if self.keys[pygame.K_d]:
+                self.RECT1X = self.RECT1X + self.srunner
 
-    if RECT2X >= 481:
-        RECT2X =+ 481
+            if self.keys[pygame.K_a]:
+                self.RECT1X = self.RECT1X - self.srunner
 
-    if RECT2Y <= 0:
-        RECT2Y =+ 481
+            if self.keys[pygame.K_w]:
+                self.RECT1Y = self.RECT1Y - self.srunner
 
-    if RECT2Y >= 481:
-        RECT2Y =+ 481
+            if self.keys[pygame.K_s]:
+                self.RECT1Y = self.RECT1Y + self.srunner
 
-    if pygame.Rect.colliderect(rectangle_one, rectangle_two):
+            if self.keys[pygame.K_RIGHT]:
+                self.RECT2X = self.RECT2X + self.schaser
 
-        pygame.Rect.move(rectangle_one, 10, 10)
+            if self.keys[pygame.K_LEFT]:
+                self.RECT2X = self.RECT2X - self.schaser
 
-        textsurface = myfont.render('Tagged', True, (0, 0, 0))
-        screen.blit(textsurface, (RECT1X - 40, RECT1Y - 60))
+            if self.keys[pygame.K_UP]:
+                self.RECT2Y = self.RECT2Y - self.schaser
 
-        RED = (30, 30, 200)
-        CHASER = (255, 0, 0)
-        srunner, schaser = 4, 3
+            if self.keys[pygame.K_DOWN]:
+                self.RECT2Y = self.RECT2Y + self.schaser
 
-    pygame.display.flip()
-    clock.tick(60)
+            if self.RECT1X >= 481:
+                self.RECT1X =- 3
 
-pygame.quit()
+            if self.RECT1X <= 5:
+                self.RECT1X =+ 5
+
+            if self.RECT1Y >= 481:
+                self.RECT1Y =- 3
+
+            if self.RECT1Y <= 0:
+                self.RECT1Y =+ 3
+
+            if self.RECT2X <= 0:
+                self.RECT2X =+ 497
+
+            if self.RECT2X >= 481:
+                self.RECT2X =+ 481
+
+            if self.RECT2Y <= 0:
+                self.RECT2Y =+ 481
+
+            if self.RECT2Y >= 481:
+                self.RECT2Y =+ 481
+
+            if pygame.Rect.colliderect(self.rectangle_one, self.rectangle_two):
+
+                pygame.Rect.move(self.rectangle_one, 10, 10)
+
+                self.screen.blit(self.taggedtext, (self.RECT1X - 40, self.RECT1Y - 60))
+
+                self.RED = (30, 30, 200)
+                self.CHASER = (255, 0, 0)
+                self.srunner, schaser = 4, 3
+
+            pygame.display.flip()
+            self.clock.tick(60)
+
+        pygame.quit()
+
+def main():
+
+    mw = Tag()
+    mw.mainmenu()
+
+# Open the project file and call the main program class.
+if __name__ == "__main__":
+    main()
