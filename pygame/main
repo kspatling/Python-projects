@@ -1,113 +1,298 @@
+# I import pygame to start creating games.
 import pygame
 
+# I create a class called tag.
 class Tag():
 
+    # I define my self variables, this area contains no code other than definining my variables.
     def __init__(self):
 
+        # I initiate pygame, and fonts for it.
         pygame.init()
         pygame.font.init()
+        pygame.mixer.init()
 
+        # My colours and speed of the runner/chaser.
         self.WHITE = (255, 255, 255)
         self.RED = (255, 0, 0)
         self.CHASER = (30, 30, 200)
-        self.BLACK = (0, 0, 0)
         self.GREEN = (0, 255, 0)
-        self.schaser = 4
-        self.srunner = 3
+        self.schaser, self.srunner = 3.5, 3
 
+        # Window height, then the rectangle placement of the first rectangle and the placement of the second rectangle.
         self.WIDTH, self.HEIGHT = 500, 500
         self.RECT1X, self.RECT1Y = self.WIDTH/2 - 50, self.HEIGHT/2 - 50
         self.RECT2X, self.RECT2Y = self.WIDTH/2 + 50, self.HEIGHT/2 + 50
 
+        # This is the size of the window.
         self.size = (self.WIDTH, self.HEIGHT)
+
+        # This is how we define the window size using pygame.
         self.screen = pygame.display.set_mode(self.size)
+
+        # This sets the window title.
         pygame.display.set_caption("Rectangle Yessuh")
+
+        # This declares the clock variable.
         self.clock = pygame.time.Clock()
 
+        # I define what font and text size I will be using for my labels.
         self.myfont = pygame.font.SysFont('Comic Sans MS', 30)
+
+        # Here I define all my labels, using the text above, and message, and state that it will be true for being their
+        # And that the text color will be black.
         self.startmenutext = self.myfont.render('Lazer Tag', True, (0, 0, 0))
         self.inforunnertext = self.myfont.render('This is a runner!', True, (0, 0, 0))
         self.infochasertext = self.myfont.render('This is the chaser!', True, (0, 0, 0))
         self.startgametext = self.myfont.render('Start', True, (0, 0, 0))
+        self.gameovertext = self.myfont.render('Game Over!', True, (0, 0, 0))
+        self.gamewintext = self.myfont.render('Game Won!!', True, (0, 0, 0))
         self.taggedtext = self.myfont.render('Tagged', True, (0, 0, 0))
 
+    # Here is my main window.
     def mainmenu(self):
 
+        # While the program window is running.
         while True:
+
+            # While the program window is running, check for the events that happen within pygame.
             for event in pygame.event.get():
+
+                # If an event is called that is caused by the user clicking the exit button.
                 if event.type == pygame.QUIT:
+
+                    # Then we will quit the program.
                     quit()
 
+            # Added music but my computer does not allow it to play.
+            #music = 'lazer.mp3'
+            #pygame.mixer.music.load(music)
+            #pygame.mixer.music.play(-1)
+
+            # Fill the screen completely white.
             self.screen.fill(self.WHITE)
+
+            # We place the text labe on the screen, calling the text from earilier, and placing its x and y cordinates.
             self.screen.blit(self.startmenutext, (self.RECT1X - 20, self.RECT1Y - 95))
+
+            # Draw a green rectangle that will be stationary.
             pygame.draw.rect(self.screen, self.GREEN, [183, 300, 120, 40], 0)
+
+            # We place the text labe on the screen, calling the text from earilier, and placing its x and y cordinates.
             self.screen.blit(self.startgametext, (self.RECT1X, self.RECT1Y + 97))
 
+            # We use pygame's mouse componenets to grab the x and y position of the mouse location.
             self.mousex = pygame.mouse.get_pos()[0]
             self.mousey = pygame.mouse.get_pos()[1]
+
+            # We then grab if the mouse has been clicked or not. This tests for the left click.
             self.mouseclick = pygame.mouse.get_pressed()[0]
 
+            # If the mouse position is between x-coord 180 and 300. Or within my green start box.
             if self.mousex >= 180  and self.mousex <= 300:
 
+                # If the mouse position is between y-coord 297 and 337. Or within my green start box.
                 if self.mousey >= 297  and self.mousey <= 337:
 
+                    # Then if the user left clicks the box the game will move on to the information screen.
                     if self.mouseclick == 1:
+
+                        # This will tell the user about the game.
                         self.informationscreen()
 
+            #Update the full display Surface to the screen.
             pygame.display.flip()
+
+            # Judges when the window pixels will update.
             self.clock.tick(60)
 
 
+    # This is the information about the game.
     def informationscreen(self):
 
+        # While the program window is running.
         while True:
+
+            # While the program window is running, check for the events that happen within pygame.
             for event in pygame.event.get():
+
+                # If an event is called that is caused by the user clicking the exit button.
                 if event.type == pygame.QUIT:
+
+                    # Then we will quit the program.
                     quit()
 
+            # Fill the screen completely white.
             self.screen.fill(self.WHITE)
+
+            # Draw a green rectangle that will be stationary.
             pygame.draw.rect(self.screen, self.GREEN, [183, 300, 120, 40], 0)
+
+            # Here I place all the text that will describe how my game works.
             self.screen.blit(self.startgametext, (self.RECT1X, self.RECT1Y + 97))
             self.screen.blit(self.infochasertext, (self.RECT1X - 40, self.RECT1Y - 15))
             self.screen.blit(self.inforunnertext, (self.RECT1X - 40, self.RECT1Y - 103))
 
+            # Here I place the rectangles as a example of what a runner and chaser look like.
             self.rectangle_one = pygame.draw.rect(self.screen, self.RED, [self.RECT1X - 75, self.RECT1Y - 90, 15, 15], 0)
             self.rectangle_two = pygame.draw.rect(self.screen, self.CHASER, [self.RECT1X - 75, self.RECT1Y, 15, 15], 0)
 
+            # We use pygame's mouse componenets to grab the x and y position of the mouse location.
             self.mousex = pygame.mouse.get_pos()[0]
             self.mousey = pygame.mouse.get_pos()[1]
+
+            # We then grab if the mouse has been clicked or not. This tests for the left click.
             self.mouseclick = pygame.mouse.get_pressed()[2]
 
+            # If the mouse position is between x-coord 180 and 300. Or within my green start box.
             if self.mousex >= 180  and self.mousex <= 300:
 
+                # If the mouse position is between y-coord 297 and 337. Or within my green start box.
                 if self.mousey >= 297  and self.mousey <= 337:
 
+                    # Then if the user left clicks the box the game will move on to the information screen.
                     if self.mouseclick == 1:
 
+                        # This will tell the user about the game.
                         self.startgame()
 
+            #Update the full display Surface to the screen.
             pygame.display.flip()
+
+            # Judges when the window pixels will update.
+            self.clock.tick(60)
+
+    def gameoverscreen(self):
+
+        # While the program window is running.
+        while True:
+
+            # While the program window is running, check for the events that happen within pygame.
+            for event in pygame.event.get():
+
+                # If an event is called that is caused by the user clicking the exit button.
+                if event.type == pygame.QUIT:
+
+                    # Then we will quit the program.
+                    quit()
+
+            # Fill the screen completely white.
+            self.screen.fill(self.WHITE)
+
+            # This creates the box
+            pygame.draw.rect(self.screen, self.RED, [155, 200, 200, 40], 0)
+            self.screen.blit(self.gameovertext, (175, 195))
+
+            # We use pygame's mouse componenets to grab the x and y position of the mouse location.
+            self.mousex = pygame.mouse.get_pos()[0]
+            self.mousey = pygame.mouse.get_pos()[1]
+
+            # We then grab if the mouse has been clicked or not. This tests for the left click.
+            self.mouseclick = pygame.mouse.get_pressed()[0]
+
+            # If the mouse position is between x-coord 180 and 300. Or within my green start box.
+            if self.mousex >= 155  and self.mousex <= 355:
+
+                # If the mouse position is between y-coord 297 and 337. Or within my green start box.
+                if self.mousey >= 200  and self.mousey <= 240:
+
+                    # Then if the user left clicks the box the game will move on to the information screen.
+                    if self.mouseclick == 1:
+
+                        # This will tell the user about the game.
+                        quit()
+
+            #Update the full display Surface to the screen.
+            pygame.display.flip()
+
+            # Judges when the window pixels will update.
+            self.clock.tick(60)
+
+    def gamewinscreen(self):
+
+        # While the program window is running.
+        while True:
+
+            # While the program window is running, check for the events that happen within pygame.
+            for event in pygame.event.get():
+
+                # If an event is called that is caused by the user clicking the exit button.
+                if event.type == pygame.QUIT:
+
+                    # Then we will quit the program.
+                    quit()
+
+            # Fill the screen completely white.
+            self.screen.fill(self.WHITE)
+
+            # This creates the box
+            pygame.draw.rect(self.screen, self.GREEN, [155, 200, 200, 40], 0)
+            self.screen.blit(self.gamewintext, (175, 195))
+
+            # We use pygame's mouse componenets to grab the x and y position of the mouse location.
+            self.mousex = pygame.mouse.get_pos()[0]
+            self.mousey = pygame.mouse.get_pos()[1]
+
+            # We then grab if the mouse has been clicked or not. This tests for the left click.
+            self.mouseclick = pygame.mouse.get_pressed()[0]
+
+            # If the mouse position is between x-coord 180 and 300. Or within my green start box.
+            if self.mousex >= 155  and self.mousex <= 355:
+
+                # If the mouse position is between y-coord 297 and 337. Or within my green start box.
+                if self.mousey >= 200  and self.mousey <= 240:
+
+                    # Then if the user left clicks the box the game will move on to the information screen.
+                    if self.mouseclick == 1:
+
+                        # This will tell the user about the game.
+                        quit()
+
+            #Update the full display Surface to the screen.
+            pygame.display.flip()
+
+            # Judges when the window pixels will update.
             self.clock.tick(60)
 
 
     def startgame(self):
 
+        # While the program window is running.
         while True:
+
+            # While the program window is running, check for the events that happen within pygame.
             for event in pygame.event.get():
+
+                # If an event is called that is caused by the user clicking the exit button.
                 if event.type == pygame.QUIT:
+
+                    # Then we will quit the program.
                     quit()
 
+            # This states the time of the program.
+            self.time = pygame.time.get_ticks()
+
+            # This grabs how long the game has been running for.
+            self.time = (self.time / 1000)
+
+            # Fill the screen completely white.
             self.screen.fill(self.WHITE)
+
+            # Pygame checks for which keys are registered and stores them.
             self.keys = pygame.key.get_pressed()
 
+            # This is the border colour that aids the player in knowing which border they can go through.
             pygame.draw.rect(self.screen, self.CHASER, [0, 0, 10000, 5], 0)
             pygame.draw.rect(self.screen, self.RED, [495, 0, 5, 10000], 0)
             pygame.draw.rect(self.screen, self.RED, [0, 495, 10000, 5], 0)
             pygame.draw.rect(self.screen, self.CHASER, [0, 0, 5, 10000], 0)
 
+            # This places the runner and chaser, and creates their rectangles.
             self.rectangle_one = pygame.draw.rect(self.screen, self.RED, [self.RECT1X, self.RECT1Y, 15, 15], 0)
             self.rectangle_two = pygame.draw.rect(self.screen, self.CHASER, [self.RECT2X, self.RECT2Y, 15, 15], 0)
 
+            # This deals with the key movements. If the player uses WASD, then it will add it's running speed to the respective
+            # x and y coordinates so it can move around.
             if self.keys[pygame.K_d]:
                 self.RECT1X = self.RECT1X + self.srunner
 
@@ -120,6 +305,8 @@ class Tag():
             if self.keys[pygame.K_s]:
                 self.RECT1Y = self.RECT1Y + self.srunner
 
+            # This deals with the key movements. If the player uses the arrows keys, then it will add it's running speed to the respective
+            # x and y coordinates so it can move around.
             if self.keys[pygame.K_RIGHT]:
                 self.RECT2X = self.RECT2X + self.schaser
 
@@ -132,6 +319,9 @@ class Tag():
             if self.keys[pygame.K_DOWN]:
                 self.RECT2Y = self.RECT2Y + self.schaser
 
+            # This is the border of the program. If the the box tries to cross a border then it will place it back to where
+            # It belongs.if a player enters a border it CAN cross like the red crossing the red border, it will be teleported to the
+            # respective area adjacent across from their.
             if self.RECT1X >= 481:
                 self.RECT1X =- 3
 
@@ -156,21 +346,35 @@ class Tag():
             if self.RECT2Y >= 481:
                 self.RECT2Y =+ 481
 
-            if pygame.Rect.colliderect(self.rectangle_one, self.rectangle_two):
+            # This checks for when these rectangles are inside each other. If this is true then...
+            if pygame.Rect.colliderect(self.rectangle_one, self.rectangle_two) == 1:
 
-                pygame.Rect.move(self.rectangle_one, 10, 10)
-
+                # Then this will display a tagged text above the character, and then it will print the gameover screen.
                 self.screen.blit(self.taggedtext, (self.RECT1X - 40, self.RECT1Y - 60))
 
-                self.RED = (30, 30, 200)
-                self.CHASER = (255, 0, 0)
-                self.srunner, schaser = 4, 3
+                # Opens the gameover screen.
+                self.gameoverscreen()
 
+            if self.time >= 20:
+                # Opens the win condition.
+                self.gamewinscreen()
+
+            # This creats the text for my timer.
+            self.gametimetext = self.myfont.render(str(self.time), True, (0, 0, 0))
+
+            # This places the clock time of the game.
+            self.screen.blit(self.gametimetext, (215, 10))
+
+            # Update the full display Surface to the screen.
             pygame.display.flip()
+
+            # Judges when the window pixels will update.
             self.clock.tick(60)
 
+        # When the game ends pygame will quit.
         pygame.quit()
 
+# This defines the mainwindow of the class, and then defines the main window of it.
 def main():
 
     mw = Tag()
