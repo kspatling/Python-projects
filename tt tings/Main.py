@@ -16,6 +16,11 @@ class RPG():
         self.clock = pygame.time.Clock()
 
         self.backgroundmenu = pygame.image.load('backgroundback.png').convert()
+        self.backgroundmenurect = self.backgroundmenu.get_rect()
+        self.backgroundmenuposx = 0
+        self.backgroundmenuposy = 0
+        self.backgroundmenuleft = 0
+        self.backgroundmenuright = 0
         self.mainmenuadventurebros = pygame.image.load('mainlogo.png')
         self.mainmenulogostart = pygame.image.load('startlogo.png')
         self.mainmenulogoinformation = pygame.image.load('informationlogo.png')
@@ -142,12 +147,14 @@ class RPG():
             if self.keys[pygame.K_a]:
 
                 self.x -= self.velocity
+                self.backgroundmenuposx += self.velocity
                 self.moveLeft = True
                 self.moveRight = False
 
             elif self.keys[pygame.K_d]:
 
                 self.x += self.velocity
+                self.backgroundmenuposx -= self.velocity
                 self.moveLeft = False
                 self.moveRight = True
 
@@ -183,7 +190,15 @@ class RPG():
 
     def redrawGameWindow(self):
 
-        self.screen.blit(self.backgroundmenu, (0, 0))
+        self.screen.blit(self.backgroundmenu, (self.backgroundmenuposx, self.backgroundmenuposy))
+        self.changerate1 = 0
+
+        if self.backgroundmenuposx > 0:
+
+            self.screen.blit(self.backgroundmenu, (1600 - self.backgroundmenurect[2], self.backgroundmenuposy))
+
+        print(self.backgroundmenuposx)
+
 
         if self.walkingCount + 1 >= 27:
             self.walkingCount = 0
@@ -195,6 +210,12 @@ class RPG():
         elif self.moveLeft:
             self.screen.blit(self.charLeft[self.walkingCount // 3], (self.x, self.y))
             self.walkingCount += 1
+
+        if self.x <= 123:
+            self.x += self.velocity
+
+        if self.x >= 1300:
+            self.x -= self.velocity
 
         pygame.display.update()
 
