@@ -191,14 +191,11 @@ class RPG():
     def redrawGameWindow(self):
 
         self.screen.blit(self.backgroundmenu, (self.backgroundmenuposx, self.backgroundmenuposy))
-        self.changerate1 = 0
+        self.yes = 1
 
-        if self.backgroundmenuposx > 0:
-
-            self.screen.blit(self.backgroundmenu, (1600 - self.backgroundmenurect[2], self.backgroundmenuposy))
-
-        print(self.backgroundmenuposx)
-
+        for x in range(10):
+            self.screen.blit(self.backgroundmenu, (self.backgroundmenuposx + (1600 * self.yes), self.backgroundmenuposy))
+            self.yes = self.yes + 1
 
         if self.walkingCount + 1 >= 27:
             self.walkingCount = 0
