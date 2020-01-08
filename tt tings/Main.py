@@ -19,11 +19,13 @@ class RPG():
         self.backgroundmenurect = self.backgroundmenu.get_rect()
         self.backgroundmenuposx = 0
         self.backgroundmenuposy = 0
-        self.backgroundmenuleft = 0
-        self.backgroundmenuright = 0
+
+        self.backgroundmenuinfo = pygame.image.load('backgroundback4.png').convert()
+
         self.mainmenuadventurebros = pygame.image.load('mainlogo.png')
         self.mainmenulogostart = pygame.image.load('startlogo.png')
         self.mainmenulogoinformation = pygame.image.load('informationlogo.png')
+        self.myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
         self.menumusic = ('Main Menu Theme Song.wav')
 
@@ -59,6 +61,25 @@ class RPG():
                           self.playerLeftOne, self.playerLeftTwo,
                           self.playerLeftThree, self.playerLeftTwo]
 
+        self.badguyLeftOne = pygame.image.load('bad_guy1.png')
+        self.badguyLeftOne = pygame.transform.scale(self.badguyLeftOne, (115, 150))
+        self.badguyLeftTwo = pygame.image.load('bad_guy2.png')
+        self.badguyLeftTwo = pygame.transform.scale(self.badguyLeftTwo, (115, 150))
+        self.badguyLeftThree = pygame.image.load('bad_guy4.png')
+        self.badguyLeftThree = pygame.transform.scale(self.badguyLeftThree, (115, 150))
+
+        self.badcharLeft = [self.badguyLeftOne, self.badguyLeftTwo,
+                         self.badguyLeftThree, self.badguyLeftTwo,
+                         self.badguyLeftOne, self.badguyLeftTwo,
+                         self.badguyLeftThree, self.badguyLeftTwo,
+                         self.badguyLeftOne, self.badguyLeftTwo,
+                         self.badguyLeftThree, self.badguyLeftTwo,
+                         self.badguyLeftOne, self.badguyLeftTwo,
+                         self.badguyLeftThree, self.badguyLeftTwo]
+
+        self.npcAlex = pygame.image.load('NPC1.png')
+        self.npcAlex = pygame.transform.scale(self.npcAlex, (345, 450))
+
         self.charStand = pygame.image.load('playerStand.png')
         self.booleanJumping = False
         self.moveLeft = False
@@ -68,7 +89,11 @@ class RPG():
         self.velocity = 4
         self.walkingCount = 0
 
-        self.x, self.y = 20, 600
+        self.x, self.y = 128, 600
+        self.npc1x, self.npc1y = 1600, 370
+
+        self.npcChat1 = self.myfont.render("Please Help! My village is under attack by vicious Mingo's!", True, (0, 0, 0))
+        self.npcChat1x = 1400
 
     def grabinformation(self):
 
@@ -129,8 +154,26 @@ class RPG():
 
                         self.maingamescreen()
 
+            if self.mousex >= 600 and self.mousex <= 930:
+
+                if self.mousey >= 625 and self.mousey <= 655:
+
+                    if self.mouseclick == 1:
+
+                        self.maininfoscreen()
+
             pygame.display.flip()
             self.clock.tick(60)
+
+    def maininfoscreen(self):
+
+        pygame.mixer.music.load(self.menumusic)
+        pygame.mixer.music.play(-1)
+
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    quit()
 
     def maingamescreen(self):
 
@@ -150,6 +193,8 @@ class RPG():
                 self.backgroundmenuposx += self.velocity
                 self.moveLeft = True
                 self.moveRight = False
+                self.npc1x += self.velocity
+                self.npcChat1x += self.velocity
 
             elif self.keys[pygame.K_d]:
 
@@ -157,6 +202,8 @@ class RPG():
                 self.backgroundmenuposx -= self.velocity
                 self.moveLeft = False
                 self.moveRight = True
+                self.npc1x -= self.velocity
+                self.npcChat1x -= self.velocity
 
             else:
 
@@ -176,7 +223,7 @@ class RPG():
 
                 if self.jumpingCount >= -9:
 
-                    self.y -= (self.jumpingCount * abs(self.jumpingCount)) * 0.2
+                    self.y -= (self.jumpingCount * abs(self.jumpingCount)) * 0.3
                     self.jumpingCount -= 1
                 else:
 
@@ -191,27 +238,39 @@ class RPG():
     def redrawGameWindow(self):
 
         self.screen.blit(self.backgroundmenu, (self.backgroundmenuposx, self.backgroundmenuposy))
-        self.yes = 1
+        self.rightBackgroundMultiply = 1
+        self.leftBackgroundMultiply = -1
 
         for x in range(10):
-            self.screen.blit(self.backgroundmenu, (self.backgroundmenuposx + (1600 * self.yes), self.backgroundmenuposy))
-            self.yes = self.yes + 1
+            self.screen.blit(self.backgroundmenu, (self.backgroundmenuposx + (1600 * self.rightBackgroundMultiply), self.backgroundmenuposy))
+            self.rightBackgroundMultiply = self.rightBackgroundMultiply + 1
+
+        for x in range(10):
+            self.screen.blit(self.backgroundmenu, (self.backgroundmenuposx + (1600 * self.leftBackgroundMultiply), self.backgroundmenuposy))
+            self.leftBackgroundMultiply = self.leftBackgroundMultiply - 1
+
+        if self.backgroundmenuposx <= -400:
+            self.screen.blit(self.npcChat1, (self.npcChat1x, 400))
+
+        print(self.backgroundmenuposx, self.x)
 
         if self.walkingCount + 1 >= 27:
             self.walkingCount = 0
 
         if self.moveRight:
+            self.screen.blit(self.npcAlex, (self.npc1x, self.npc1y))
             self.screen.blit(self.charRight[self.walkingCount // 3], (self.x, self.y))
             self.walkingCount += 1
 
         elif self.moveLeft:
+            self.screen.blit(self.npcAlex, (self.npc1x, self.npc1y))
             self.screen.blit(self.charLeft[self.walkingCount // 3], (self.x, self.y))
             self.walkingCount += 1
 
-        if self.x <= 123:
+        if self.x <= 124:
             self.x += self.velocity
 
-        if self.x >= 1300:
+        if self.x >= 700:
             self.x -= self.velocity
 
         pygame.display.update()
@@ -224,3 +283,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
