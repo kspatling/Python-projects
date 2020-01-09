@@ -3,7 +3,6 @@ from tkinter import *
 
 class RPG():
 
-    pygame.init()
     pygame.font.init()
     pygame.mixer.init()
 
@@ -80,6 +79,9 @@ class RPG():
         self.npcAlex = pygame.image.load('NPC1.png')
         self.npcAlex = pygame.transform.scale(self.npcAlex, (345, 450))
 
+        self.badguyInfo = pygame.image.load('bad_guy6.png')
+        self.badguyInfo = pygame.transform.scale(self.badguyInfo, (345, 450))
+
         self.charStand = pygame.image.load('playerStand.png')
         self.booleanJumping = False
         self.moveLeft = False
@@ -94,6 +96,14 @@ class RPG():
 
         self.npcChat1 = self.myfont.render("Please Help! My village is under attack by vicious Mingo's!", True, (0, 0, 0))
         self.npcChat1x = 1400
+
+        self.timerCount = pygame.time.get_ticks
+
+        self.chatInfo1 = self.myfont.render("Use A to move Left & D to move Right!", True, (0, 0, 0))
+        self.chatInfo2 = self.myfont.render("Use SPACE to jump & Left-CLick to shoot!", True, (0, 0, 0))
+        self.chatInfo3 = self.myfont.render("Help the villagers from the ravage Mingo's!", True, (0, 0, 0))
+        self.chatInfo4 = self.myfont.render("Mingo: Bad Guy! Run! Shoot! Hide!", True, (0, 0, 0))
+        self.timerRead = self.myfont.render('This is cool'.format(str(self.timerCount)), True, (0, 0, 0))
 
     def grabinformation(self):
 
@@ -169,11 +179,36 @@ class RPG():
 
         pygame.mixer.music.load(self.menumusic)
         pygame.mixer.music.play(-1)
+        self.screen.blit(self.backgroundmenu, (0, 0))
 
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     quit()
+
+            self.screen.blit(self.badguyInfo, (700, 350))
+            self.screen.blit(self.chatInfo1, (500, 200))
+            self.screen.blit(self.chatInfo2, (500, 300))
+            self.screen.blit(self.chatInfo3, (500, 100))
+            self.screen.blit(self.chatInfo4, (300, 550))
+            self.screen.blit(self.mainmenulogostart, (700, 760))
+
+            self.mousex = pygame.mouse.get_pos()[0]
+            self.mousey = pygame.mouse.get_pos()[1]
+
+            self.mouseclick = pygame.mouse.get_pressed()[0]
+
+            if self.mousex >= 705 and self.mousex <= 848:
+
+                if self.mousey >= 765 and self.mousey <= 815:
+
+                    if self.mouseclick == 1:
+                        self.maingamescreen()
+
+            print(self.mousex, self.mousey)
+
+            pygame.display.flip()
+            self.clock.tick(60)
 
     def maingamescreen(self):
 
@@ -237,6 +272,10 @@ class RPG():
 
     def redrawGameWindow(self):
 
+        pygame.init()
+
+        self.screen.blit(self.timerRead, (200, 200))
+
         self.screen.blit(self.backgroundmenu, (self.backgroundmenuposx, self.backgroundmenuposy))
         self.rightBackgroundMultiply = 1
         self.leftBackgroundMultiply = -1
@@ -251,8 +290,6 @@ class RPG():
 
         if self.backgroundmenuposx <= -400:
             self.screen.blit(self.npcChat1, (self.npcChat1x, 400))
-
-        print(self.backgroundmenuposx, self.x)
 
         if self.walkingCount + 1 >= 27:
             self.walkingCount = 0
@@ -283,4 +320,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
