@@ -1,5 +1,6 @@
 import pygame
 from tkinter import *
+import random as rng
 
 class RPG():
 
@@ -42,39 +43,40 @@ class RPG():
         self.playerLeftThree = pygame.image.load('playerLeftThree.png')
         self.playerLeftThree = pygame.transform.scale(self.playerLeftThree, (115, 150))
 
-        self.charRight = [self.playerRightOne, self.playerRightTwo,
-                          self.playerRightThree, self.playerRightTwo,
-                          self.playerRightOne, self.playerRightTwo,
-                          self.playerRightThree, self.playerRightTwo,
-                          self.playerRightOne, self.playerRightTwo,
-                          self.playerRightThree, self.playerRightTwo,
-                          self.playerRightOne, self.playerRightTwo,
-                          self.playerRightThree, self.playerRightTwo]
+        self.badguyalive = True
 
-        self.charLeft = [self.playerLeftOne, self.playerLeftTwo,
-                          self.playerLeftThree, self.playerLeftTwo,
-                          self.playerLeftOne, self.playerLeftTwo,
-                          self.playerLeftThree, self.playerLeftTwo,
-                          self.playerLeftOne, self.playerLeftTwo,
-                          self.playerLeftThree, self.playerLeftTwo,
-                          self.playerLeftOne, self.playerLeftTwo,
-                          self.playerLeftThree, self.playerLeftTwo]
+        self.charRight = []
+
+        for x in range(1000):
+            self.charRight.append(self.playerRightOne)
+            self.charRight.append(self.playerRightTwo)
+            self.charRight.append(self.playerRightThree)
+
+        self.charLeft = []
+
+        for x in range(1000):
+            self.charLeft.append(self.playerLeftOne)
+            self.charLeft.append(self.playerLeftTwo)
+            self.charLeft.append(self.playerLeftThree)
 
         self.badguyLeftOne = pygame.image.load('bad_guy1.png')
-        self.badguyLeftOne = pygame.transform.scale(self.badguyLeftOne, (115, 150))
+        self.badguyLeftOne = pygame.transform.scale(self.badguyLeftOne, (230, 300))
         self.badguyLeftTwo = pygame.image.load('bad_guy2.png')
-        self.badguyLeftTwo = pygame.transform.scale(self.badguyLeftTwo, (115, 150))
+        self.badguyLeftTwo = pygame.transform.scale(self.badguyLeftTwo, (230, 300))
         self.badguyLeftThree = pygame.image.load('bad_guy4.png')
-        self.badguyLeftThree = pygame.transform.scale(self.badguyLeftThree, (115, 150))
+        self.badguyLeftThree = pygame.transform.scale(self.badguyLeftThree, (230, 300))
 
-        self.badcharLeft = [self.badguyLeftOne, self.badguyLeftTwo,
-                         self.badguyLeftThree, self.badguyLeftTwo,
-                         self.badguyLeftOne, self.badguyLeftTwo,
-                         self.badguyLeftThree, self.badguyLeftTwo,
-                         self.badguyLeftOne, self.badguyLeftTwo,
-                         self.badguyLeftThree, self.badguyLeftTwo,
-                         self.badguyLeftOne, self.badguyLeftTwo,
-                         self.badguyLeftThree, self.badguyLeftTwo]
+        self.badcharLeft = []
+
+        for x in range(10000):
+            self.badcharLeft.append(self.badguyLeftOne)
+            self.badcharLeft.append(self.badguyLeftTwo)
+            self.badcharLeft.append(self.badguyLeftThree)
+
+        self.x, self.y = 128, 600
+        self.badguyx, self.badguyy = 3200, 450
+
+        self.healthplayer = 150
 
         self.npcAlex = pygame.image.load('NPC1.png')
         self.npcAlex = pygame.transform.scale(self.npcAlex, (345, 450))
@@ -90,20 +92,17 @@ class RPG():
         self.jumpingCount = 9
         self.velocity = 4
         self.walkingCount = 0
+        self.enemywalkingCount = 0
 
-        self.x, self.y = 128, 600
         self.npc1x, self.npc1y = 1600, 370
 
         self.npcChat1 = self.myfont.render("Please Help! My village is under attack by vicious Mingo's!", True, (0, 0, 0))
         self.npcChat1x = 1400
 
-        self.timerCount = pygame.time.get_ticks
-
         self.chatInfo1 = self.myfont.render("Use A to move Left & D to move Right!", True, (0, 0, 0))
         self.chatInfo2 = self.myfont.render("Use SPACE to jump & Left-CLick to shoot!", True, (0, 0, 0))
         self.chatInfo3 = self.myfont.render("Help the villagers from the ravage Mingo's!", True, (0, 0, 0))
         self.chatInfo4 = self.myfont.render("Mingo: Bad Guy! Run! Shoot! Hide!", True, (0, 0, 0))
-        self.timerRead = self.myfont.render('This is cool'.format(str(self.timerCount)), True, (0, 0, 0))
 
     def grabinformation(self):
 
@@ -177,8 +176,6 @@ class RPG():
 
     def maininfoscreen(self):
 
-        pygame.mixer.music.load(self.menumusic)
-        pygame.mixer.music.play(-1)
         self.screen.blit(self.backgroundmenu, (0, 0))
 
         while True:
@@ -203,17 +200,15 @@ class RPG():
                 if self.mousey >= 765 and self.mousey <= 815:
 
                     if self.mouseclick == 1:
+
                         self.maingamescreen()
 
-            print(self.mousex, self.mousey)
+                        self.mouseclick = 0
 
             pygame.display.flip()
             self.clock.tick(60)
 
     def maingamescreen(self):
-
-        pygame.mixer.music.load(self.menumusic)
-        pygame.mixer.music.play(-1)
 
         while True:
             for event in pygame.event.get():
@@ -230,6 +225,8 @@ class RPG():
                 self.moveRight = False
                 self.npc1x += self.velocity
                 self.npcChat1x += self.velocity
+                self.badguyx = self.badguyx - 3
+                self.enemywalkingCount += 1
 
             elif self.keys[pygame.K_d]:
 
@@ -239,12 +236,16 @@ class RPG():
                 self.moveRight = True
                 self.npc1x -= self.velocity
                 self.npcChat1x -= self.velocity
+                self.badguyx = self.badguyx - 3
+                self.enemywalkingCount += 1
 
             else:
 
                 self.moveLeft = False
                 self.moveRight = True
                 self.walkingCount = 0
+                self.badguyx = self.badguyx - 3
+                self.enemywalkingCount += 1
 
             if not self.booleanJumping:
 
@@ -274,11 +275,14 @@ class RPG():
 
         pygame.init()
 
-        self.screen.blit(self.timerRead, (200, 200))
-
         self.screen.blit(self.backgroundmenu, (self.backgroundmenuposx, self.backgroundmenuposy))
         self.rightBackgroundMultiply = 1
         self.leftBackgroundMultiply = -1
+
+        self.mousex = pygame.mouse.get_pos()[0]
+        self.mousey = pygame.mouse.get_pos()[1]
+
+        self.mouseclick = pygame.mouse.get_pressed()[0]
 
         for x in range(10):
             self.screen.blit(self.backgroundmenu, (self.backgroundmenuposx + (1600 * self.rightBackgroundMultiply), self.backgroundmenuposy))
@@ -287,6 +291,10 @@ class RPG():
         for x in range(10):
             self.screen.blit(self.backgroundmenu, (self.backgroundmenuposx + (1600 * self.leftBackgroundMultiply), self.backgroundmenuposy))
             self.leftBackgroundMultiply = self.leftBackgroundMultiply - 1
+
+        pygame.draw.rect(self.screen, (0, 0, 0), [(self.x - 35), (self.y - 35), 160, 25], 0)
+        pygame.draw.rect(self.screen, (255, 0, 0), [(self.x - 30), (self.y - 30), 150, 15], 0)
+        pygame.draw.rect(self.screen, (0, 255, 0), [(self.x - 30), (self.y - 30), self.healthplayer, 15], 0)
 
         if self.backgroundmenuposx <= -400:
             self.screen.blit(self.npcChat1, (self.npcChat1x, 400))
@@ -297,12 +305,19 @@ class RPG():
         if self.moveRight:
             self.screen.blit(self.npcAlex, (self.npc1x, self.npc1y))
             self.screen.blit(self.charRight[self.walkingCount // 3], (self.x, self.y))
+
             self.walkingCount += 1
 
         elif self.moveLeft:
             self.screen.blit(self.npcAlex, (self.npc1x, self.npc1y))
             self.screen.blit(self.charLeft[self.walkingCount // 3], (self.x, self.y))
+
             self.walkingCount += 1
+
+        if self.backgroundmenuposx <= -1800:
+
+            if self.badguyalive:
+                self.enemy = self.screen.blit(self.badcharLeft[self.enemywalkingCount // 3], (self.badguyx, self.badguyy))
 
         if self.x <= 124:
             self.x += self.velocity
@@ -311,7 +326,6 @@ class RPG():
             self.x -= self.velocity
 
         pygame.display.update()
-
 
 def main():
     mw = RPG()
