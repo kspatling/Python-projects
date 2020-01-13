@@ -45,6 +45,7 @@ class RPG():
 
         self.lasershot = pygame.image.load('lasershot.png')
         self.lasershot = pygame.transform.scale(self.lasershot, (75, 10))
+        self.lasershotrect = self.lasershot.get_rect()
 
         self.badguyalive = True
 
@@ -78,7 +79,6 @@ class RPG():
 
         self.x, self.y = 128, 600
         self.badguyx, self.badguyy = 3100, 450
-        self.bulletx = self.x
 
         self.healthplayer = 150
         self.healthenemy = 150
@@ -100,6 +100,8 @@ class RPG():
         self.enemywalkingCount = 0
 
         self.npc1x, self.npc1y = 1600, 370
+        self.lasershots = self.screen.blit(self.lasershot, (11110, 11110))
+        self.lasershotrect = self.lasershot.get_rect()
 
         self.npcChat1 = self.myfont.render("Please Help! My village is under attack by vicious Mingo's!", True, (0, 0, 0))
         self.npcChat1x = 1400
@@ -215,6 +217,11 @@ class RPG():
 
     def maingamescreen(self):
 
+        self.bulletstate = 'READY'
+        self.bulletx = self.x
+        self.bullety = self.y
+        self.bulletxvel = 4
+
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -232,6 +239,7 @@ class RPG():
                 self.npcChat1x += self.velocity
                 self.badguyx = self.badguyx - 3
                 self.enemywalkingCount += 1
+                self.bulletxvel = 8
 
             elif self.keys[pygame.K_d]:
 
@@ -243,6 +251,7 @@ class RPG():
                 self.npcChat1x -= self.velocity
                 self.badguyx = self.badguyx - 3
                 self.enemywalkingCount += 1
+                self.bulletxvel = 4
 
             else:
 
@@ -281,9 +290,8 @@ class RPG():
 
         pygame.init()
 
-        self.bullety = self.y
-        self.bulletstate = 'READY'
-        self.bulletxvel = 4
+        self.badcharrect = self.badcharLeft[self.enemywalkingCount // 3].get_rect()
+        print(self.badcharrect)
 
         self.screen.blit(self.backgroundmenu, (self.backgroundmenuposx, self.backgroundmenuposy))
         self.rightBackgroundMultiply = 1
@@ -342,19 +350,31 @@ class RPG():
         self.mouseclick = pygame.mouse.get_pressed()[0]
 
         if self.keys[pygame.K_c]:
-            self.shootbullet()
+            self.shootbullet(self.bulletx, self.bullety)
 
         if self.bulletstate is 'SHOOT':
-            self.shootbullet()
+            self.shootbullet(self.bulletx, self.bullety)
             self.bulletx += self.bulletxvel
-            print(self.bulletx, self.bulletxvel)
-            print('Yes')
+
+        if self.bulletx >= 1500:
+            self.bulletstate = 'READY'
+            self.bulletx = self.x
+
+        if self.bulletstate == 'READY':
+            self.bulletx = self.x
+
+        #self.runcollisions()
 
         pygame.display.update()
 
-    def shootbullet(self):
+    def shootbullet(self, x, y):
         self.bulletstate = 'SHOOT'
-        self.screen.blit(self.lasershot, (self.bulletx, 635))
+        self.lasershots = self.screen.blit(self.lasershot, (x + 32, y + 45))
+
+    #def runcollisions(self):
+
+        #if pygame.Rect.colliderect(self.lasershotrect.center, self.badcharrect.center):
+            #print('Yes')
 
 
 def main():
