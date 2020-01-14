@@ -398,6 +398,12 @@ class RPG():
         if self.healthenemy <= 0:
             self.badguyalive = False
 
+        if self.badguyalive:
+            if self.x >= self.badguyx:
+                self.badguyalive = False
+                self.healthplayer = self.healthplayer - 75
+
+
 def main():
     mw = RPG()
     mw.grabinformation()
