@@ -89,6 +89,9 @@ class RPG():
         self.badguyInfo = pygame.image.load('bad_guy6.png')
         self.badguyInfo = pygame.transform.scale(self.badguyInfo, (345, 450))
 
+        self.badguyBoss = pygame.image.load('bad_guy6.png')
+        self.badguyBoss = pygame.transform.scale(self.badguyInfo, (300, 390))
+
         self.charStand = pygame.image.load('playerStand.png')
         self.booleanJumping = False
         self.moveLeft = False
@@ -219,6 +222,9 @@ class RPG():
         self.bulletstate = 0
         self.bulletx = self.x
         self.bulletxvel = 8
+        self.bossbattle = False
+        self.jumpmultiply = 0.2
+        self.bossx = 350
 
         while True:
             for event in pygame.event.get():
@@ -230,7 +236,6 @@ class RPG():
             if self.keys[pygame.K_a]:
 
                 self.x -= self.velocity
-                self.backgroundmenuposx += self.velocity
                 self.moveLeft = True
                 self.moveRight = False
                 self.npc1x += self.velocity
@@ -239,10 +244,12 @@ class RPG():
                 self.enemywalkingCount += 1
                 self.bulletxvel = 8
 
+                if self.bossbattle == False:
+                    self.backgroundmenuposx += self.velocity
+
             elif self.keys[pygame.K_d]:
 
                 self.x += self.velocity
-                self.backgroundmenuposx -= self.velocity
                 self.moveLeft = False
                 self.moveRight = True
                 self.npc1x -= self.velocity
@@ -250,6 +257,9 @@ class RPG():
                 self.badguyx = self.badguyx - 3
                 self.enemywalkingCount += 1
                 self.bulletxvel = 8
+
+                if self.bossbattle == False:
+                    self.backgroundmenuposx -= self.velocity
 
             else:
 
@@ -271,7 +281,7 @@ class RPG():
 
                 if self.jumpingCount >= -9:
 
-                    self.y -= (self.jumpingCount * abs(self.jumpingCount)) * 0.2
+                    self.y -= (self.jumpingCount * abs(self.jumpingCount)) * self.jumpmultiply
                     self.jumpingCount -= 1
                 else:
 
@@ -343,11 +353,13 @@ class RPG():
                 pygame.draw.rect(self.screen, (255, 0, 0), [(self.badguyx + 40), (self.badguyy + 55), 150, 15], 0)
                 pygame.draw.rect(self.screen, (0, 255, 0), [(self.badguyx + 40), (self.badguyy + 55), self.healthenemy, 15], 0)
 
-        if self.x <= 124:
-            self.x += self.velocity
+        if self.bossbattle == False:
 
-        if self.x >= 700:
-            self.x -= self.velocity
+            if self.x <= 124:
+                self.x += self.velocity
+
+            if self.x >= 700:
+                self.x -= self.velocity
 
         self.mouseclick = pygame.mouse.get_pressed()[0]
 
@@ -365,6 +377,22 @@ class RPG():
 
         if self.bulletstate == 0:
             self.bulletx = self.x
+
+        if self.backgroundmenuposx <= -3200:
+            self.bossbattle = True
+
+        if self.bossbattle:
+
+            self.velocity = 5
+            self.jumpmultiply = 1.4
+
+            if self.x <= 175:
+                self.x += self.velocity
+
+            if self.x >= 1300:
+                self.x -= self.velocity
+
+            self.screen.blit(self.badguyInfo, (self.bossx, 375))
 
         self.runcollisions()
 
