@@ -1,34 +1,54 @@
+# Kevin Spatling
+# Here I imported the assets for my game.
 import pygame
 from tkinter import *
 import random as rng
 
+# Here I created my class where all my game code will be stored.
 class RPG():
 
+    # I initialze the pygame functions I will use.
     pygame.font.init()
     pygame.mixer.init()
 
+    # I predefine my static variables that load before anything else loads up in the program.
     def __init__(self):
 
+        # Here I define the width and height of the window.
         self.WIDTH, self.HEIGHT = 1550, 850
         self.windowsize = (self.WIDTH, self.HEIGHT)
+
+        # I then create a pygame screen using these variables.
         self.screen = pygame.display.set_mode(self.windowsize)
+
+        # I title the window.
         pygame.display.set_caption("Adventure Bros")
+
+        # I define the frame refresh rate.
         self.clock = pygame.time.Clock()
 
+        # Here I import my background menu and convert it to a jpg.
         self.backgroundmenu = pygame.image.load('backgroundback.png').convert()
-        self.backgroundmenurect = self.backgroundmenu.get_rect()
+
+        # I define the x and y coords of the background.
         self.backgroundmenuposx = 0
         self.backgroundmenuposy = 0
 
+        # Here I import the background menu for the info screen.
         self.backgroundmenuinfo = pygame.image.load('backgroundback4.png').convert()
 
+        # Here I import the main menu button images.
         self.mainmenuadventurebros = pygame.image.load('mainlogo.png')
         self.mainmenulogostart = pygame.image.load('startlogo.png')
         self.mainmenulogoinformation = pygame.image.load('informationlogo.png')
+
+        # Here I defined what font I will use for my text.
         self.myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
+        # I import the music for my file.
         self.menumusic = ('Main Menu Theme Song.wav')
 
+        # I import all frames of my player I will use to make him look like hes moving, and I scale the images to be smaller. This is for right movement.
         self.playerRightOne = pygame.image.load('playerRightOne.png')
         self.playerRightOne = pygame.transform.scale(self.playerRightOne, (115, 150))
         self.playerRightTwo = pygame.image.load('playerRightTwo.png')
@@ -36,6 +56,7 @@ class RPG():
         self.playerRightThree = pygame.image.load('playerRightThree.png')
         self.playerRightThree = pygame.transform.scale(self.playerRightThree, (115, 150))
 
+        # I import all frames of my player I will use to make him look like hes moving, and I scale the images to be smaller. This is for left movement.
         self.playerLeftOne = pygame.image.load('playerLeftOne.png')
         self.playerLeftOne = pygame.transform.scale(self.playerLeftOne, (115, 150))
         self.playerLeftTwo = pygame.image.load('playerLeftTwo.png')
@@ -43,26 +64,33 @@ class RPG():
         self.playerLeftThree = pygame.image.load('playerLeftThree.png')
         self.playerLeftThree = pygame.transform.scale(self.playerLeftThree, (115, 150))
 
+        # Here I import the last shot and grab the laser's x and y coordinates
         self.lasershot = pygame.image.load('lasershot.png')
         self.lasershot = pygame.transform.scale(self.lasershot, (75, 10))
         self.lasershotrect = self.lasershot.get_rect()
 
+        # Here I define if the bad guy is still alive.
         self.badguyalive = True
 
+        # Here I create the character right movement.
         self.charRight = []
 
+        # Here I append constantly the images of my player so that when they move it will constantly go through their movement.
         for x in range(1000):
             self.charRight.append(self.playerRightOne)
             self.charRight.append(self.playerRightTwo)
             self.charRight.append(self.playerRightThree)
 
+        # Here I create the character left movement.
         self.charLeft = []
 
+        # Here I append constantly the images of my player so that when they move it will constantly go through their movement.
         for x in range(1000):
             self.charLeft.append(self.playerLeftOne)
             self.charLeft.append(self.playerLeftTwo)
             self.charLeft.append(self.playerLeftThree)
 
+        # I import all frames of my bad guy I will use to make him look like hes moving, and I scale the images to be smaller. This is for left movement. The badguy can only move left.
         self.badguyLeftOne = pygame.image.load('bad_guy1.png')
         self.badguyLeftOne = pygame.transform.scale(self.badguyLeftOne, (230, 300))
         self.badguyLeftTwo = pygame.image.load('bad_guy2.png')
@@ -70,39 +98,53 @@ class RPG():
         self.badguyLeftThree = pygame.image.load('bad_guy4.png')
         self.badguyLeftThree = pygame.transform.scale(self.badguyLeftThree, (230, 300))
 
+        # Here is where I will store all his movement pictures.
         self.badcharLeft = []
 
+        # Here I append constantly the images of my badguy so that when they move it will constantly go through their movement.
         for x in range(10000):
             self.badcharLeft.append(self.badguyLeftOne)
             self.badcharLeft.append(self.badguyLeftTwo)
             self.badcharLeft.append(self.badguyLeftThree)
 
+        # Here I create my player's x and y variables and my bad guy's x and y variables
         self.x, self.y = 128, 600
         self.badguyx, self.badguyy = 3100, 450
 
+        # The player's enemy and health.
         self.healthplayer = 150
         self.healthenemy = 150
 
+        # Here I created the NPC's image.
         self.npcAlex = pygame.image.load('NPC1.png')
         self.npcAlex = pygame.transform.scale(self.npcAlex, (345, 450))
 
+        # Here I created the bad guys image for the info screen.
         self.badguyInfo = pygame.image.load('bad_guy6.png')
         self.badguyInfo = pygame.transform.scale(self.badguyInfo, (345, 450))
 
+        # Here I created the bosses image.
         self.badguyBoss = pygame.image.load('bad_guy6.png')
         self.badguyBoss = pygame.transform.scale(self.badguyInfo, (300, 390))
 
+        # Here I defined the player's non constant movement.
         self.charStand = pygame.image.load('playerStand.png')
+
+        # Booleans for when the player is jumping or moving left and right.
         self.booleanJumping = False
         self.moveLeft = False
         self.moveRight = False
 
+        # Here I define my variables for the movement system to look through the list and display the images to make it look like the characters are moving on the screen.
         self.jumpingCount = 9
         self.velocity = 4
         self.walkingCount = 0
         self.enemywalkingCount = 0
 
+        # Here I created the npc on the screen.
         self.npc1x, self.npc1y = 1600, 370
+        
+        # Here i created the laser on the screen to be predeifned off the screen.
         self.lasershots = self.screen.blit(self.lasershot, (11110, 11110))
 
         self.npcChat1 = self.myfont.render("Please Help! My village is under attack by vicious Mingo's!", True, (0, 0, 0))
@@ -301,9 +343,9 @@ class RPG():
         self.lasershotrect = self.lasershot.get_rect()
         self.badcharrect = self.badcharLeft[self.enemywalkingCount // 3].get_rect()
         self.playerrect = self.charLeft[self.walkingCount // 3].get_rect()
-        #self.playerrect.topleft = self.x
-        #self.lasershotrect.topleft = self.bulletx
-        #self.badcharrect.topleft = self.x
+        self.playerrect.topleft = self.x
+        self.lasershotrect.topleft = self.bulletx
+        self.badcharrect.topleft = self.x
 
         self.screen.blit(self.backgroundmenu, (self.backgroundmenuposx, self.backgroundmenuposy))
         self.rightBackgroundMultiply = 1
@@ -404,19 +446,19 @@ class RPG():
 
     def runcollisions(self):
 
-        #if pygame.Rect.colliderect(self.badcharrect, self.lasershotrect):
+        if pygame.Rect.colliderect(self.badcharrect, self.lasershotrect):
 
-            #self.healthenemy = self.healthenemy =+ 25
+            self.healthenemy = self.healthenemy =+ 25
 
-        #if self.healthenemy == 0:
-            #self.enemy.kill()
+        if self.healthenemy == 0:
+            self.enemy.kill()
 
-        #if pygame.Rect.colliderect(self.badcharrect, self.playerrect):
+        if pygame.Rect.colliderect(self.badcharrect, self.playerrect):
 
-            #self.healthplayer = self.healthplayer =- 25
+            self.healthplayer = self.healthplayer =- 25
 
-        #if self.healthplayer == 0:
-            #self.playerrect.kill()
+        if self.healthplayer == 0:
+            self.playerrect.kill()
 
         if self.badguyalive:
             if self.bulletx >= self.badguyx:
